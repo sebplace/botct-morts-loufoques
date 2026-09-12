@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Le Registre Macabre — Générateur de morts loufoques (Blood on the Clocktower)</title>
+<meta name="description" content="Générateur aléatoire de morts loufoques et fidèles au lore pour Blood on the Clocktower. Annoncez les morts de Ravenswood Bluff avec panache : cause, lieu, dernières paroles et verdict du Conteur.">
+<meta name="theme-color" content="#0c0a10">
+<meta property="og:title" content="Le Registre Macabre de Ravenswood Bluff">
+<meta property="og:description" content="Générateur de morts loufoques pour Blood on the Clocktower.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%95%AF%EF%B8%8F%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+<div class="scenery" aria-hidden="true">
+  <div class="moon"></div>
+  <svg class="skyline" viewBox="0 0 1440 320" preserveAspectRatio="xMidYMax slice">
+    <path class="hill" d="M0 320 L0 250 Q 120 205 240 240 T 480 235 T 720 250 T 960 230 T 1200 245 T 1440 225 L1440 320 Z"/>
+    <g class="tower">
+      <path d="M690 320 L690 150 L700 120 L740 120 L750 150 L750 320 Z"/>
+      <path d="M694 120 L720 60 L746 120 Z"/>
+      <rect x="716" y="40" width="8" height="22"/>
+      <rect x="710" y="50" width="20" height="5"/>
+      <circle class="clockface" cx="720" cy="165" r="18"/>
+      <path class="hands" d="M720 165 L720 153 M720 165 L729 170"/>
+      <rect x="704" y="200" width="12" height="20" rx="6"/>
+      <rect x="724" y="200" width="12" height="20" rx="6"/>
+    </g>
+    <g class="roofs">
+      <path d="M120 320 L120 265 L160 235 L200 265 L200 320 Z"/>
+      <path d="M250 320 L250 280 L285 255 L320 280 L320 320 Z"/>
+      <path d="M980 320 L980 270 L1020 242 L1060 270 L1060 320 Z"/>
+      <path d="M1120 320 L1120 285 L1150 262 L1180 285 L1180 320 Z"/>
+      <path d="M430 320 L430 290 L458 270 L486 290 L486 320 Z"/>
+    </g>
+    <g class="birds">
+      <path d="M300 90 q 8 -8 16 0 q 8 -8 16 0"/>
+      <path d="M360 60 q 6 -6 12 0 q 6 -6 12 0"/>
+      <path d="M1080 80 q 7 -7 14 0 q 7 -7 14 0"/>
+    </g>
+  </svg>
+  <div class="fog"></div>
+</div>
+
+<main class="wrap">
+
+  <header class="masthead">
+    <p class="kicker">Ravenswood Bluff · Bureau des affaires nocturnes</p>
+    <h1>Le Registre&nbsp;Macabre</h1>
+    <p class="tagline">Générateur de morts loufoques &amp; fidèles au lore pour <em>Blood on the Clocktower</em></p>
+  </header>
+
+  <section class="panel" aria-label="Réglages du rapport">
+    <div class="field-group">
+      <span class="field-label" id="lbl-script">Script</span>
+      <div class="chips" role="radiogroup" aria-labelledby="lbl-script" id="script-chips">
+        <button type="button" class="chip is-on" role="radio" aria-checked="true" data-value="all">Tous</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-value="tb">Trouble Brewing</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-value="bmr">Bad Moon Rising</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-value="sv">Sects &amp; Violets</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-value="exp">Expérimental</button>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <span class="field-label" id="lbl-phase">Moment</span>
+      <div class="chips" role="radiogroup" aria-labelledby="lbl-phase" id="phase-chips">
+        <button type="button" class="chip is-on" role="radio" aria-checked="true" data-value="auto">Au hasard</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-value="nuit">Nuit</button>
+        <button type="button" class="chip" role="radio" aria-checked="false" data-value="jour">Jour</button>
+      </div>
+    </div>
+
+    <div class="field-group">
+      <label class="field-label" for="chaos">Niveau de loufoquerie&nbsp;: <span id="chaos-label">Complètement loufoque</span></label>
+      <input type="range" id="chaos" min="1" max="4" step="1" value="3" list="chaos-ticks">
+      <datalist id="chaos-ticks">
+        <option value="1"></option><option value="2"></option>
+        <option value="3"></option><option value="4"></option>
+      </datalist>
+      <div class="range-legend"><span>Sobre</span><span>Étrange</span><span>Loufoque</span><span>Absurde</span></div>
+    </div>
+
+    <div class="field-group inline">
+      <label class="field-label" for="victim-name">Victime (facultatif)</label>
+      <div class="inline-row">
+        <input type="text" id="victim-name" placeholder="ex. Sébastien" maxlength="40" autocomplete="off">
+        <select id="victim-gender" aria-label="Accord en genre">
+          <option value="auto">Genre : auto</option>
+          <option value="m">Masculin</option>
+          <option value="f">Féminin</option>
+        </select>
+      </div>
+    </div>
+
+    <button type="button" id="generate" class="summon">
+      <span class="summon-ink">Annoncer une mort</span>
+      <span class="summon-hint">espace</span>
+    </button>
+  </section>
+
+  <section class="parchment-shell" aria-label="Certificat de décès">
+    <article class="parchment" id="card" aria-live="polite">
+      <div class="seal" aria-hidden="true"><span>†</span></div>
+
+      <p class="affair-kicker">Dossier n°<span id="case-no">—</span> · Registre macabre</p>
+      <h2 class="affair" id="affair">Le village attend un rapport</h2>
+      <p class="meta" id="meta"><span class="badge" id="badge-script">—</span><span class="badge" id="badge-phase">—</span><span class="badge" id="badge-chaos">—</span></p>
+
+      <dl class="report">
+        <div class="row" data-part="victime">
+          <dt>Victime</dt>
+          <dd id="out-victime">Appuyez sur « Annoncer une mort » pour ouvrir un dossier.</dd>
+          <button class="reroll" type="button" data-reroll="victime" title="Relancer la victime" aria-label="Relancer la victime">⟳</button>
+        </div>
+        <div class="row" data-part="constat">
+          <dt>Constat</dt>
+          <dd id="out-constat">—</dd>
+          <button class="reroll" type="button" data-reroll="constat" title="Relancer le constat" aria-label="Relancer le constat">⟳</button>
+        </div>
+        <div class="row" data-part="cause">
+          <dt>Cause officielle</dt>
+          <dd id="out-cause">—</dd>
+          <button class="reroll" type="button" data-reroll="cause" title="Relancer la cause" aria-label="Relancer la cause">⟳</button>
+        </div>
+        <div class="row" data-part="indice">
+          <dt>Détail troublant</dt>
+          <dd id="out-indice">—</dd>
+          <button class="reroll" type="button" data-reroll="indice" title="Relancer le détail" aria-label="Relancer le détail">⟳</button>
+        </div>
+        <div class="row" data-part="mots">
+          <dt>Dernières paroles</dt>
+          <dd id="out-mots">—</dd>
+          <button class="reroll" type="button" data-reroll="mots" title="Relancer les dernières paroles" aria-label="Relancer les dernières paroles">⟳</button>
+        </div>
+        <div class="row" data-part="verdict">
+          <dt>Verdict du Conteur</dt>
+          <dd id="out-verdict">—</dd>
+          <button class="reroll" type="button" data-reroll="verdict" title="Relancer le verdict" aria-label="Relancer le verdict">⟳</button>
+        </div>
+      </dl>
+
+      <p class="graine">Graine&nbsp;: <code id="seed">—</code> · <span class="hint">⟳ relance une seule ligne du rapport</span></p>
+    </article>
+
+    <div class="actions">
+      <button type="button" id="copy" class="ghost">📋 Copier le rapport</button>
+      <button type="button" id="permalink" class="ghost">🔗 Copier le permalien</button>
+      <button type="button" id="again" class="ghost">🕯️ Encore une</button>
+    </div>
+    <p class="toast" id="toast" role="status" aria-live="polite"></p>
+  </section>
+
+  <section class="ledger" aria-label="Dossiers précédents">
+    <h3>Dossiers classés <button type="button" id="clear-history" class="mini">vider</button></h3>
+    <ol id="history" class="history"><li class="empty">Aucun dossier pour l'instant. La nuit est jeune.</li></ol>
+  </section>
+
+  <footer class="colophon">
+    <p><strong>Le Registre Macabre</strong> — projet de fan, non officiel, sans lien avec The Pandemonium Institute.
+      <em>Blood on the Clocktower</em> est une marque de ses ayants droit ; aucun texte de règles n'est reproduit ici.</p>
+    <p>Aucune donnée n'est envoyée nulle part : tout est généré dans votre navigateur.
+      Raccourcis&nbsp;: <kbd>Espace</kbd> nouvelle mort · <kbd>C</kbd> copier · <kbd>P</kbd> permalien.</p>
+  </footer>
+
+</main>
+
+<script src="data/lore.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
