@@ -122,7 +122,7 @@
       ["parfaitement immobile, les yeux ouverts, sans une seule marque", "L'Affaire du Corps Sans Marque"],
       ["froid{e} depuis plusieurs heures alors qu'{il} parlait encore au dîner", "L'Affaire de l'Heure Manquante"],
       ["vidé{e} de tout son sang, le sol restant immaculé", "L'Affaire du Sol Immaculé"],
-      ["une expression de compréhension très tardive sur le visage", "L'Affaire de la Révélation Trop Tardive"],
+      ["avec une expression de compréhension très tardive sur le visage", "L'Affaire de la Révélation Trop Tardive"],
       ["la gorge serrée par une main invisible et fort soignée", "L'Affaire de la Main Absente"],
       ["assis{e} bien droit, comme si la mort avait été polie", "L'Affaire de la Mort Courtoise"],
       ["gelé{e} en plein mois d'août, givre compris", "L'Affaire du Givre d'Août"],
@@ -155,7 +155,7 @@
       ["écrasé{e} par une meule de fromage lancée à contresens dans une rue en pente", "L'Affaire de la Meule Fugueuse"],
       ["expiré{e} après avoir gagné un pari portant sur sa propre espérance de vie", "L'Affaire du Pari Gagné"],
       ["assailli{e} par un troupeau d'oies particulièrement bien organisé", "L'Affaire des Oies Syndiquées"],
-      ["disparu{e} dans un placard, retrouvé{e} dans un autre, mort{e} dans un troisième", "L'Affaire des Trois Placards"],
+      ["coincé{e} dans un troisième placard, après avoir disparu dans un premier et transité par un deuxième", "L'Affaire des Trois Placards"],
       ["mort{e} d'un fou rire déclenché par une remarque que personne n'a entendue", "L'Affaire du Fou Rire Solitaire"],
       ["remplacé{e} par une botte de foin très ressemblante, puis brûlé{e} par mégarde", "L'Affaire de la Botte Ressemblante"],
       ["assassiné{e} par son propre reflet, qui a ensuite pris son quart de garde", "L'Affaire du Reflet Consciencieux"],
@@ -179,7 +179,7 @@
       ["supprimé{e} rétroactivement : {il} n'a jamais existé, mais {il} est quand même mort{e}", "L'Affaire de l'Inexistence Fatale"],
       ["écrasé{e} sous le poids d'une métaphore devenue soudainement littérale", "L'Affaire de la Métaphore Lourde"],
       ["mort{e} d'avoir lu sa propre notice nécrologique avec deux jours d'avance", "L'Affaire de la Nécrologie Prématurée"],
-      ["dissous{e} dans un bain de camomille, pour des raisons qui demeurent obscures", "L'Affaire de la Camomille Corrosive"],
+      ["dilué{e} dans un bain de camomille, pour des raisons qui demeurent obscures", "L'Affaire de la Camomille Corrosive"],
       ["retiré{e} du jeu par une main immense descendue du plafond", "L'Affaire de la Main du Plafond"],
       ["replié{e} soigneusement en huit et rangé{e} dans un tiroir de la sacristie", "L'Affaire du Tiroir Bien Rangé"],
       ["remplacé{e} par un silence de la même taille et du même poids", "L'Affaire du Silence Équivalent"],
@@ -214,7 +214,7 @@
       ],
       manieres: [
         ["frappé{e} une seule fois, très proprement, par quelque chose qui savait où viser", "L'Affaire du Geste Unique"],
-        ["retrouvé{e} avec l'empreinte d'un sourire sur la porte, à l'envers", "L'Affaire du Sourire Inversé"],
+        ["sous l'empreinte d'un sourire imprimée sur la porte, à l'envers", "L'Affaire du Sourire Inversé"],
         ["griffé{e} trois fois : une pour le doute, une pour la peur, une pour finir", "L'Affaire des Trois Griffures"]
       ]
     },
@@ -226,7 +226,7 @@
       ],
       manieres: [
         ["poignardé{e} de sa propre main, avec une détermination toute administrative", "L'Affaire de la Démission Définitive"],
-        ["retrouvé{e} mort{e} et étrangement satisfait{e} : promotion oblige", "L'Affaire de la Promotion Posthume"]
+        ["mort{e} et étrangement satisfait{e} : promotion oblige", "L'Affaire de la Promotion Posthume"]
       ]
     },
     {
@@ -308,7 +308,7 @@
       ],
       manieres: [
         ["mort{e} deux fois, ce qui pose un vrai problème de comptabilité au Fossoyeur", "L'Affaire du Double Décès"],
-        ["retrouvé{e} froid{e} et debout, en train de hocher poliment la tête", "L'Affaire du Hochement Posthume"],
+        ["froid{e} et debout, en train de hocher poliment la tête", "L'Affaire du Hochement Posthume"],
         ["mort{e} parce que la journée avait été trop calme, statistiquement parlant", "L'Affaire de la Journée Trop Calme"]
       ]
     },
@@ -460,7 +460,7 @@
       ],
       manieres: [
         ["mort{e} dans un monde où tout était faux, sauf ce détail-là", "L'Affaire du Seul Fait Vrai"],
-        ["retrouvé{e} à l'endroit exact où toutes les informations {le} disaient absent{e}", "L'Affaire de l'Endroit Nié"],
+        ["à l'endroit exact où toutes les informations {le} disaient absent{e}", "L'Affaire de l'Endroit Nié"],
         ["éteint{e} par une vérité isolée au milieu d'un océan de mensonges", "L'Affaire de la Vérité Isolée"]
       ]
     },
