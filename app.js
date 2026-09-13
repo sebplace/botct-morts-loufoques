@@ -89,16 +89,17 @@
 
   /** Répartition des niveaux d'absurdité selon le curseur. */
   const MELANGE = {
-    1: [[1, 78], [2, 22]],
-    2: [[1, 24], [2, 56], [3, 20]],
-    3: [[2, 24], [3, 56], [4, 20]],
-    4: [[3, 34], [4, 66]]
+    1: [[1, 70], [2, 30]],
+    2: [[1, 25], [2, 55], [3, 20]],
+    3: [[2, 25], [3, 55], [4, 20]],
+    4: [[3, 35], [4, 65]]
   };
 
-  function tirerMort(rng, chaos, jour) {
-    const table = jour ? L.MODES_EXECUTION : L.MANIERES;
+  function tirerScene(rng, chaos, jour) {
+    const table = jour ? L.JOUR : L.NUIT;
     const niveau = weighted(rng, MELANGE[chaos] || MELANGE[3]);
-    return pick(rng, table[niveau]);
+    const lot = table.filter(function (s) { return s.niveau === niveau; });
+    return pick(rng, lot.length ? lot : table);
   }
 
   function roleParId(id) {
@@ -111,9 +112,7 @@
   }
 
   function nomAuHasard(rng, g) {
-    const prenom = pick(rng, g === "f" ? L.PRENOMS_F : L.PRENOMS_M);
-    const epithete = pick(rng, g === "f" ? L.EPITHETES_F : L.EPITHETES_M);
-    return prenom + " " + epithete;
+    return pick(rng, g === "f" ? L.PRENOMS_F : L.PRENOMS_M);
   }
 
   function nettoyerIdee(txt) {
@@ -139,13 +138,9 @@
       acc: acc, accGenre: accGenre,
       role: opts.role ? roleParId(opts.role) : null,
       idee: nettoyerIdee(opts.idee),
-      ouverture: pick(rng, jour ? L.OUVERTURES_JOUR : L.OUVERTURES_NUIT),
+      scene: tirerScene(rng, opts.chaos, jour),
       amorce: pick(rng, jour ? L.AMORCES_IDEE_JOUR : L.AMORCES_IDEE),
       suite: pick(rng, jour ? L.SUITES_IDEE.jour : L.SUITES_IDEE.nuit),
-      mort: tirerMort(rng, opts.chaos, jour),
-      lieu: pick(rng, L.LIEUX),
-      moment: pick(rng, L.MOMENTS),
-      detail: pick(rng, L.DETAILS),
       dossier: String(range(rng, 1, 9999)).padStart(4, "0"),
       surMesure: false
     };
@@ -161,41 +156,41 @@
     });
   }
 
-  function titre(d) { return d.mort[1]; }
+  function titre(d) { return d.scene.titre; }
 
-  /** Renvoie [{ cle, html }] — deux ou trois paragraphes, pas davantage. */
-  function paragraphes(d) {
-    const g = d.genre;
+  /**
+   * Remplit une phrase : accords, prénom, rôle, accusateur.
+   * `premier` indique si la première mention du prénom doit porter le rôle.
+   */
+  function remplir(texte, d, etat) {
+    let out = accordAutre(accord(escapeHtml(texte), d.genre), d.accGenre);
     const nomHtml = "<strong>" + escapeHtml(d.nom) + "</strong>";
-    const roleHtml = d.role ? ", " + escapeHtml(roleAvecArticle(d.role)) + "," : "";
-    const accHtml = "<strong>" + escapeHtml(d.acc) + "</strong>";
+    const apposition = d.role ? ", " + escapeHtml(roleAvecArticle(d.role)) + "," : "";
 
-    const ouverture = accordAutre(accord(d.ouverture, g), d.accGenre)
-      .replace(/\{nom\}/g, nomHtml)
-      .replace(/\{role\}/g, roleHtml)
-      .replace(/\{acc\}/g, accHtml)
-      .replace(/,\s*([.!?;:])/g, "$1")
-      .replace(/,\s*,/g, ",");
+    out = out.replace(/\{nom\}/g, function () {
+      if (!etat.nomPose) { etat.nomPose = true; return nomHtml + apposition; }
+      return nomHtml;
+    });
+    out = out.replace(/\{acc\}/g, "<strong>" + escapeHtml(d.acc) + "</strong>");
 
-    const paras = [{ cle: "ouverture", html: ouverture }];
+    /* Le rôle en apposition peut se retrouver collé à une ponctuation. */
+    return out.replace(/,\s*([.!?;:])/g, "$1").replace(/,\s*,/g, ",");
+  }
+
+  /** Renvoie [{ cle, html }] : mise en place, idée éventuelle, puis la mort. */
+  function paragraphes(d) {
+    const etat = { nomPose: false };
+    const paras = [{ cle: "avant", html: remplir(d.scene.avant, d, etat) }];
 
     if (d.idee) {
       paras.push({
         cle: "idee",
-        html: escapeHtml(accord(d.amorce, g)) + " <em>«&nbsp;" + escapeHtml(d.idee) +
+        html: remplir(d.amorce, d, etat) + " <em>«&nbsp;" + escapeHtml(d.idee) +
           "&nbsp;»</em>. " + escapeHtml(d.suite)
       });
     }
 
-    const fin = d.jour
-      ? accord("{Il} a fini " + d.mort[0] + ", " + d.moment + ".", g)
-      : accord("On l'a retrouvé{e} " + d.mort[0] + ", " + d.lieu + ", " + d.moment + ".", g);
-
-    paras.push({
-      cle: "mort",
-      html: escapeHtml(fin) + " " + escapeHtml(accord(d.detail, g))
-    });
-
+    paras.push({ cle: "mort", html: remplir(d.scene.mort, d, etat) });
     return paras;
   }
 
@@ -304,18 +299,11 @@
   /* ------------------------------------------ réécriture ciblée ------ */
 
   const relances = {
-    ouverture: function (d, rng) {
-      d.ouverture = pick(rng, d.jour ? L.OUVERTURES_JOUR : L.OUVERTURES_NUIT);
-    },
+    avant: function (d, rng) { d.scene = tirerScene(rng, d.opts.chaos, d.jour); },
+    mort: function (d, rng) { d.scene = tirerScene(rng, d.opts.chaos, d.jour); },
     idee: function (d, rng) {
       d.amorce = pick(rng, d.jour ? L.AMORCES_IDEE_JOUR : L.AMORCES_IDEE);
       d.suite = pick(rng, d.jour ? L.SUITES_IDEE.jour : L.SUITES_IDEE.nuit);
-    },
-    mort: function (d, rng) {
-      d.mort = tirerMort(rng, d.opts.chaos, d.jour);
-      d.lieu = pick(rng, L.LIEUX);
-      d.moment = pick(rng, L.MOMENTS);
-      d.detail = pick(rng, L.DETAILS);
     }
   };
 
