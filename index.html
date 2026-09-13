@@ -67,6 +67,57 @@
         <span class="mode-title">Exécution loufoque</span>
         <span class="mode-sub">Procès-verbal du village</span>
       </button>
+      <button type="button" class="mode" role="tab" aria-selected="false" data-mode="recit">
+        <span class="mode-icon" aria-hidden="true">✍️</span>
+        <span class="mode-title">Raconte ta mort</span>
+        <span class="mode-sub">Le récit de ta partie</span>
+      </button>
+    </div>
+
+    <div class="field-group" id="recit-form" hidden>
+      <span class="field-label">Ta partie</span>
+      <div class="form-grid">
+        <label class="mini-field">
+          <span>Ton prénom</span>
+          <input type="text" id="recit-nom" placeholder="Sébastien" maxlength="40" autocomplete="off">
+        </label>
+        <label class="mini-field">
+          <span>Genre</span>
+          <select id="recit-genre">
+            <option value="auto">Auto</option>
+            <option value="m">Masculin</option>
+            <option value="f">Féminin</option>
+          </select>
+        </label>
+        <label class="mini-field wide">
+          <span>Ton rôle</span>
+          <select id="recit-role"><option value="">— je préfère ne pas le dire —</option></select>
+        </label>
+        <div class="mini-field wide">
+          <span>Comment es-tu mort·e&nbsp;?</span>
+          <div class="chips" role="radiogroup" aria-label="Type de mort" id="fin-chips">
+            <button type="button" class="chip is-on" role="radio" aria-checked="true" data-value="nuit">🌙 Pendant la nuit</button>
+            <button type="button" class="chip" role="radio" aria-checked="false" data-value="jour">⚖️ Exécuté·e par le village</button>
+          </div>
+        </div>
+        <label class="mini-field" id="acc-field" hidden>
+          <span>Qui t'a nominé·e&nbsp;?</span>
+          <input type="text" id="recit-acc" placeholder="Marguerite" maxlength="40" autocomplete="off">
+        </label>
+        <label class="mini-field" id="acc-genre-field" hidden>
+          <span>Genre</span>
+          <select id="recit-acc-genre">
+            <option value="auto">Auto</option>
+            <option value="m">Masculin</option>
+            <option value="f">Féminin</option>
+          </select>
+        </label>
+        <label class="mini-field wide">
+          <span>Une idée, un détail à glisser dans le récit <em>(facultatif)</em></span>
+          <textarea id="recit-idee" rows="2" maxlength="180"
+            placeholder="j'avais juré trois fois que j'étais le Cuisinier"></textarea>
+        </label>
+      </div>
     </div>
 
     <div class="field-group">
@@ -99,7 +150,7 @@
       <div class="range-legend"><span>Sobre</span><span>Étrange</span><span>Loufoque</span><span>Absurde</span></div>
     </div>
 
-    <div class="field-group inline">
+    <div class="field-group inline" id="victim-field">
       <label class="field-label" for="victim-name" id="lbl-victim">Victime (facultatif)</label>
       <div class="inline-row">
         <input type="text" id="victim-name" placeholder="ex. Sébastien" maxlength="40" autocomplete="off">
@@ -206,7 +257,15 @@
         </div>
       </dl>
 
-      <p class="graine">Graine&nbsp;: <code id="seed">—</code> · <span class="hint">⟳ relance une seule ligne du rapport</span></p>
+      <div class="recit" id="report-recit" hidden>
+        <p class="recit-p" data-part="r1">—</p>
+        <p class="recit-p" data-part="r2">—</p>
+        <p class="recit-p" data-part="r3">—</p>
+        <p class="recit-p" data-part="r4">—</p>
+        <p class="recit-p" data-part="r5">—</p>
+      </div>
+
+      <p class="graine">Graine&nbsp;: <code id="seed">—</code> · <span class="hint" id="hint">⟳ relance une seule ligne du rapport</span></p>
     </article>
 
     <div class="actions">

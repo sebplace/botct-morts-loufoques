@@ -3,12 +3,12 @@
 **Générateur de morts loufoques — et fidèles au lore — pour [Blood on the Clocktower](https://bloodontheclocktower.com/).**
 
 Un Conteur qui annonce « Untel est mort » rate une occasion. Ce générateur produit, en un clic,
-le document qui va avec — et il en existe deux, parce qu'à Ravenswood Bluff on ne meurt pas de la
-même façon la nuit et le jour :
+le document qui va avec — et il en existe trois, parce qu'à Ravenswood Bluff on ne meurt pas de la
+même façon la nuit, le jour, ou dans les souvenirs d'un joueur vexé :
 
-| 🌙 **Mort de la nuit** | ⚖️ **Exécution loufoque** |
-|---|---|
-| Un **certificat de décès** : victime, constat, cause officielle (le bon démon, au bon moment), détail troublant, dernières paroles, verdict du Conteur. | Un **procès-verbal du village** : accusé, nommant, chef d'accusation, pièce à conviction, défense, décompte des voix avec Votes de Mort, mode d'exécution, et surtout la **révélation** de ce que la victime était réellement. |
+| 🌙 **Mort de la nuit** | ⚖️ **Exécution loufoque** | ✍️ **Raconte ta mort** |
+|---|---|---|
+| Un **certificat de décès** : victime, constat, cause officielle (le bon démon, au bon moment), détail troublant, dernières paroles, verdict du Conteur. | Un **procès-verbal du village** : accusé, nommant, chef d'accusation, pièce à conviction, défense, décompte des voix avec Votes de Mort, mode d'exécution, et surtout la **révélation** de ce que la victime était réellement. | Tu donnes ton prénom, **ton vrai rôle**, qui t'a nominé et une idée à glisser dedans — l'app en tire un **récit en prose** qui se moque gentiment de ta partie, avec un clin d'œil fidèle aux règles de ton personnage. |
 
 👉 **[Ouvrir le générateur](https://sebplace.github.io/botct-morts-loufoques/)**
 
@@ -22,20 +22,37 @@ même façon la nuit et le jour :
 |---|---|
 | 🎭 **36 causes de mort fidèles au lore** | Diablotin, Zombuul, Pukka, Shabaloth, Po, Fang Gu, Vigormortis, No Dashii, Vortox, Légion, Léviathan, Émeute, Al-Hadikhia, Timonstre, Kazali, Yaggablabla, Ojo, Parasyte, Seigneur de Typhon… mais aussi l'Assassin, le Parrain, la Sorcière, la Commère, la Pourfendeuse, l'Immaculée, le Bricoleur, le Maladroit, la Dulcinée, le Barbier, le Psychopathe, le Golem, le Sélénite et le rebond du Maire. |
 | ⚖️ **Des exécutions à part entière** | 40 modes d'exécution, 30 chefs d'accusation, 25 pièces à conviction, 25 plaidoiries, un décompte de voix cohérent (seuil à 50 % des vivants, Votes de Mort en appoint) et **56 révélations post-mortem** dont les conséquences suivent les vraies règles : exécuter le Saint met fin à la partie, la Corneille ne se réveille que si c'est le Démon qui la tue, le Fossoyeur aurait appris ce soir quel rôle a été exécuté — le sien. |
+| ✍️ **Ton vrai rôle, ton vrai récit** | Les **87 rôles officiels** des quatre scripts sont dans la liste. Choisis le tien et le récit s'en sert : le Soldat ne meurt pas du Démon *à moins d'avoir été empoisonné*, la Corneille ne se réveille que si c'est le Démon qui la tue, le Fossoyeur aurait appris cette nuit quel rôle a été exécuté — le sien, et exécuter le Saint met fin à la partie sur-le-champ. Ajoute une idée à toi : elle est citée telle quelle dans le texte. |
 | 📜 **4 scripts** | Trouble Brewing, Bad Moon Rising, Sects & Violets, Expérimental — ou tout mélanger. Le filtre s'applique aussi aux révélations. |
 | 🌙 **Cohérence jour / nuit** | Une exécution ne se produit jamais la nuit, le Diablotin ne frappe jamais en plein débat. Le moment affiché découle de la cause. |
 | 🎚️ **Curseur de loufoquerie** | De « gothique sobre » (mort sans une marque, cœur arrêté au carillon) à « absurdité totale » (exécution administrative, mort d'une faute de frappe dans son propre nom). |
 | ✍️ **Accord en genre automatique** | « Retrouvé**e** noyé**e** » / « Retrouvé noyé ». Saisissez le prénom d'un joueur réel, le texte s'accorde. |
-| ⟳ **Relance ligne par ligne** | Le chef d'accusation vous plaît mais pas la défense ? Relancez cette seule ligne. |
-| 🔗 **Permalien reproductible** | Chaque document a une graine ; l'URL rejoue exactement le même dossier, section comprise. |
+| ⟳ **Relance ligne par ligne** | Le chef d'accusation vous plaît mais pas la défense ? Relancez cette seule ligne. Dans le récit, cliquez sur un paragraphe pour le réécrire. |
+| 🔗 **Permalien reproductible** | Chaque document a une graine ; l'URL rejoue exactement le même dossier, section et réponses du formulaire comprises. |
 | 🗃️ **Archives locales** | Les 12 derniers dossiers sont conservés dans le navigateur et rejouables d'un clic. |
 | 📋 **Copie en texte brut** | Pour coller dans Discord pendant une partie en ligne. |
 
-**Raccourcis clavier :** <kbd>Espace</kbd> nouveau rapport · <kbd>C</kbd> copier · <kbd>P</kbd> permalien · <kbd>M</kbd> changer de section.
+**Raccourcis clavier :** <kbd>Espace</kbd> nouveau rapport · <kbd>C</kbd> copier · <kbd>P</kbd> permalien · <kbd>M</kbd> section suivante.
 
 ---
 
-## Deux exemples
+## Trois exemples
+
+**✍️ Raconte ta mort** — prénom *Sébastien*, rôle *Soldat*, idée *« je répétais à tout le monde que j'étais invulnérable »*
+
+> La dernière personne à avoir vu **Sébastien**, le Soldat, vivant jure qu'il avait l'air parfaitement serein.
+>
+> Ce qu'il n'avait dit à personne : *« je répétais à tout le monde que j'étais invulnérable »*. Cela n'a servi strictement à rien.
+>
+> Le poison n'était pas mortel. Les conséquences, elles, se sont montrées très coopératives. Retrouvé mort d'une information fausse reçue avec une confiance totale, dans la bibliothèque du Savant, section « poisons — usage domestique », juste après avoir affirmé n'avoir peur de rien.
+>
+> Les cloches ont sonné un coup de trop. Personne n'a osé le mentionner à voix haute. Ses derniers mots, que le village se répète encore, un peu gêné : « C'est sûrement rien, ce bruit. »
+>
+> *Le Soldat.* Le Soldat ne meurt pas de la main du Démon. À moins d'être ivre ou empoisonné — et c'est bien ce qui s'est passé.
+>
+> Le Conteur confirme : ce n'était ni un accident, ni une surprise, ni une injustice. On en parle encore, et on en parlera probablement trop longtemps.
+
+![Le récit personnalisé](docs/capture-recit.png)
 
 **🌙 Mort de la nuit**
 
@@ -167,6 +184,8 @@ Les tables disponibles :
 | `MODES_EXECUTION` | comment le village s'y prend, par niveau de loufoquerie |
 | `NOTES_DE_VOTE`, `MOTS_DU_NOMMANT`, `VERDICTS_EXECUTION` | le décor du procès-verbal |
 | `REVELATIONS` | ce que l'exécuté était vraiment (`camp` + `script`) |
+| `ROLES` | les 87 rôles officiels, avec leur clin d'œil de récit (`nuit` / `exec`) |
+| `OUVERTURES_NUIT`, `OUVERTURES_JOUR`, `AMORCES_IDEE`, `RAPPORTEURS`, `CLOTURES` | les trames du récit |
 
 Pour ajouter une cause de mort :
 
@@ -193,6 +212,19 @@ Pour ajouter une révélation :
 `camp` vaut `demon`, `sbire`, `marginal`, `village` ou `inconnu`. Vérifiez la règle que vous
 évoquez sur le [wiki officiel](https://wiki.bloodontheclocktower.com/) avant de l'écrire :
 la moitié du plaisir vient de ce que la blague est exacte.
+
+Pour donner un clin d'œil sur mesure à un rôle dans le récit, complétez son entrée dans `ROLES` :
+
+```js
+{ id: "soldat", nom: "Soldat", art: "le", type: "village", script: "tb",
+  nuit: "Le Soldat ne meurt pas de la main du Démon. À moins d'être ivre ou empoisonné — et c'est bien ce qui s'est passé.",
+  exec: "Invulnérable au Démon, parfaitement vulnérable au village." }
+```
+
+`nuit` et `exec` sont facultatifs : sans eux, le récit retombe sur un texte générique
+correspondant au `type` du rôle. Dans ces deux champs, les marqueurs d'accord se rapportent
+au joueur ; ceux entre crochets (`[e]`, `[il]`, `[Il]`) se rapportent à l'accusateur et ne
+servent que dans `OUVERTURES_JOUR`.
 
 Les contributions sont les bienvenues, surtout les morts qui font rire à voix haute une table
 de quinze personnes à deux heures du matin.

@@ -160,7 +160,7 @@
       ["remplacé{e} par une botte de foin très ressemblante, puis brûlé{e} par mégarde", "L'Affaire de la Botte Ressemblante"],
       ["assassiné{e} par son propre reflet, qui a ensuite pris son quart de garde", "L'Affaire du Reflet Consciencieux"],
       ["enseveli{e} sous une avalanche de lentilles dans un village sans montagne", "L'Affaire de l'Avalanche de Lentilles"],
-      ["décédé{e} en tentant de prouver qu'{il} tenait en équilibre sur une chèvre", "L'Affaire de la Chèvre d'Équilibre"],
+      ["mort{e} en tentant de prouver qu'{il} tenait en équilibre sur une chèvre", "L'Affaire de la Chèvre d'Équilibre"],
       ["éteint{e} comme une bougie, avec la petite fumée et tout", "L'Affaire de la Petite Fumée"],
       ["dévoré{e} par un ragoût qu'{il} avait pourtant cuisiné {lui}-même", "L'Affaire du Ragoût Ingrat"],
       ["écrabouillé{e} par un piano, dans un village qui n'a jamais vu de piano", "L'Affaire du Piano Inexplicable"],
@@ -413,7 +413,7 @@
       ],
       manieres: [
         ["mort{e} mais toujours en service, ce qui a beaucoup troublé le Fossoyeur", "L'Affaire du Cadavre Opérationnel"],
-        ["décédé{e} sans que cela n'interrompe une seule de ses activités quotidiennes", "L'Affaire de l'Activité Continue"],
+        ["mort{e} sans que cela n'interrompe une seule de ses activités quotidiennes", "L'Affaire de l'Activité Continue"],
         ["privé{e} de son pouvoir par un voisin qu'{il} croyait pourtant sympathique", "L'Affaire du Voisin Sympathique"]
       ]
     },
@@ -459,7 +459,7 @@
       ],
       manieres: [
         ["mort{e} la lame à la main, deux identités échangées dans son dos", "L'Affaire de la Coupe Posthume"],
-        ["décédé{e} en provoquant un remaniement dont {il} n'aura jamais connu le détail", "L'Affaire du Remaniement Aveugle"]
+        ["mort{e} en provoquant un remaniement dont {il} n'aura jamais connu le détail", "L'Affaire du Remaniement Aveugle"]
       ]
     },
     {
@@ -481,7 +481,7 @@
       ],
       manieres: [
         ["mort{e} adoré{e} de tous, en emportant la lucidité d'un voisin parfaitement innocent", "L'Affaire de la Lucidité Emportée"],
-        ["décédé{e} dans un chagrin collectif si dense qu'il en a saoulé quelqu'un", "L'Affaire du Chagrin Enivrant"]
+        ["emporté{e} par un chagrin collectif si dense qu'il en a saoulé quelqu'un", "L'Affaire du Chagrin Enivrant"]
       ]
     },
 
@@ -1003,6 +1003,324 @@
     inconnu: "Non révélé"
   };
 
+  /* ================================================================== */
+  /*  RÔLES — noms officiels (botc-translations, game/fr.json)           */
+  /*  type : village | marginal | sbire | demon                          */
+  /*  nuit / exec : clin d'œil fidèle aux règles, quand il y en a un     */
+  /* ================================================================== */
+
+  const ROLES = [
+    /* ---------------- Trouble Brewing — Villageois ---------------- */
+    { id: "lavandiere", nom: "Lavandière", art: "la", type: "village", script: "tb",
+      nuit: "{Il} savait depuis la première nuit qu'un{e} tel{le} était Villageois. {Il} n'a jamais réussi à faire admettre à quel point c'était utile." },
+    { id: "archiviste", nom: "Archiviste", art: "l'", type: "village", script: "tb",
+      nuit: "{Il} connaissait un Marginal par son nom depuis le premier soir. {Il} emporte cette information au cimetière." },
+    { id: "detective", nom: "Détective", art: "le", type: "village", script: "tb",
+      nuit: "{Il} avait un Sbire dans son collimateur depuis la nuit 1. Le Sbire, lui, dort encore.",
+      exec: "{Il} avait pourtant nommé un Sbire, le premier soir, avec une précision de greffier. Personne n'a voulu relire ses notes." },
+    { id: "cuisinier", nom: "Cuisinier", art: "le", type: "village", script: "tb",
+      exec: "{Il} était le Cuisinier, et son chiffre d'ouverture était exact. Il aura fallu une exécution pour que quelqu'un refasse le calcul." },
+    { id: "empathe", nom: "Empathe", art: "l'", type: "village", script: "tb",
+      nuit: "Chaque nuit, {il} comptait les maléfiques autour de {lui}. Cette nuit, le compte s'est arrêté net.",
+      exec: "{Il} répétait depuis deux jours que ses deux voisins étaient bons. {Il} avait raison, évidemment." },
+    { id: "voyante", nom: "Voyante", art: "la", type: "village", script: "tb",
+      nuit: "{Il} était à deux doigts de trouver le Démon. Le Démon a estimé que deux doigts, c'était un doigt de trop." },
+    { id: "fossoyeur", nom: "Fossoyeur", art: "le", type: "village", script: "tb",
+      nuit: "{Il} apprenait chaque nuit quel rôle avait été exécuté le jour même. Cette nuit, plus personne ne lui dira rien.",
+      exec: "{Il} aurait appris cette nuit quel rôle avait été exécuté aujourd'hui. C'était le sien. On lui épargne la lecture." },
+    { id: "moine", nom: "Moine", art: "le", type: "village", script: "tb",
+      nuit: "{Il} protégeait quelqu'un d'autre, comme chaque nuit. Le Démon a simplement contourné l'obstacle.",
+      exec: "{Il} protégeait quelqu'un chaque nuit du Démon. Cette nuit, plus personne ne protège personne." },
+    { id: "corneille", nom: "Corneille", art: "la", type: "village", script: "tb",
+      nuit: "Tué{e} par le Démon, {il} s'est réveillé{e} juste assez longtemps pour apprendre le rôle de quelqu'un. {Il} n'aura pas eu le temps de le répéter.",
+      exec: "{Il} se serait réveillé{e} pour apprendre un rôle si le Démon l'avait tué{e}. Une exécution ne réveille personne. C'est le règlement." },
+    { id: "immaculee", nom: "Immaculée", art: "l'", type: "village", script: "tb",
+      exec: "{Il} était l'Immaculée. Si ce nommant avait été Villageois et que c'était sa première nomination, c'est lui qui serait mort à sa place. Manifestement, ce n'était ni l'un ni l'autre." },
+    { id: "pourfendeuse", nom: "Pourfendeuse", art: "la", type: "village", script: "tb",
+      nuit: "{Il} gardait son tir pour le bon moment. Le bon moment n'est jamais venu.",
+      exec: "{Il} gardait son unique tir pour le bon jour. Le village a choisi ce jour-là pour la pendre." },
+    { id: "soldat", nom: "Soldat", art: "le", type: "village", script: "tb",
+      nuit: "Le Soldat ne meurt pas de la main du Démon. À moins d'être ivre ou empoisonné — et c'est bien ce qui s'est passé.",
+      exec: "Invulnérable au Démon, parfaitement vulnérable au village. Le Soldat n'a jamais prétendu être invulnérable aux idiots." },
+    { id: "maire", nom: "Maire", art: "le", type: "village", script: "tb",
+      nuit: "La mort visait le Maire. Le Conteur aurait pu la faire glisser sur quelqu'un d'autre. Le Conteur ne l'a pas fait.",
+      exec: "À trois joueurs en vie et sans exécution, le Bien l'emportait grâce à {lui}. Le village a préféré une exécution. Aujourd'hui." },
+
+    /* ---------------- Trouble Brewing — Marginaux ---------------- */
+    { id: "majordome", nom: "Majordome", art: "le", type: "marginal", script: "tb",
+      exec: "{Il} ne pouvait voter que si son maître votait. Son maître a voté. Contre {lui}." },
+    { id: "ivrogne", nom: "Ivrogne", art: "l'", type: "marginal", script: "tb",
+      nuit: "{Il} se croyait Villageois depuis le premier soir. {Il} est mort{e} sans jamais l'apprendre, ce qui est peut-être une bonté.",
+      exec: "{Il} se croyait Villageois et donnait des informations avec un aplomb remarquable. Aucune n'était vraie. Aucune." },
+    { id: "recluse", nom: "Recluse", art: "la", type: "marginal", script: "tb",
+      exec: "{Il} avait le don de passer pour maléfique auprès de toutes les capacités du village. À force, {il} a fini par convaincre les gens aussi." },
+    { id: "saint", nom: "Saint", art: "le", type: "marginal", script: "tb",
+      exec: "La partie s'arrête ici. Le Saint a été exécuté : le Bien a perdu, immédiatement et sans appel. Le village range les chaises en silence.",
+      nuit: "Le Saint est mort dans son sommeil, ce qui ne met fin à rien du tout. Seule une exécution aurait tout fait basculer. Le village l'a échappé belle." },
+    /* ---------------- Trouble Brewing — Sbires & Démon ---------------- */
+    { id: "empoisonneur", nom: "Empoisonneur", art: "l'", type: "sbire", script: "tb",
+      exec: "Les informations reçues ces deux dernières nuits redeviennent fiables. Enfin, celles qui l'étaient déjà." },
+    { id: "espionne", nom: "Espionne", art: "l'", type: "sbire", script: "tb",
+      exec: "{Il} avait lu le Grimoire et passait pour Villageois{e} auprès de toutes les capacités du jeu. Le village a mis trois jours ; c'est presque rapide." },
+    { id: "femme-ecarlate", nom: "Femme écarlate", art: "la", type: "sbire", script: "tb",
+      exec: "{Il} attendait patiemment la mort du Démon pour prendre sa place. Le village a réglé le problème dans le mauvais ordre." },
+    { id: "baron", nom: "Baron", art: "le", type: "sbire", script: "tb",
+      exec: "Cela explique enfin pourquoi cette partie comptait tant de Marginaux. Le village aurait pu s'en douter dès la distribution." },
+    { id: "diablotin", nom: "Diablotin", art: "le", type: "demon", script: "tb",
+      exec: "Le village avait raison. Reste à savoir si la Femme écarlate, quelque part dans le cercle, vient d'hériter du poste.",
+      nuit: "Le Diablotin s'est poignardé lui-même pour transmettre sa charge. C'est la plus dévouée des démissions." },
+
+    /* ---------------- Bad Moon Rising ---------------- */
+    { id: "grand-mere", nom: "Grand-mère", art: "la", type: "village", script: "bmr",
+      nuit: "{Il} veillait sur un petit-enfant dont {il} connaissait le nom. Si le Démon s'en est pris à l'enfant, la Grand-mère suit toujours." },
+    { id: "marin", nom: "Marin", art: "le", type: "village", script: "bmr",
+      nuit: "Le Marin ne peut pas mourir. Le Marin est pourtant mort. Quelqu'un, quelque part, a empoisonné un verre de trop.",
+      exec: "Ivre, heureux et rigoureusement invulnérable — à tout, sauf à un vote à main levée." },
+    { id: "femme-de-chambre", nom: "Femme de chambre", art: "la", type: "village", script: "bmr",
+      nuit: "{Il} savait qui s'était réveillé cette nuit-là. Cette nuit-ci, {il} était du nombre." },
+    { id: "exorciste", nom: "Exorciste", art: "l'", type: "village", script: "bmr",
+      nuit: "{Il} avait empêché le Démon de se réveiller une nuit entière. Le Démon a une excellente mémoire." },
+    { id: "aubergiste", nom: "Aubergiste", art: "l'", type: "village", script: "bmr",
+      exec: "Deux joueurs lui devaient la vie de la nuit précédente. Les deux ont voté contre {lui}. L'hospitalité a ses limites." },
+    { id: "parieur", nom: "Parieur", art: "le", type: "village", script: "bmr",
+      nuit: "{Il} a misé sur la mauvaise personne avec une assurance remarquable. Le Parieur paie toujours comptant." },
+    { id: "commere", nom: "Commère", art: "la", type: "village", script: "bmr",
+      exec: "{Il} disait des choses vraies en public, et quelqu'un en mourait à chaque fois. Le village a fini par trouver ça suspect." },
+    { id: "courtisan", nom: "Courtisan", art: "le", type: "village", script: "bmr",
+      nuit: "{Il} avait rendu le Démon ivre trois jours durant. Le Démon a dessoûlé exactement à temps." },
+    { id: "professeur", nom: "Professeur", art: "le", type: "village", script: "bmr",
+      nuit: "Ironie : le Professeur pouvait ramener un Villageois mort à la vie. Il n'a jamais prévu le cas où le mort serait lui." },
+    { id: "menestrel", nom: "Ménestrel", art: "le", type: "village", script: "bmr",
+      exec: "Si un Sbire avait été exécuté à sa place, tout le village serait ivre ce soir. On l'a échappé belle, si l'on veut." },
+    { id: "tisaniere", nom: "Tisanière", art: "la", type: "village", script: "bmr",
+      exec: "Tant qu'{il} vivait et que ses deux voisins étaient bons, ceux-ci ne pouvaient pas mourir. Ils s'en aperçoivent à l'instant." },
+    { id: "pacifiste", nom: "Pacifiste", art: "le", type: "village", script: "bmr",
+      exec: "Un Villageois exécuté survit parfois, quand le Conteur est d'humeur. Le Conteur n'était pas d'humeur." },
+    { id: "fou-du-roi", nom: "Fou du roi", art: "le", type: "village", script: "bmr",
+      exec: "{Il} s'est relevé, a épousseté sa veste et a demandé si le vote comptait quand même. La première mort du Fou du roi n'en est pas une.",
+      nuit: "Le Démon a frappé. Le Fou du roi s'est relevé, vexé, et a réclamé des excuses." },
+    { id: "bricoleur", nom: "Bricoleur", art: "le", type: "marginal", script: "bmr",
+      nuit: "Le Bricoleur peut mourir à tout moment, sans cause et sans préavis. Le moment, c'était cette nuit.",
+      exec: "Le village s'est donné beaucoup de mal : le Bricoleur peut mourir tout seul, à n'importe quel moment." },
+    { id: "selenite", nom: "Sélénite", art: "le", type: "marginal", script: "bmr",
+      exec: "En apprenant sa mort, {il} a désigné quelqu'un du doigt. Si c'était un joueur du Bien, cette personne ne verra pas l'aube." },
+    { id: "gros-bras", nom: "Gros bras", art: "le", type: "marginal", script: "bmr",
+      exec: "La première personne à l'avoir choisi cette partie n'a plus jamais rien compris à ce qu'elle apprenait." },
+    { id: "lunatique", nom: "Lunatique", art: "le", type: "marginal", script: "bmr",
+      exec: "{Il} se croyait le Démon et jouait le rôle avec une conviction admirable. Le vrai Démon, lui, a beaucoup ri." },
+    { id: "parrain", nom: "Parrain", art: "le", type: "sbire", script: "bmr",
+      exec: "Chaque fois qu'un Marginal mourait, {il} réglait ses comptes la nuit suivante. Il n'y aura pas de nuit suivante." },
+    { id: "avocat-du-diable", nom: "Avocat du diable", art: "l'", type: "sbire", script: "bmr",
+      exec: "{Il} avait sauvé trois accusés de la corde en les rendant inexécutables. Le quatrième, c'était {lui}." },
+    { id: "assassin", nom: "Assassin", art: "l'", type: "sbire", script: "bmr",
+      exec: "{Il} gardait son unique coup pour le bon moment. Le bon moment ne viendra pas." },
+    { id: "conspirateur", nom: "Conspirateur", art: "le", type: "sbire", script: "bmr",
+      exec: "{Il} espérait que le village exécute le Démon pour s'offrir un dernier jour de duel. Le village a exécuté le Conspirateur. Détail." },
+    { id: "zombuul", nom: "Zombuul", art: "le", type: "demon", script: "bmr",
+      exec: "Le Zombuul était déjà mort une première fois. Le village espère très fort que celle-ci compte pour de bon." },
+    { id: "pukka", nom: "Pukka", art: "le", type: "demon", script: "bmr",
+      exec: "Quelqu'un, quelque part, est empoisonné depuis hier soir et l'ignore encore. Bonne chance." },
+    { id: "shabaloth", nom: "Shabaloth", art: "le", type: "demon", script: "bmr",
+      exec: "Il dévorait deux personnes par nuit et en régurgitait parfois une. Le village n'a pas eu à trancher qui aurait eu cette chance." },
+    { id: "po", nom: "Po", art: "le", type: "demon", script: "bmr",
+      exec: "Le Po jeûnait certaines nuits pour mieux se rattraper ensuite. Le rattrapage n'aura pas lieu." },
+
+    /* ---------------- Sects & Violets ---------------- */
+    { id: "horloger", nom: "Horloger", art: "l'", type: "village", script: "sv",
+      exec: "{Il} savait exactement combien de sièges séparaient le Démon de son Sbire le plus proche. Cette distance vient de changer." },
+    { id: "reveur", nom: "Rêveur", art: "le", type: "village", script: "sv",
+      nuit: "Chaque nuit, {il} apprenait deux rôles possibles pour un joueur : un bon, un mauvais. Cette nuit, {il} n'apprendra rien du tout." },
+    { id: "charmeur", nom: "Charmeur de serpents", art: "le", type: "village", script: "sv",
+      nuit: "S'{il} avait choisi le Démon, {il} serait devenu le Démon et le Démon serait devenu {lui}. {Il} a choisi son voisin de gauche." },
+    { id: "mathematicien", nom: "Mathématicien", art: "le", type: "village", script: "sv",
+      nuit: "{Il} comptait chaque nuit les capacités qui avaient mal fonctionné. Le total de ce soir aurait été édifiant." },
+    { id: "fleuriste", nom: "Fleuriste", art: "la", type: "village", script: "sv",
+      exec: "{Il} savait chaque nuit si le Démon avait voté dans la journée. Il faut croire que le Démon a voté aujourd'hui." },
+    { id: "crieur", nom: "Crieur public", art: "le", type: "village", script: "sv",
+      exec: "{Il} apprenait chaque nuit si un Sbire avait nominé. Ce soir, la réponse aurait été franchement intéressante." },
+    { id: "oracle", nom: "Oracle", art: "l'", type: "village", script: "sv",
+      exec: "{Il} comptait les morts maléfiques chaque nuit. {Il} pourra désormais les compter de l'intérieur." },
+    { id: "savant", nom: "Savant", art: "le", type: "village", script: "sv",
+      exec: "Chaque jour, le Conteur lui glissait deux affirmations, une vraie, une fausse. {Il} n'aura jamais su démêler la dernière paire." },
+    { id: "couturiere", nom: "Couturière", art: "la", type: "village", script: "sv",
+      nuit: "{Il} avait une seule question en réserve : ces deux-là sont-ils du même bord ? {Il} l'a posée une nuit trop tard." },
+    { id: "philosophe", nom: "Philosophe", art: "le", type: "village", script: "sv",
+      exec: "{Il} avait emprunté la capacité d'un autre Villageois, qui n'a rien vu venir et se demande encore pourquoi il ne sert plus à rien." },
+    { id: "artiste", nom: "Artiste", art: "l'", type: "village", script: "sv",
+      exec: "{Il} avait le droit de poser une seule question au Conteur, en privé, dans toute la partie. {Il} ne l'a pas posée. {Il} attendait le bon moment." },
+    { id: "jongleur", nom: "Jongleur", art: "le", type: "village", script: "sv",
+      exec: "{Il} avait avancé cinq hypothèses publiques et attendait le décompte de la nuit. Le décompte n'arrivera jamais." },
+    { id: "sage", nom: "Sage", art: "le", type: "village", script: "sv",
+      nuit: "Le Démon l'a tué, et le Sage a donc appris deux noms, dont l'un est celui du Démon. {Il} est mort{e} avec la réponse dans la bouche.",
+      exec: "Si le Démon l'avait tué, le Sage aurait appris deux noms dont celui du Démon. Le village s'est arrangé pour éviter ça." },
+    { id: "barbier", nom: "Barbier", art: "le", type: "marginal", script: "sv",
+      exec: "{Il} est mort aujourd'hui : le Démon pourra donc échanger deux personnages cette nuit. Le service continue après la fermeture." },
+    { id: "maladroit", nom: "Maladroit", art: "le", type: "marginal", script: "sv",
+      exec: "En apprenant sa mort, {il} a désigné quelqu'un. Si c'était un joueur maléfique, son camp vient de perdre la partie. Fidèle à {lui}-même." },
+    { id: "bete-de-foire", nom: "Bête de foire", art: "la", type: "marginal", script: "sv",
+      exec: "On lui avait demandé de ne surtout pas laisser entendre qu'{il} était Marginal. {Il} en a parlé. Deux fois." },
+    { id: "dulcinee", nom: "Dulcinée", art: "la", type: "marginal", script: "sv",
+      exec: "{Il} était adoré{e} de tous. Un{e} voisin{e} vient de devenir définitivement ivre, et l'ignore encore." },
+    { id: "jumelle", nom: "Jumelle maléfique", art: "la", type: "sbire", script: "sv",
+      exec: "Quelque part dans le cercle, son jumeau du Bien se sent soudain très seul — et très suspect." },
+    { id: "sorciere", nom: "Sorcière", art: "la", type: "sbire", script: "sv",
+      exec: "La malédiction du jour tombe à l'eau. Cela arrange au moins une personne, qui peut nominer tranquille." },
+    { id: "cerenovus", nom: "Cerenovus", art: "le", type: "sbire", script: "sv",
+      exec: "Trois joueurs se croient encore obligés de jouer un rôle qui n'a jamais été le leur. Personne ne leur dira." },
+    { id: "guenaude", nom: "Guenaude", art: "la", type: "sbire", script: "sv",
+      exec: "{Il} changeait les rôles des gens pendant leur sommeil. Le village n'est plus très sûr de qui est qui, et il a raison." },
+    { id: "fang-gu", nom: "Fang Gu", art: "le", type: "demon", script: "sv",
+      exec: "Si {il} avait attaqué un Marginal une nuit de plus, le Démon serait ailleurs à cette heure. Le village a eu de la chance." },
+    { id: "vigormortis", nom: "Vigormortis", art: "le", type: "demon", script: "sv",
+      exec: "Ses Sbires morts continuaient de travailler. Ils s'arrêtent, enfin, et personne ne les regrette." },
+    { id: "no-dashii", nom: "No Dashii", art: "le", type: "demon", script: "sv",
+      exec: "Ses deux voisins Villageois donnaient des informations fausses depuis le début, sans le savoir. Ils vont devoir tout relire." },
+    { id: "vortox", nom: "Vortox", art: "le", type: "demon", script: "sv",
+      exec: "Toutes les informations de cette partie étaient fausses. Absolument toutes. Le village peut jeter ses notes." },
+
+    /* ---------------- Expérimental ---------------- */
+    { id: "legion", nom: "Légion", art: "la", type: "demon", script: "exp",
+      exec: "Ils étaient légion. Il en reste. Beaucoup." },
+    { id: "leviathan", nom: "Léviathan", art: "le", type: "demon", script: "exp",
+      exec: "Le Léviathan ne tuait pas la nuit : il attendait le cinquième jour. Le village a compris juste à temps, pour une fois." },
+    { id: "emeute", nom: "Émeute", art: "l'", type: "demon", script: "exp",
+      exec: "Nominer était devenu mortel pour tout le monde. Le village a fini par le remarquer." },
+    { id: "al-hadikhia", nom: "Al-Hadikhia", art: "l'", type: "demon", script: "exp",
+      exec: "Il posait chaque nuit une question très douce à trois personnes. Plus personne n'aura à y répondre." },
+    { id: "timonstre", nom: "Timonstre", art: "le", type: "demon", script: "exp",
+      exec: "Un Sbire le portait chaque nuit comme on porte un nourrisson. Ce Sbire a l'air soulagé et essaie de le cacher." },
+    { id: "kazali", nom: "Kazali", art: "le", type: "demon", script: "exp",
+      exec: "{Il} avait recruté ses Sbires parmi les gens bien, le premier soir. Ces gens-là sont toujours assis dans le cercle." },
+    { id: "yaggablabla", nom: "Yaggablabla", art: "le", type: "demon", script: "exp",
+      exec: "{Il} avait une phrase secrète et la répétait beaucoup trop. Le village n'a jamais compris laquelle, mais il a compris qui." },
+    { id: "ojo", nom: "Ojo", art: "l'", type: "demon", script: "exp",
+      exec: "{Il} désignait des rôles, pas des personnes, et le Conteur improvisait le reste. Le Conteur souffle discrètement." },
+    { id: "parasyte", nom: "Parasyte", art: "le", type: "demon", script: "exp",
+      exec: "Tant que son hôte vivait, {il} était intouchable. Quelqu'un a donc compris comment fonctionne l'hôte. Bravo." },
+    { id: "typhon", nom: "Seigneur de Typhon", art: "le", type: "demon", script: "exp",
+      exec: "Il siégeait entre ses Sbires, protégé des deux côtés. On l'a exécuté quand même, ce qui a dû vexer les gardes." },
+    { id: "psychopathe", nom: "Psychopathe", art: "le", type: "sbire", script: "exp",
+      exec: "{Il} provoquait des duels avant chaque nomination et les gagnait presque tous. Presque." },
+    { id: "golem", nom: "Golem", art: "le", type: "marginal", script: "exp",
+      exec: "{Il} n'avait droit qu'à une seule nomination de toute la partie, et elle tuait quiconque n'était pas le Démon. {Il} ne l'a pas utilisée. Quel gâchis." },
+    { id: "demoiselle", nom: "Demoiselle", art: "la", type: "marginal", script: "exp",
+      exec: "Un Sbire pouvait la démasquer publiquement et faire perdre le Bien sur-le-champ. Le village s'en est chargé tout seul, gratuitement." },
+    { id: "politicien", nom: "Politicien", art: "le", type: "marginal", script: "exp",
+      exec: "S'{il} est jugé le plus responsable de la défaite de son camp, {il} change de bord et gagne. {Il} a très bien travaillé." },
+    { id: "heretique", nom: "Hérétique", art: "l'", type: "marginal", script: "exp",
+      exec: "Quel que soit le camp qui gagne à la fin, il perdra — et tout le monde avec {lui}. Le village n'a pas fini de digérer." }
+  ];
+
+  /** Clins d'œil génériques, quand le rôle n'en a pas de sur mesure. */
+  const RECIT_ROLE_GENERIQUE = {
+    nuit: {
+      village: [
+        "{Il} avait une capacité parfaitement utile au village. Le village ne s'en servira plus.",
+        "Un Villageois de moins, et personne pour reprendre le travail.",
+        "{Il} faisait honnêtement son métier de Villageois. C'est souvent ce qui coûte le plus cher."
+      ],
+      marginal: [
+        "{Il} comptait parmi les Marginaux : du bon côté, mais avec un mode d'emploi compliqué.",
+        "Marginal jusqu'au bout, {il} meurt sans que personne sache très bien si c'est une bonne ou une mauvaise nouvelle."
+      ],
+      sbire: [
+        "{Il} servait le Démon. Le Démon, lui, ne fait pas dans le sentiment : un Sbire, ça se remplace.",
+        "Servir le Démon comporte des risques, dont celui d'être utile une nuit de trop."
+      ],
+      demon: [
+        "Le Démon est mort cette nuit. Cela n'arrive jamais par hasard, et jamais tout à fait pour rien.",
+        "Un Démon qui meurt la nuit, c'est presque toujours un Démon qui a décidé de mourir."
+      ]
+    },
+    exec: {
+      village: [
+        "{Il} était du côté du Bien, avec une capacité utile et désormais parfaitement perdue.",
+        "Le village vient d'accomplir le travail du Démon, gratuitement et avec entrain."
+      ],
+      marginal: [
+        "{Il} comptait parmi les Marginaux : techniquement du bon côté, statistiquement une perte sèche.",
+        "Un Marginal exécuté, c'est rarement une victoire et souvent une complication."
+      ],
+      sbire: [
+        "{Il} servait le Démon. Le village s'autorise une demi-victoire et une pleine tournée.",
+        "Un Sbire de moins : cela ne fait pas gagner, mais cela fait beaucoup de bien au moral."
+      ],
+      demon: [
+        "Le Démon est tombé. Reste à savoir si quelqu'un, dans le cercle, vient d'hériter du poste.",
+        "Le village avait raison. Personne n'ose avouer avoir voté au hasard."
+      ]
+    }
+  };
+
+  /* ================================================================== */
+  /*  RÉCIT — trames narratives                                          */
+  /*  {nom} = prénom · {role} = « le Fossoyeur » · {acc} = accusateur     */
+  /* ================================================================== */
+
+  const OUVERTURES_NUIT = [
+    "{nom}{role} s'est couché{e} ce soir-là avec la satisfaction tranquille de qui croit avoir tout compris.",
+    "Personne, au village, n'aurait parié sur {nom}{role} pour la victime de cette nuit-là. Personne, sauf une créature.",
+    "{nom}{role} avait passé la journée à parler. C'était, avec le recul, une stratégie discutable.",
+    "La dernière personne à avoir vu {nom}{role} vivant{e} jure qu'{il} avait l'air parfaitement serein{e}.",
+    "{nom}{role} a soufflé sa chandelle un peu plus tôt que d'habitude. On ne saura jamais pourquoi.",
+    "Il faisait doux, ce soir-là, et {nom}{role} avait décidé de ne s'inquiéter de rien.",
+    "{nom}{role} s'était fait une promesse : demain, {il} dirait enfin tout ce qu'{il} savait.",
+    "Le village s'est endormi rassuré. {nom}{role} s'est endormi{e} tout court.",
+    "{nom}{role} avait survécu à trois nuits. La quatrième a eu raison de {lui}, de son assurance et de ses projets.",
+    "On raconte que {nom}{role} a entendu quelque chose, cette nuit-là, et a préféré se rendormir."
+  ];
+
+  /* Marqueurs propres à l'accusateur : [e] accord, [il] / [Il] pronom. */
+  const OUVERTURES_JOUR = [
+    "Le jour s'est levé sur un village d'humeur décisive. {acc} s'est levé[e] en même temps que lui, et a nominé {nom}{role}.",
+    "Il aura fallu moins de deux minutes de débat. {acc} s'est raclé la gorge, a désigné {nom}{role}, et le village a hoché la tête.",
+    "{acc} avait préparé son accusation la veille au soir. [Il] l'a servie avec la précision d'un notaire : {nom}{role} devait répondre.",
+    "Personne ne voulait nominer en premier. {acc} a fini par s'y résoudre, et c'est sur {nom}{role} que le doigt s'est arrêté.",
+    "La journée avait pourtant bien commencé, jusqu'à ce que {acc} prononce le nom de {nom}{role} d'une voix un peu trop forte.",
+    "{acc} a précisé qu'[il] ne le faisait pas de gaieté de cœur. Puis [il] a nominé {nom}{role} quand même.",
+    "Le village tournait en rond depuis une heure. {acc} a tranché en nominant {nom}{role}, ce qui a eu le mérite de faire avancer la journée.",
+    "On a d'abord cru à une plaisanterie. Puis {acc} a répété le nom de {nom}{role}, plus lentement, et plus personne n'a ri."
+  ];
+
+  const AMORCES_IDEE = [
+    "Ce qu'{il} n'avait dit à personne :",
+    "Il y avait une chose qu'{il} gardait pour {lui} :",
+    "Un détail que le village ignorait :",
+    "Restait ce point, que personne n'a pensé à vérifier :",
+    "Et puis il y avait cela, qui change tout ou rien :",
+    "Le dossier ne mentionne qu'une fois ce détail :",
+    "Une dernière chose, notée en marge du registre :"
+  ];
+
+  const AMORCES_IDEE_JOUR = [
+    "L'accusation s'est appuyée là-dessus :",
+    "Il faut dire, à la décharge du village :",
+    "Un élément a beaucoup circulé ce jour-là :",
+    "Le village n'a retenu que cela :",
+    "Tout est parti de là :",
+    "Quelqu'un a rappelé, au pire moment :"
+  ];
+
+  const RAPPORTEURS = [
+    "rapportés par la Tavernière, qui a l'oreille fine",
+    "notés par le Fossoyeur, qui note tout",
+    "entendus par trois personnes, qui n'en donnent pas la même version",
+    "que personne n'a pris au sérieux sur le moment",
+    "consignés au registre sans commentaire",
+    "que le village se répète encore, un peu gêné",
+    "qu'on grave rarement sur les tombes"
+  ];
+
+  const CLOTURES = [
+    "Le village a repris ses activités. Mal, mais il les a reprises.",
+    "La nuit suivante a été particulièrement silencieuse.",
+    "On en parle encore, et on en parlera probablement trop longtemps.",
+    "L'affaire est close. La partie, elle, continue.",
+    "Quelqu'un a proposé une minute de silence. Elle a duré onze secondes.",
+    "Le Conteur a tourné la page. C'est tout ce qu'un Conteur peut faire.",
+    "Le cercle s'est resserré d'un siège."
+  ];
+
   /* ------------------------------------------------------------------ */
   /*  MÉTA                                                               */
   /* ------------------------------------------------------------------ */
@@ -1028,6 +1346,9 @@
     ACCUSATIONS, PREUVES, PLAIDOYERS, MODES_EXECUTION,
     NOTES_DE_VOTE, VERDICTS_EXECUTION, REVELATIONS, MOTS_DU_NOMMANT,
     POIDS_REVELATION, LIBELLES_CAMP,
+    ROLES, RECIT_ROLE_GENERIQUE,
+    OUVERTURES_NUIT, OUVERTURES_JOUR, AMORCES_IDEE, AMORCES_IDEE_JOUR,
+    RAPPORTEURS, CLOTURES,
     SCRIPTS, CHAOS_LABELS
   };
 })(window);

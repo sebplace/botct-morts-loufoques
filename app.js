@@ -124,13 +124,15 @@
 
   /** Construit un dossier complet, entièrement déterminé par (graine, options). */
   function forger(seed, opts) {
+    if (opts.mode === "recit") return forgerRecit(seed, opts);
     return opts.mode === "execution" ? forgerExecution(seed, opts) : forgerMort(seed, opts);
   }
 
   function rngPour(seed, opts) {
     return mulberry32(hashSeed(
       seed + "|" + opts.mode + "|" + opts.script + "|" + opts.phase + "|" +
-      opts.chaos + "|" + (opts.nom || "") + "|" + opts.genre
+      opts.chaos + "|" + (opts.nom || "") + "|" + opts.genre + "|" +
+      (opts.role || "") + "|" + (opts.idee || "") + "|" + (opts.acc || "") + "|" + (opts.accGenre || "")
     ));
   }
 
@@ -246,13 +248,14 @@
   function titreAffaire(d) { return d.maniere[1]; }
 
   function nomScript(d) {
-    if (d.mode === "execution") {
+    if (d.mode === "execution" || d.mode === "recit") {
       return d.opts.script === "all" ? "Toutes éditions" : L.SCRIPTS[d.opts.script].nom;
     }
     return d.cause.script === "all" ? "Toutes éditions" : L.SCRIPTS[d.cause.script].nom;
   }
 
   function libellePhase(d) {
+    if (d.mode === "recit") return (d.jour ? "Jour " : "Nuit ") + d.cycle;
     return (d.phase === "jour" ? "Jour " : "Nuit ") + d.cycle;
   }
 
@@ -298,7 +301,182 @@
       escapeHtml(accord(r.texte, d.victime.genre));
   }
 
+  /* ================================================================ */
+  /*  Le récit : à partir des vraies infos de la partie               */
+  /* ================================================================ */
+
+  /** Accord propre à l'accusateur : marqueurs entre crochets. */
+  function accordAcc(str, g) {
+    const f = g === "f";
+    return String(str)
+      .replace(/\[e\]/g, f ? "e" : "")
+      .replace(/\[il\]/g, f ? "elle" : "il")
+      .replace(/\[Il\]/g, f ? "Elle" : "Il");
+  }
+
+  function roleParId(id) {
+    for (let i = 0; i < L.ROLES.length; i++) if (L.ROLES[i].id === id) return L.ROLES[i];
+    return null;
+  }
+
+  function roleAvecArticle(r) {
+    return r.art === "l'" ? "l'" + r.nom : r.art + " " + r.nom;
+  }
+
+  /** Nettoie l'idée saisie : pas de balise, pas de point final en double. */
+  function nettoyerIdee(txt) {
+    return String(txt || "").replace(/\s+/g, " ").trim().replace(/[.;,]+$/, "").slice(0, 180);
+  }
+
+  function forgerRecit(seed, opts) {
+    const rng = rngPour(seed, opts);
+    const jour = opts.fin === "jour";
+    const role = opts.role ? roleParId(opts.role) : null;
+
+    const victime = opts.nom
+      ? { nom: opts.nom, genre: opts.genre !== "auto" ? opts.genre : (devineGenre(opts.nom) || "m"), siege: range(rng, 1, 15) }
+      : tirerVictime(rng, opts);
+
+    const accGenre = opts.accGenre !== "auto" ? opts.accGenre : (devineGenre(opts.acc) || "f");
+    const nomAcc = opts.acc || tirerVictime(rng, { script: opts.script, phase: "jour", chaos: opts.chaos, nom: "", genre: accGenre, mode: "recit" }).nom;
+    const accusateur = { nom: nomAcc, genre: accGenre };
+
+    /* Une cause n'a de sens que pour une mort nocturne. */
+    const causesNuit = L.CAUSES.filter(function (c) {
+      const okScript = opts.script === "all" || c.script === opts.script || c.script === "all";
+      return okScript && (c.quand === "nuit" || c.quand === "toujours");
+    });
+    const cause = jour ? null : (causesNuit.length ? pick(rng, causesNuit) : pick(rng, L.CAUSES));
+
+    const maniere = jour ? tirerSupplice(rng, opts) : tirerManiere(rng, opts, cause);
+    const lieu = pick(rng, (cause && cause.lieux) || L.LIEUX);
+    const moment = pick(rng, (cause && cause.moments) || L.MOMENTS);
+
+    return {
+      mode: "recit", seed: seed, opts: opts, jour: jour, role: role,
+      victime: victime, accusateur: accusateur,
+      idee: nettoyerIdee(opts.idee),
+      cause: cause, maniere: maniere, lieu: lieu, moment: moment,
+      ouverture: pick(rng, jour ? L.OUVERTURES_JOUR : L.OUVERTURES_NUIT),
+      intro: cause ? pick(rng, cause.intro) : "",
+      amorce: pick(rng, jour ? L.AMORCES_IDEE_JOUR : L.AMORCES_IDEE),
+      accusation: pick(rng, L.ACCUSATIONS),
+      preuve: pick(rng, L.PREUVES),
+      defense: pick(rng, L.PLAIDOYERS),
+      vote: tirerVote(rng),
+      indice: pick(rng, L.INDICES),
+      mots: pick(rng, L.DERNIERS_MOTS),
+      rapporteur: pick(rng, L.RAPPORTEURS),
+      clinRole: tirerClinRole(rng, role, jour),
+      verdict: pick(rng, jour ? L.VERDICTS_EXECUTION : L.VERDICTS),
+      cloture: pick(rng, L.CLOTURES),
+      cycle: range(rng, 1, 5),
+      dossier: String(range(rng, 1, 9999)).padStart(4, "0"),
+      surMesure: false
+    };
+  }
+
+  function tirerClinRole(rng, role, jour) {
+    const cle = jour ? "exec" : "nuit";
+    if (role && role[cle]) return role[cle];
+    const type = role ? role.type : pick(rng, ["village", "village", "marginal", "sbire"]);
+    return pick(rng, L.RECIT_ROLE_GENERIQUE[cle][type]);
+  }
+
+  /** Assemble les paragraphes. Renvoie [{ cle, html }]. */
+  function paragraphesRecit(d) {
+    const g = d.victime.genre;
+    const nomHtml = "<strong>" + escapeHtml(d.victime.nom) + "</strong>";
+    const roleHtml = d.role ? ", " + escapeHtml(roleAvecArticle(d.role)) + "," : "";
+    const accHtml = "<strong>" + escapeHtml(d.accusateur.nom) + "</strong>";
+
+    const remplir = function (tpl) {
+      return accordAcc(accord(tpl, g), d.accusateur.genre)
+        .replace(/\{nom\}/g, nomHtml)
+        .replace(/\{role\}/g, roleHtml)
+        .replace(/\{acc\}/g, accHtml)
+        .replace(/,\s*([.!?;:])/g, "$1")
+        .replace(/,\s*,/g, ",");
+    };
+
+    const paras = [];
+
+    paras.push({ cle: "ouverture", html: remplir(d.ouverture) });
+
+    if (d.idee) {
+      paras.push({
+        cle: "idee",
+        html: escapeHtml(accord(d.amorce, g)) + " <em>«&nbsp;" + escapeHtml(d.idee) + "&nbsp;»</em>." +
+          (d.jour ? " Le village en a fait tout un dossier." : " Cela n'a servi strictement à rien.")
+      });
+    }
+
+    if (d.jour) {
+      paras.push({
+        cle: "deroule",
+        html: escapeHtml(accord("Le chef d'accusation tenait en une phrase : accusé{e} " + d.accusation + ".", g)) +
+          " " + escapeHtml(accord(d.preuve, g)) +
+          " Pour toute défense, " + (g === "f" ? "l'accusée" : "l'accusé") + " a répondu : " +
+          '<span class="dit">' + escapeHtml(accord(d.defense, g)) + "</span>"
+      });
+      const v = d.vote;
+      const dont = v.votesDeMort > 0
+        ? ", dont " + v.votesDeMort + " Vote" + (v.votesDeMort > 1 ? "s" : "") + " de Mort"
+        : ", sans un seul Vote de Mort";
+      paras.push({
+        cle: "consequence",
+        html: "Le vote a donné " + '<span class="tally">' + v.voix + " voix" + escapeHtml(dont) +
+          "</span>, pour " + v.seuil + " requise" + (v.seuil > 1 ? "s" : "") + " sur " + v.vivants +
+          " joueurs en vie. " + escapeHtml(v.note) + " " +
+          escapeHtml(accord("Exécuté{e} publiquement, " + minuscule(d.maniere[0]) + ".", g))
+      });
+    } else {
+      paras.push({
+        cle: "deroule",
+        html: escapeHtml(accord(d.intro, g)) + " " +
+          escapeHtml(accord("Retrouvé{e} " + d.maniere[0] + ", " + d.lieu + ", " + d.moment + ".", g))
+      });
+      paras.push({
+        cle: "consequence",
+        html: escapeHtml(accord(d.indice, g)) +
+          " Ses derniers mots, " + escapeHtml(d.rapporteur) + " : " +
+          '<span class="dit">' + escapeHtml(accord(d.mots, g)) + "</span>"
+      });
+    }
+
+    paras.push({
+      cle: "role",
+      html: (d.role ? "<em>" + escapeHtml(capitalise(roleAvecArticle(d.role))) + ".</em> " : "") +
+        escapeHtml(accord(d.clinRole, g))
+    });
+
+    paras.push({ cle: "fin", html: escapeHtml(d.verdict) + " " + escapeHtml(d.cloture) });
+
+    return paras;
+  }
+
+  function titreRecit(d) { return d.maniere[1]; }
+
+  function recitTexte(d) {
+    const brut = paragraphesRecit(d).map(function (p) {
+      return p.html.replace(/<[^>]+>/g, "")
+        .replace(/&nbsp;/g, " ")
+        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+        .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+    });
+    return [
+      (d.jour ? "⚖ " : "† ") + titreRecit(d).toUpperCase() + (d.jour ? " ⚖" : " †"),
+      "Ravenswood Bluff — " + (d.jour ? "Jour " : "Nuit ") + d.cycle +
+        " — dossier n°" + d.dossier + " — " + (d.opts.script === "all" ? "Toutes éditions" : L.SCRIPTS[d.opts.script].nom),
+      "",
+      brut.join("\n\n"),
+      "",
+      "Graine : " + (d.surMesure ? "sur mesure" : d.seed) + " — " + lienPartage(d)
+    ].join("\n");
+  }
+
   function rapportTexte(d) {
+    if (d.mode === "recit") return recitTexte(d);
     return d.mode === "execution" ? rapportExecutionTexte(d) : rapportMortTexte(d);
   }
 
@@ -355,7 +533,11 @@
   const els = {
     card: $("#card"), affair: $("#affair"), caseNo: $("#case-no"), seed: $("#seed"),
     registry: $("#registry-label"), summonLabel: $("#summon-label"), victimLabel: $("#lbl-victim"),
-    reportMort: $("#report-mort"), reportExec: $("#report-execution"), phaseGroup: $("#phase-group"),
+    reportMort: $("#report-mort"), reportExec: $("#report-execution"), reportRecit: $("#report-recit"),
+    phaseGroup: $("#phase-group"), victimField: $("#victim-field"), recitForm: $("#recit-form"),
+    rNom: $("#recit-nom"), rGenre: $("#recit-genre"), rRole: $("#recit-role"),
+    rIdee: $("#recit-idee"), rAcc: $("#recit-acc"), rAccGenre: $("#recit-acc-genre"),
+    accField: $("#acc-field"), accGenreField: $("#acc-genre-field"),
     badgeScript: $("#badge-script"), badgePhase: $("#badge-phase"), badgeChaos: $("#badge-chaos"),
     victime: $("#out-victime"), constat: $("#out-constat"), cause: $("#out-cause"),
     indice: $("#out-indice"), mots: $("#out-mots"), verdict: $("#out-verdict"),
@@ -364,7 +546,7 @@
     supplice: $("#out-supplice"), revelation: $("#out-revelation"), verdictx: $("#out-verdictx"),
     chaos: $("#chaos"), chaosLabel: $("#chaos-label"),
     nom: $("#victim-name"), genre: $("#victim-gender"),
-    toast: $("#toast"), history: $("#history")
+    toast: $("#toast"), history: $("#history"), hint: $("#hint")
   };
 
   let courant = null;
@@ -372,6 +554,21 @@
   let mode = "mort";
 
   function optionsCourantes() {
+    if (mode === "recit") {
+      return {
+        mode: "recit",
+        script: document.querySelector("#script-chips .is-on").dataset.value,
+        phase: document.querySelector("#fin-chips .is-on").dataset.value,
+        fin: document.querySelector("#fin-chips .is-on").dataset.value,
+        chaos: parseInt(els.chaos.value, 10),
+        nom: els.rNom.value.trim(),
+        genre: els.rGenre.value,
+        role: els.rRole.value,
+        idee: els.rIdee.value.trim(),
+        acc: els.rAcc.value.trim(),
+        accGenre: els.rAccGenre.value
+      };
+    }
     return {
       mode: mode,
       script: document.querySelector("#script-chips .is-on").dataset.value,
@@ -382,21 +579,53 @@
     };
   }
 
+  /** Remplit la liste des rôles, groupée par script puis par type. */
+  function peuplerRoles() {
+    const ordre = [
+      ["village", "Villageois"], ["marginal", "Marginaux"],
+      ["sbire", "Sbires"], ["demon", "Démons"]
+    ];
+    let html = '<option value="">— je préfère ne pas le dire —</option>';
+    Object.keys(L.SCRIPTS).forEach(function (s) {
+      ordre.forEach(function (pair) {
+        const lot = L.ROLES.filter(function (r) { return r.script === s && r.type === pair[0]; });
+        if (!lot.length) return;
+        html += '<optgroup label="' + L.SCRIPTS[s].court + " · " + pair[1] + '">';
+        lot.forEach(function (r) {
+          html += '<option value="' + r.id + '">' + escapeHtml(r.nom) + "</option>";
+        });
+        html += "</optgroup>";
+      });
+    });
+    els.rRole.innerHTML = html;
+  }
+
   function appliquerMode(m) {
-    mode = m === "execution" ? "execution" : "mort";
+    mode = (m === "execution" || m === "recit") ? m : "mort";
     document.querySelectorAll(".mode").forEach(function (b) {
       const on = b.dataset.mode === mode;
       b.classList.toggle("is-on", on);
       b.setAttribute("aria-selected", on ? "true" : "false");
     });
     const exec = mode === "execution";
-    els.reportMort.hidden = exec;
+    const recit = mode === "recit";
+    els.reportMort.hidden = mode !== "mort";
     els.reportExec.hidden = !exec;
-    els.phaseGroup.hidden = exec;
-    els.registry.textContent = exec ? "Procès-verbal du village" : "Registre macabre";
-    els.summonLabel.textContent = exec ? "Rendre la sentence" : "Annoncer une mort";
+    els.reportRecit.hidden = !recit;
+    els.phaseGroup.hidden = exec || recit;
+    els.victimField.hidden = recit;
+    els.recitForm.hidden = !recit;
+    const jour = recit && document.querySelector("#fin-chips .is-on").dataset.value === "jour";
+    els.accField.hidden = !jour;
+    els.accGenreField.hidden = !jour;
+    els.registry.textContent = recit ? "Le récit de ta partie"
+      : exec ? "Procès-verbal du village" : "Registre macabre";
+    els.summonLabel.textContent = recit ? "Écrire mon récit"
+      : exec ? "Rendre la sentence" : "Annoncer une mort";
     els.victimLabel.textContent = exec ? "Accusé·e (facultatif)" : "Victime (facultatif)";
-    els.nom.placeholder = exec ? "ex. Sébastien" : "ex. Sébastien";
+    els.hint.textContent = recit
+      ? "cliquez sur un paragraphe pour le réécrire"
+      : "⟳ relance une seule ligne du rapport";
   }
 
   function rendre(d, partiel) {
@@ -404,31 +633,43 @@
     appliquerMode(d.mode);
     const g = d.victime.genre;
 
-    const parts = d.mode === "execution" ? {
-      accuse: texteAccuse(d),
-      nommant: texteNommant(d),
-      accusation: texteAccusation(d),
-      preuve: escapeHtml(accord(d.preuve, g)),
-      defense: escapeHtml(accord(d.defense, g)),
-      vote: texteVote(d),
-      supplice: texteSupplice(d),
-      revelation: texteRevelation(d),
-      verdictx: escapeHtml(d.verdict)
-    } : {
-      victime: texteVictime(d),
-      constat: escapeHtml(texteConstat(d)),
-      cause: texteCause(d),
-      indice: escapeHtml(accord(d.indice, g)),
-      mots: escapeHtml(accord(d.mots, g)),
-      verdict: escapeHtml(d.verdict)
-    };
+    if (d.mode === "recit") {
+      const paras = paragraphesRecit(d);
+      els.reportRecit.innerHTML = paras.map(function (p) {
+        return '<p class="recit-p" data-part="' + p.cle +
+          '" role="button" tabindex="0" title="Cliquez pour réécrire ce paragraphe">' + p.html + "</p>";
+      }).join("");
+      if (partiel) {
+        const cible = els.reportRecit.querySelector('[data-part="' + partiel + '"]');
+        if (cible) { void cible.offsetWidth; cible.classList.add("flash"); }
+      }
+    } else {
+      const parts = d.mode === "execution" ? {
+        accuse: texteAccuse(d),
+        nommant: texteNommant(d),
+        accusation: texteAccusation(d),
+        preuve: escapeHtml(accord(d.preuve, g)),
+        defense: escapeHtml(accord(d.defense, g)),
+        vote: texteVote(d),
+        supplice: texteSupplice(d),
+        revelation: texteRevelation(d),
+        verdictx: escapeHtml(d.verdict)
+      } : {
+        victime: texteVictime(d),
+        constat: escapeHtml(texteConstat(d)),
+        cause: texteCause(d),
+        indice: escapeHtml(accord(d.indice, g)),
+        mots: escapeHtml(accord(d.mots, g)),
+        verdict: escapeHtml(d.verdict)
+      };
 
-    Object.keys(parts).forEach(function (k) {
-      els[k].innerHTML = parts[k];
-      if (!partiel || partiel === k || (partiel === "cause" && k === "constat")) flash(k);
-    });
+      Object.keys(parts).forEach(function (k) {
+        els[k].innerHTML = parts[k];
+        if (!partiel || partiel === k || (partiel === "cause" && k === "constat")) flash(k);
+      });
+    }
 
-    els.affair.textContent = titreAffaire(d);
+    els.affair.textContent = d.mode === "recit" ? titreRecit(d) : titreAffaire(d);
     els.caseNo.textContent = d.dossier;
     els.badgeScript.textContent = nomScript(d);
     els.badgePhase.textContent = libellePhase(d);
@@ -491,7 +732,47 @@
     vote: function (d, rng) { d.vote = tirerVote(rng); },
     supplice: function (d, rng) { d.maniere = tirerSupplice(rng, d.opts); },
     revelation: function (d, rng) { d.revelation = tirerRevelation(rng, d.opts); },
-    verdictx: function (d, rng) { d.verdict = pick(rng, L.VERDICTS_EXECUTION); }
+    verdictx: function (d, rng) { d.verdict = pick(rng, L.VERDICTS_EXECUTION); },
+
+    /* --- récit personnalisé : un paragraphe à la fois --- */
+    ouverture: function (d, rng) {
+      d.ouverture = pick(rng, d.jour ? L.OUVERTURES_JOUR : L.OUVERTURES_NUIT);
+    },
+    idee: function (d, rng) {
+      d.amorce = pick(rng, d.jour ? L.AMORCES_IDEE_JOUR : L.AMORCES_IDEE);
+    },
+    deroule: function (d, rng) {
+      if (d.jour) {
+        d.accusation = pick(rng, L.ACCUSATIONS);
+        d.preuve = pick(rng, L.PREUVES);
+        d.defense = pick(rng, L.PLAIDOYERS);
+      } else {
+        const pool = L.CAUSES.filter(function (c) {
+          const okScript = d.opts.script === "all" || c.script === d.opts.script || c.script === "all";
+          return okScript && (c.quand === "nuit" || c.quand === "toujours");
+        });
+        d.cause = pick(rng, pool.length ? pool : L.CAUSES);
+        d.intro = pick(rng, d.cause.intro);
+        d.maniere = tirerManiere(rng, d.opts, d.cause);
+        d.lieu = pick(rng, d.cause.lieux || L.LIEUX);
+        d.moment = pick(rng, d.cause.moments || L.MOMENTS);
+      }
+    },
+    consequence: function (d, rng) {
+      if (d.jour) {
+        d.vote = tirerVote(rng);
+        d.maniere = tirerSupplice(rng, d.opts);
+      } else {
+        d.indice = pick(rng, L.INDICES);
+        d.mots = pick(rng, L.DERNIERS_MOTS);
+        d.rapporteur = pick(rng, L.RAPPORTEURS);
+      }
+    },
+    role: function (d, rng) { d.clinRole = tirerClinRole(rng, d.role, d.jour); },
+    fin: function (d, rng) {
+      d.verdict = pick(rng, d.jour ? L.VERDICTS_EXECUTION : L.VERDICTS);
+      d.cloture = pick(rng, L.CLOTURES);
+    }
   };
 
   function relancer(part) {
@@ -507,7 +788,7 @@
   function archiver(d) {
     dossiers.unshift({
       mode: d.mode,
-      titre: titreAffaire(d),
+      titre: d.mode === "recit" ? titreRecit(d) : titreAffaire(d),
       victime: d.victime.nom,
       phase: libellePhase(d),
       seed: d.seed,
@@ -523,10 +804,10 @@
       els.history.innerHTML = '<li class="empty">Aucun dossier pour l\'instant. La nuit est jeune.</li>';
       return;
     }
+    const icones = { execution: "⚖️", recit: "✍️", mort: "🌙" };
     els.history.innerHTML = dossiers.map(function (e, i) {
-      const icone = e.mode === "execution" ? "⚖️" : "🌙";
       return '<li class="entry' + (e.mode === "execution" ? " is-exec" : "") + '" data-i="' + i + '" tabindex="0" role="button">' +
-        '<span class="h-no">' + icone + "</span>" +
+        '<span class="h-no">' + (icones[e.mode] || "🌙") + "</span>" +
         '<span class="h-title">' + escapeHtml(e.titre) + "</span>" +
         '<span class="h-sub">' + escapeHtml(e.victime) + " · " + escapeHtml(e.phase) + "</span>" +
         "</li>";
@@ -566,8 +847,18 @@
     u.searchParams.set("g", d.seed);
     u.searchParams.set("m", d.mode);
     u.searchParams.set("s", d.opts.script);
-    if (d.mode !== "execution") u.searchParams.set("p", d.opts.phase);
+    if (d.mode === "mort") u.searchParams.set("p", d.opts.phase);
     u.searchParams.set("c", d.opts.chaos);
+    if (d.mode === "recit") {
+      u.searchParams.set("f", d.opts.fin);
+      if (d.opts.nom) u.searchParams.set("n", d.opts.nom);
+      if (d.opts.genre !== "auto") u.searchParams.set("x", d.opts.genre);
+      if (d.opts.role) u.searchParams.set("r", d.opts.role);
+      if (d.opts.idee) u.searchParams.set("i", d.opts.idee);
+      if (d.opts.acc) u.searchParams.set("a", d.opts.acc);
+      if (d.opts.accGenre !== "auto") u.searchParams.set("y", d.opts.accGenre);
+      return u.toString();
+    }
     if (d.opts.nom) u.searchParams.set("n", d.opts.nom);
     if (d.opts.genre !== "auto") u.searchParams.set("x", d.opts.genre);
     return u.toString();
@@ -580,27 +871,44 @@
   function lireURL() {
     const p = new URLSearchParams(location.search);
     if (!p.get("g")) return null;
-    const m = p.get("m") === "execution" ? "execution" : "mort";
-    return {
-      seed: p.get("g"),
-      opts: {
-        mode: m,
-        script: p.get("s") || "all",
-        phase: m === "execution" ? "jour" : (p.get("p") || "auto"),
-        chaos: Math.min(4, Math.max(1, parseInt(p.get("c"), 10) || 3)),
-        nom: p.get("n") || "",
-        genre: p.get("x") || "auto"
-      }
+    const brut = p.get("m");
+    const m = (brut === "execution" || brut === "recit") ? brut : "mort";
+    const opts = {
+      mode: m,
+      script: p.get("s") || "all",
+      phase: m === "execution" ? "jour" : (p.get("p") || "auto"),
+      chaos: Math.min(4, Math.max(1, parseInt(p.get("c"), 10) || 3)),
+      nom: p.get("n") || "",
+      genre: p.get("x") || "auto"
     };
+    if (m === "recit") {
+      opts.fin = p.get("f") === "jour" ? "jour" : "nuit";
+      opts.phase = opts.fin;
+      opts.role = p.get("r") || "";
+      opts.idee = (p.get("i") || "").slice(0, 180);
+      opts.acc = p.get("a") || "";
+      opts.accGenre = p.get("y") || "auto";
+    }
+    return { seed: p.get("g"), opts: opts };
   }
 
   function appliquerOptions(o) {
     setChip("#script-chips", o.script);
-    if (o.mode !== "execution") setChip("#phase-chips", o.phase);
+    if (o.mode === "mort") setChip("#phase-chips", o.phase);
     els.chaos.value = o.chaos;
     els.chaosLabel.textContent = L.CHAOS_LABELS[o.chaos];
-    els.nom.value = o.nom || "";
-    els.genre.value = o.genre || "auto";
+    if (o.mode === "recit") {
+      setChip("#fin-chips", o.fin || "nuit");
+      els.rNom.value = o.nom || "";
+      els.rGenre.value = o.genre || "auto";
+      els.rRole.value = o.role || "";
+      els.rIdee.value = o.idee || "";
+      els.rAcc.value = o.acc || "";
+      els.rAccGenre.value = o.accGenre || "auto";
+    } else {
+      els.nom.value = o.nom || "";
+      els.genre.value = o.genre || "auto";
+    }
   }
 
   function setChip(groupSel, value) {
@@ -645,6 +953,8 @@
   /* ------------------------------------------------------------ câblage */
 
   function init() {
+    peuplerRoles();
+
     document.querySelectorAll(".mode").forEach(function (b) {
       b.addEventListener("click", function () {
         if (mode === b.dataset.mode) return;
@@ -653,10 +963,24 @@
       });
     });
 
-    document.querySelectorAll("#script-chips .chip, #phase-chips .chip").forEach(function (chip) {
+    document.querySelectorAll("#script-chips .chip, #phase-chips .chip, #fin-chips .chip").forEach(function (chip) {
       chip.addEventListener("click", function () {
         setChip("#" + chip.parentElement.id, chip.dataset.value);
+        if (chip.parentElement.id === "fin-chips") {
+          const jour = chip.dataset.value === "jour";
+          els.accField.hidden = !jour;
+          els.accGenreField.hidden = !jour;
+        }
       });
+    });
+
+    els.reportRecit.addEventListener("click", function (e) {
+      const p = e.target.closest(".recit-p");
+      if (p) relancer(p.dataset.part);
+    });
+    els.reportRecit.addEventListener("keydown", function (e) {
+      const p = e.target.closest(".recit-p");
+      if (p && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); relancer(p.dataset.part); }
     });
 
     els.chaos.addEventListener("input", function () {
@@ -705,7 +1029,8 @@
       else if (e.key === "c" || e.key === "C") { $("#copy").click(); }
       else if (e.key === "p" || e.key === "P") { $("#permalink").click(); }
       else if (e.key === "m" || e.key === "M") {
-        appliquerMode(mode === "execution" ? "mort" : "execution");
+        const suite = { mort: "execution", execution: "recit", recit: "mort" };
+        appliquerMode(suite[mode]);
         nouveauRapport();
       }
     });
