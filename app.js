@@ -251,8 +251,16 @@
     majURL(d);
   }
 
+  /** Ne jamais resservir la même réplique deux fois d'affilée. */
   function nouvelleMort() {
-    const d = forger(newSeed(), optionsCourantes());
+    const opts = optionsCourantes();
+    const precedent = courant ? courant.texte : null;
+    let d = forger(newSeed(), opts);
+    let essais = 0;
+    while (precedent && d.texte === precedent && essais < 8) {
+      d = forger(newSeed(), opts);
+      essais++;
+    }
     rendre(d);
     archiver(d);
   }
