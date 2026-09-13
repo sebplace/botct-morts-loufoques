@@ -1,6 +1,6 @@
 /*!
- * Le Registre Macabre de Ravenswood Bluff
- * Générateur de récits de mort absurde. Aucune dépendance, aucun réseau.
+ * Raconte ta mort — Ravenswood Bluff
+ * Une réplique à dire à voix haute quand le village vient de t'exécuter.
  */
 (function () {
   "use strict";
@@ -34,7 +34,6 @@
   }
 
   const pick = (rng, arr) => arr[Math.floor(rng() * arr.length)];
-  const range = (rng, min, max) => min + Math.floor(rng() * (max - min + 1));
 
   function weighted(rng, pairs) {
     const total = pairs.reduce((s, p) => s + p[1], 0);
@@ -47,22 +46,15 @@
   }
 
   /* ================================================================ */
-  /*  Accords en genre                                                */
+  /*  Accords                                                         */
   /* ================================================================ */
 
-  /** Se rapporte au personnage principal. */
+  /** Se rapporte à toi. */
   function accord(str, g) {
-    const f = g === "f";
-    return String(str)
-      .replace(/\{e\}/g, f ? "e" : "")
-      .replace(/\{il\}/g, f ? "elle" : "il")
-      .replace(/\{Il\}/g, f ? "Elle" : "Il")
-      .replace(/\{le\}/g, f ? "la" : "le")
-      .replace(/\{un\}/g, f ? "une" : "un")
-      .replace(/\{lui\}/g, f ? "elle" : "lui");
+    return String(str).replace(/\{e\}/g, g === "f" ? "e" : "");
   }
 
-  /** Se rapporte à la personne qui a fait exécuter. */
+  /** Se rapporte à la personne qui t'a fait pendre. */
   function accordAutre(str, g) {
     const f = g === "f";
     return String(str)
@@ -71,36 +63,28 @@
       .replace(/\[Il\]/g, f ? "Elle" : "Il");
   }
 
-  /** Devine le genre d'un prénom saisi à la main (heuristique française). */
   function devineGenre(nom) {
     const n = String(nom || "").trim().toLowerCase();
     if (!n) return null;
     const masculinsEnE = ["pierre", "philippe", "alexandre", "antoine", "étienne", "etienne",
-      "jérôme", "jerome", "maxime", "côme", "come", "aristide", "jules", "charles", "gilles",
-      "hervé", "rené", "andré", "aimé", "dominique", "claude", "camille", "sébastien", "sebastien"];
+      "jérôme", "jerome", "maxime", "côme", "come", "jules", "charles", "gilles", "hervé",
+      "rené", "andré", "aimé", "dominique", "claude", "camille", "sébastien", "sebastien"];
     if (masculinsEnE.indexOf(n) !== -1) return "m";
     if (/(a|e|ine|ette|elle|ense|ude)$/.test(n)) return "f";
     return "m";
   }
 
   /* ================================================================ */
-  /*  Fabrique du récit                                               */
+  /*  Tirage de la mort                                               */
   /* ================================================================ */
 
-  /** Répartition des niveaux d'absurdité selon le curseur. */
+  /** Le curseur pousse vers les niveaux voisins sans les enfermer. */
   const MELANGE = {
     1: [[1, 70], [2, 30]],
     2: [[1, 25], [2, 55], [3, 20]],
     3: [[2, 25], [3, 55], [4, 20]],
     4: [[3, 35], [4, 65]]
   };
-
-  function tirerScene(rng, chaos, jour) {
-    const table = jour ? L.JOUR : L.NUIT;
-    const niveau = weighted(rng, MELANGE[chaos] || MELANGE[3]);
-    const lot = table.filter(function (s) { return s.niveau === niveau; });
-    return pick(rng, lot.length ? lot : table);
-  }
 
   function roleParId(id) {
     for (let i = 0; i < L.ROLES.length; i++) if (L.ROLES[i].id === id) return L.ROLES[i];
@@ -111,37 +95,49 @@
     return r.art === "l'" ? "l'" + r.nom : r.art + " " + r.nom;
   }
 
-  function nomAuHasard(rng, g) {
-    return pick(rng, g === "f" ? L.PRENOMS_F : L.PRENOMS_M);
+  function morteGenerique(rng, chaos, jour) {
+    const table = jour ? L.MORTS.jour : L.MORTS.nuit;
+    const niveau = weighted(rng, MELANGE[chaos] || MELANGE[3]);
+    return pick(rng, table[niveau] || table[3]);
+  }
+
+  /**
+   * Avec un rôle choisi et une exécution, la mort sur mesure sort une fois sur
+   * deux : assez pour qu'elle tombe vite, assez rarement pour que relancer
+   * apporte autre chose.
+   */
+  function tirerMort(rng, opts, role) {
+    const surMesure = role && opts.fin === "jour" && L.MORTS_ROLE[role.id];
+    if (surMesure && rng() < 0.5) return { texte: L.MORTS_ROLE[role.id], sourceRole: true };
+    return { texte: morteGenerique(rng, opts.chaos, opts.fin === "jour"), sourceRole: false };
   }
 
   function nettoyerIdee(txt) {
-    return String(txt || "").replace(/\s+/g, " ").trim().replace(/[.;,]+$/, "").slice(0, 180);
+    return String(txt || "").replace(/\s+/g, " ").trim().replace(/[.;,]+$/, "").slice(0, 160);
   }
 
-  /** Un récit est entièrement déterminé par (graine, réponses du formulaire). */
   function forger(seed, opts) {
     const rng = mulberry32(hashSeed(
       seed + "|" + opts.fin + "|" + opts.chaos + "|" + (opts.nom || "") + "|" + opts.genre +
       "|" + (opts.role || "") + "|" + (opts.idee || "") + "|" + (opts.acc || "") + "|" + opts.accGenre
     ));
 
-    const jour = opts.fin === "jour";
     const genre = opts.genre !== "auto" ? opts.genre : (devineGenre(opts.nom) || (rng() < 0.5 ? "f" : "m"));
-    const nom = opts.nom || nomAuHasard(rng, genre);
     const accGenre = opts.accGenre !== "auto" ? opts.accGenre : (devineGenre(opts.acc) || (rng() < 0.5 ? "f" : "m"));
-    const acc = opts.acc || nomAuHasard(rng, accGenre);
+    const acc = opts.acc || pick(rng, accGenre === "f" ? L.PRENOMS_F : L.PRENOMS_M);
+    const role = opts.role ? roleParId(opts.role) : null;
+    const mort = tirerMort(rng, opts, role);
 
     return {
-      seed: seed, opts: opts, jour: jour,
-      nom: nom, genre: genre,
+      seed: seed, opts: opts,
+      jour: opts.fin === "jour",
+      nom: opts.nom, genre: genre,
       acc: acc, accGenre: accGenre,
-      role: opts.role ? roleParId(opts.role) : null,
+      role: role,
       idee: nettoyerIdee(opts.idee),
-      scene: tirerScene(rng, opts.chaos, jour),
-      amorce: pick(rng, jour ? L.AMORCES_IDEE_JOUR : L.AMORCES_IDEE),
-      suite: pick(rng, jour ? L.SUITES_IDEE.jour : L.SUITES_IDEE.nuit),
-      dossier: String(range(rng, 1, 9999)).padStart(4, "0"),
+      texte: mort.texte,
+      sourceRole: mort.sourceRole,
+      greffe: pick(rng, L.GREFFES),
       surMesure: false
     };
   }
@@ -156,59 +152,35 @@
     });
   }
 
-  function titre(d) { return d.scene.titre; }
-
-  /**
-   * Remplit une phrase : accords, prénom, rôle, accusateur.
-   * `premier` indique si la première mention du prénom doit porter le rôle.
-   */
-  function remplir(texte, d, etat) {
-    let out = accordAutre(accord(escapeHtml(texte), d.genre), d.accGenre);
-    const nomHtml = "<strong>" + escapeHtml(d.nom) + "</strong>";
-    const apposition = d.role ? ", " + escapeHtml(roleAvecArticle(d.role)) + "," : "";
-
-    out = out.replace(/\{nom\}/g, function () {
-      if (!etat.nomPose) { etat.nomPose = true; return nomHtml + apposition; }
-      return nomHtml;
-    });
-    out = out.replace(/\{acc\}/g, "<strong>" + escapeHtml(d.acc) + "</strong>");
-
-    /* Le rôle en apposition peut se retrouver collé à une ponctuation. */
-    return out.replace(/,\s*([.!?;:])/g, "$1").replace(/,\s*,/g, ",");
-  }
-
-  /** Renvoie [{ cle, html }] : mise en place, idée éventuelle, puis la mort. */
-  function paragraphes(d) {
-    const etat = { nomPose: false };
-    const paras = [{ cle: "avant", html: remplir(d.scene.avant, d, etat) }];
-
+  function replique(d) {
+    let out = accordAutre(accord(escapeHtml(d.texte), d.genre), d.accGenre)
+      .replace(/\{acc\}/g, "<strong>" + escapeHtml(d.acc) + "</strong>");
     if (d.idee) {
-      paras.push({
-        cle: "idee",
-        html: remplir(d.amorce, d, etat) + " <em>«&nbsp;" + escapeHtml(d.idee) +
-          "&nbsp;»</em>. " + escapeHtml(d.suite)
-      });
+      out += " " + accord(escapeHtml(d.greffe), d.genre)
+        .replace(/\{idee\}/g, "<em>" + escapeHtml(d.idee) + "</em>");
     }
-
-    paras.push({ cle: "mort", html: remplir(d.scene.mort, d, etat) });
-    return paras;
+    return out;
   }
 
-  function recitTexte(d) {
-    const brut = paragraphes(d).map(function (p) {
-      return p.html.replace(/<[^>]+>/g, "")
-        .replace(/&nbsp;/g, " ")
-        .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
-        .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
-    });
-    return [
-      (d.jour ? "⚖ " : "† ") + titre(d).toUpperCase() + (d.jour ? " ⚖" : " †"),
-      "Ravenswood Bluff — dossier n°" + d.dossier,
-      "",
-      brut.join("\n\n"),
-      "",
-      "Graine : " + (d.surMesure ? "sur mesure" : d.seed) + " — " + lienPartage(d)
-    ].join("\n");
+  function repliqueTexte(d) {
+    return replique(d).replace(/<[^>]+>/g, "")
+      .replace(/&nbsp;/g, " ")
+      .replace(/&amp;/g, "&").replace(/&lt;/g, "<").replace(/&gt;/g, ">")
+      .replace(/&quot;/g, '"').replace(/&#39;/g, "'");
+  }
+
+  function enTete(d) {
+    if (d.nom && d.role) return d.nom + ", " + roleAvecArticle(d.role);
+    if (d.nom) return d.nom;
+    if (d.role) return capitalise(roleAvecArticle(d.role));
+    return "Un{e} citoyen{ne} de Ravenswood Bluff".replace("{e}", d.genre === "f" ? "e" : "")
+      .replace("{ne}", d.genre === "f" ? "ne" : "");
+  }
+
+  function capitalise(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+
+  function partageTexte(d) {
+    return enTete(d) + "\n\n« " + repliqueTexte(d) + " »\n\n— " + lienPartage(d);
   }
 
   /* ================================================================ */
@@ -217,13 +189,13 @@
 
   const $ = (sel) => document.querySelector(sel);
   const els = {
-    card: $("#card"), affair: $("#affair"), caseNo: $("#case-no"), seed: $("#seed"),
-    recit: $("#recit"), badgeFin: $("#badge-fin"), badgeChaos: $("#badge-chaos"),
+    card: $("#card"), entete: $("#entete"), replique: $("#replique"),
+    badgeFin: $("#badge-fin"), badgeChaos: $("#badge-chaos"), badgeRole: $("#badge-role"),
     nom: $("#nom"), genre: $("#genre"), role: $("#role"), idee: $("#idee"),
     acc: $("#acc"), accGenre: $("#acc-genre"),
     accField: $("#acc-field"), accGenreField: $("#acc-genre-field"),
     chaos: $("#chaos"), chaosLabel: $("#chaos-label"),
-    toast: $("#toast"), history: $("#history")
+    seed: $("#seed"), toast: $("#toast"), history: $("#history")
   };
 
   let courant = null;
@@ -243,7 +215,7 @@
   }
 
   function peuplerRoles() {
-    let html = '<option value="">— je préfère ne pas le dire —</option>';
+    let html = '<option value="">— je ne dis pas mon rôle —</option>';
     Object.keys(L.SCRIPTS).forEach(function (s) {
       Object.keys(L.TYPES).forEach(function (t) {
         const lot = L.ROLES.filter(function (r) { return r.script === s && r.type === t; });
@@ -264,79 +236,45 @@
     els.accGenreField.hidden = !jour;
   }
 
-  function rendre(d, partiel) {
+  function rendre(d) {
     courant = d;
-    els.recit.innerHTML = paragraphes(d).map(function (p) {
-      return '<p class="recit-p" data-part="' + p.cle +
-        '" role="button" tabindex="0" title="Cliquez pour réécrire ce paragraphe">' + p.html + "</p>";
-    }).join("");
-
-    if (partiel) {
-      const cible = els.recit.querySelector('[data-part="' + partiel + '"]');
-      if (cible) { void cible.offsetWidth; cible.classList.add("flash"); }
-    }
-
-    els.affair.textContent = titre(d);
-    els.caseNo.textContent = d.dossier;
-    els.badgeFin.textContent = d.jour ? "Exécution" : "Mort nocturne";
+    els.entete.textContent = enTete(d);
+    els.replique.innerHTML = replique(d);
+    els.badgeFin.textContent = d.jour ? "Exécuté·e par le village" : "Mort·e pendant la nuit";
     els.badgeChaos.textContent = L.CHAOS_LABELS[d.opts.chaos];
-    els.seed.textContent = d.surMesure ? "sur mesure" : d.seed;
+    els.badgeRole.hidden = !d.sourceRole;
+    els.seed.textContent = d.seed;
 
-    if (!partiel) {
-      els.card.classList.remove("is-rolling");
-      void els.card.offsetWidth;
-      els.card.classList.add("is-rolling");
-      majURL(d);
-    }
+    els.card.classList.remove("is-rolling");
+    void els.card.offsetWidth;
+    els.card.classList.add("is-rolling");
+    majURL(d);
   }
 
-  function nouveauRecit() {
+  function nouvelleMort() {
     const d = forger(newSeed(), optionsCourantes());
     rendre(d);
     archiver(d);
   }
 
-  /* ------------------------------------------ réécriture ciblée ------ */
-
-  const relances = {
-    avant: function (d, rng) { d.scene = tirerScene(rng, d.opts.chaos, d.jour); },
-    mort: function (d, rng) { d.scene = tirerScene(rng, d.opts.chaos, d.jour); },
-    idee: function (d, rng) {
-      d.amorce = pick(rng, d.jour ? L.AMORCES_IDEE_JOUR : L.AMORCES_IDEE);
-      d.suite = pick(rng, d.jour ? L.SUITES_IDEE.jour : L.SUITES_IDEE.nuit);
-    }
-  };
-
-  function relancer(part) {
-    if (!courant || !relances[part]) { nouveauRecit(); return; }
-    relances[part](courant, Math.random);
-    courant.surMesure = true;
-    rendre(courant, part);
-    majURL(courant);
-  }
-
   /* ------------------------------------------------------ archives --- */
 
   function archiver(d) {
-    dossiers.unshift({
-      titre: titre(d), nom: d.nom, jour: d.jour, seed: d.seed, opts: d.opts
-    });
-    dossiers = dossiers.slice(0, 12);
+    dossiers.unshift({ apercu: repliqueTexte(d).slice(0, 90), jour: d.jour, seed: d.seed, opts: d.opts });
+    dossiers = dossiers.slice(0, 10);
     sauver();
     dessinerArchives();
   }
 
   function dessinerArchives() {
     if (!dossiers.length) {
-      els.history.innerHTML = '<li class="empty">Aucun récit pour l\'instant. La nuit est jeune.</li>';
+      els.history.innerHTML = '<li class="empty">Rien pour l\'instant. Tu es encore en vie.</li>';
       return;
     }
     els.history.innerHTML = dossiers.map(function (e, i) {
       return '<li class="entry" data-i="' + i + '" tabindex="0" role="button">' +
         '<span class="h-no">' + (e.jour ? "⚖️" : "🌙") + "</span>" +
-        '<span class="h-title">' + escapeHtml(e.titre) + "</span>" +
-        '<span class="h-sub">' + escapeHtml(e.nom) + "</span>" +
-        "</li>";
+        '<span class="h-title">' + escapeHtml(e.apercu) + "…</span></li>";
     }).join("");
   }
 
@@ -349,12 +287,12 @@
   }
 
   function sauver() {
-    try { localStorage.setItem("registre-macabre", JSON.stringify(dossiers)); } catch (e) { /* navigation privée */ }
+    try { localStorage.setItem("raconte-ta-mort", JSON.stringify(dossiers)); } catch (e) { /* privé */ }
   }
 
   function charger() {
     try {
-      const raw = localStorage.getItem("registre-macabre");
+      const raw = localStorage.getItem("raconte-ta-mort");
       if (raw) dossiers = JSON.parse(raw) || [];
     } catch (e) { dossiers = []; }
     dessinerArchives();
@@ -366,7 +304,6 @@
     const u = new URL(location.href);
     u.hash = "";
     u.search = "";
-    if (d.surMesure) return u.toString();
     u.searchParams.set("g", d.seed);
     u.searchParams.set("f", d.opts.fin);
     u.searchParams.set("c", d.opts.chaos);
@@ -389,12 +326,12 @@
     return {
       seed: p.get("g"),
       opts: {
-        fin: p.get("f") === "jour" ? "jour" : "nuit",
+        fin: p.get("f") === "nuit" ? "nuit" : "jour",
         chaos: Math.min(4, Math.max(1, parseInt(p.get("c"), 10) || 3)),
         nom: p.get("n") || "",
         genre: p.get("x") || "auto",
         role: p.get("r") || "",
-        idee: (p.get("i") || "").slice(0, 180),
+        idee: (p.get("i") || "").slice(0, 160),
         acc: p.get("a") || "",
         accGenre: p.get("y") || "auto"
       }
@@ -402,7 +339,7 @@
   }
 
   function appliquerOptions(o) {
-    setChip("#fin-chips", o.fin || "nuit");
+    setChip("#fin-chips", o.fin || "jour");
     els.chaos.value = o.chaos;
     els.chaosLabel.textContent = L.CHAOS_LABELS[o.chaos];
     els.nom.value = o.nom || "";
@@ -449,7 +386,7 @@
     document.body.appendChild(ta);
     ta.select();
     try { document.execCommand("copy"); done(); }
-    catch (e) { toast("Copie impossible — sélectionnez le texte à la main."); }
+    catch (e) { toast("Copie impossible — sélectionne le texte à la main."); }
     document.body.removeChild(ta);
   }
 
@@ -469,26 +406,17 @@
       els.chaosLabel.textContent = L.CHAOS_LABELS[parseInt(els.chaos.value, 10)];
     });
 
-    $("#generate").addEventListener("click", nouveauRecit);
-    $("#again").addEventListener("click", nouveauRecit);
-
-    els.recit.addEventListener("click", function (e) {
-      const p = e.target.closest(".recit-p");
-      if (p) relancer(p.dataset.part);
-    });
-    els.recit.addEventListener("keydown", function (e) {
-      const p = e.target.closest(".recit-p");
-      if (p && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); relancer(p.dataset.part); }
-    });
+    $("#generate").addEventListener("click", nouvelleMort);
+    $("#again").addEventListener("click", nouvelleMort);
+    els.replique.addEventListener("click", nouvelleMort);
 
     $("#copy").addEventListener("click", function () {
-      if (!courant) return toast("Écrivez d'abord un récit.");
-      copier(recitTexte(courant), "Récit copié — à lire d'une voix grave.");
+      if (!courant) return toast("Tire d'abord une mort.");
+      copier(partageTexte(courant), "Copié. Maintenant lis-le à voix haute.");
     });
 
     $("#permalink").addEventListener("click", function () {
-      if (!courant) return toast("Écrivez d'abord un récit.");
-      if (courant.surMesure) return toast("Récit retouché à la main : le permalien ne peut plus le reproduire.");
+      if (!courant) return toast("Tire d'abord une mort.");
       copier(lienPartage(courant), "Permalien copié.");
     });
 
@@ -512,7 +440,7 @@
       const tag = (e.target.tagName || "").toLowerCase();
       if (tag === "input" || tag === "select" || tag === "textarea") return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.code === "Space" || e.key === "Enter") { e.preventDefault(); nouveauRecit(); }
+      if (e.code === "Space" || e.key === "Enter") { e.preventDefault(); nouvelleMort(); }
       else if (e.key === "c" || e.key === "C") { $("#copy").click(); }
       else if (e.key === "p" || e.key === "P") { $("#permalink").click(); }
     });
@@ -525,12 +453,12 @@
       rendre(forger(depuisURL.seed, depuisURL.opts));
     } else {
       majChampsAccusateur();
-      nouveauRecit();
+      nouvelleMort();
     }
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 
-  window.RegistreMacabre = { forger: forger, recitTexte: recitTexte, accord: accord, newSeed: newSeed };
+  window.RaconteTaMort = { forger: forger, repliqueTexte: repliqueTexte, newSeed: newSeed };
 })();

@@ -1,34 +1,44 @@
 # 🕯️ Raconte ta mort
 
-**Tu viens de mourir en pleine partie de [Blood on the Clocktower](https://bloodontheclocktower.com/) ?
-Dis-nous qui tu étais, on s'occupe de la version officielle.**
+**Le village vient de te pendre, le Conteur te demande de raconter comment tu meurs,
+et tu n'as aucune idée de quoi dire.**
 
-Tu donnes ton prénom, ton rôle, comment tu es mort et éventuellement une idée à toi.
-L'app te rend une **scène complète** : la situation, l'enchaînement, le mécanisme précis de ta
-mort et ce qu'on a retrouvé au matin. Rien d'autre. C'est le seul but de cette application.
+Chez nous, quand quelqu'un est exécuté à [Blood on the Clocktower](https://bloodontheclocktower.com/),
+il doit raconter sa mort de façon drôle. Tout le monde n'a pas l'imagination qu'il faut à
+14 heures un dimanche. Cette app te donne une réplique : tu choisis ton rôle, tu tires, tu lis à
+voix haute.
 
-👉 **[Ouvrir le générateur](https://sebplace.github.io/botct-morts-loufoques/)**
+👉 **[Ouvrir l'app](https://sebplace.github.io/botct-morts-loufoques/)**
 
 ![Aperçu de Raconte ta mort](docs/capture.png)
 
 ---
 
-## Un exemple
+## Ce que ça donne
 
-Prénom *Sébastien*, rôle *Fossoyeur*, mort *pendant la nuit*,
-idée *« j'avais caché un fromage sous mon siège »* :
+**Fossoyeur**
 
-> **Sébastien**, le Fossoyeur, avait parié une tournée qu'il tiendrait plus longtemps qu'un corbeau à un concours de regard fixe.
->
-> Une chose, notée en marge du registre : *« j'avais caché un fromage sous mon siège »*. C'est sans doute sans rapport. Sans doute.
->
-> Le corbeau s'est posé sur la barrière à onze heures du soir. **Sébastien** a tenu six heures. Le corbeau a tenu six heures et un quart. On les a séparés au matin : l'oiseau est reparti tranquillement vers le clocher, et **Sébastien** avait perdu le pari, la tournée et la vie, exactement dans cet ordre.
+> « J'avais creusé ma tombe trois jours à l'avance, par habitude professionnelle. Le village me jette dans le puits. Ma tombe est toujours là, vide, impeccable. Personne ne l'a jamais utilisée. »
 
-Et pour une exécution, avec *Marguerite* comme accusatrice :
+**Ivrogne**
 
-> **Marguerite** a désigné **Sébastien**, le Fossoyeur, en montrant le puits communal du menton, ce qui, au village, vaut proposition formelle.
->
-> Le puits est à sec depuis 1622, ce que tout le monde savait et que personne n'a jugé utile de rappeler. **Sébastien** est tombé de onze mètres sur de la pierre sèche, avec un bruit que les témoins s'accordent à décrire comme « décevant ». On a remis la margelle en place et la journée a repris son cours.
+> « Je monte sur l'échafaud en expliquant très calmement que je suis la Voyante. Le bourreau me dit que non. Je lui dis que si. Il avait raison. J'apprends toute ma vie en trois secondes, puis plus rien. »
+
+**Soldat**
+
+> « Aucun Démon ne peut me tuer. Aucun. Je le répète pendant tout le trajet jusqu'au chêne. Le village n'est pas un Démon. Le village est bien pire : il est nombreux. »
+
+**Pourfendeuse**
+
+> « Je tends le doigt et je hurle : "JE SUIS LA POURFENDEUSE !". Il ne se passe rien. Je recommence, plus fort, avec le bras bien tendu. Il ne se passe toujours rien. On me pend pendant que j'essaie une troisième fois. »
+
+**Saint**
+
+> « Le village me pend. Le village s'aperçoit immédiatement de son erreur. Le village s'excuse. J'accepte les excuses, parce que je suis le Saint. Mais entre nous : quels imbéciles. »
+
+**Sans rôle précisé**
+
+> « On me pend, mais la corde est trop longue et je touche le sol. On recommence sur un tabouret. Le tabouret casse. On finit par me pendre assis, ce qui n'a aucune dignité. »
 
 ---
 
@@ -36,28 +46,28 @@ Et pour une exécution, avec *Marguerite* comme accusatrice :
 
 | | |
 |---|---|
-| 📖 **67 scènes écrites une par une** | 41 morts nocturnes, 26 exécutions. Chacune raconte un enchaînement complet — pourquoi la personne était là, ce qui a mal tourné, comment exactement, et ce qu'on a retrouvé. Rien n'est assemblé au hasard. |
-| 🎚️ **Niveau d'absurdité** | De « gothique sobre » (l'horloge sonne un treizième coup, et le cœur s'arrête avec) à « absurdité totale » (le secrétaire de mairie rature une ligne du registre et tu meurs par cohérence administrative). |
-| 🌙⚖️ **Mort nocturne ou exécution** | Deux jeux de scènes distincts. Pour une exécution, la personne qui t'a désigné entre dans l'histoire. |
-| 🎭 **Ton rôle, si tu veux** | Les 87 rôles officiels sont dans la liste ; le tien sert à te nommer dans l'histoire — « Sébastien, le Fossoyeur ». Tu peux aussi ne rien dire. |
-| 💬 **Ton idée, citée telle quelle** | Elle se glisse entre la mise en place et la mort, comme le détail qui n'explique rien. |
-| ✍️ **Accord en genre automatique** | Pour toi comme pour la personne qui t'a fait exécuter. |
-| ⟳ **Un clic sur un paragraphe** | Tire une autre scène, sans toucher à tes réponses. |
-| 🔗 **Permalien reproductible** | L'URL rejoue exactement le même récit. |
-| 🗃️ **Tes douze derniers récits** | Conservés dans ton navigateur, rejouables d'un clic. |
+| 🎭 **Une mort écrite pour chacun des 87 rôles** | Chaque personnage a sa propre blague, tirée de ce qu'il est dans le jeu. Le Fossoyeur creuse, la Voyante n'a rien vu venir, le Fou du roi se relève, le Marin est trop ivre pour mourir, le Zombuul y passe deux fois. |
+| 🗣️ **Fait pour être dit à voix haute** | Deux à quatre phrases, une chute. Tu lis, ou tu t'en sers comme point de départ et tu brodes. |
+| 🎚️ **Niveau de délire** | De *sobre* (la branche casse, on recommence, elle tient, toi non) à *surréaliste* (on te raye du registre communal à la règle et tu cesses d'exister en pleine phrase). |
+| ⚖️🌙 **Exécution ou mort nocturne** | Les morts sur mesure sont écrites pour l'exécution — c'est le moment où on te demande de raconter. 56 morts génériques couvrent les deux cas. |
+| 💬 **Ton détail perso** | Tu peux glisser une réplique à toi, citée telle quelle à la fin. |
+| ✍️ **Accord en genre** | Automatique, pour toi comme pour la personne qui t'a fait pendre. |
+| 🔗 **Permalien** | Pour renvoyer ta mort dans la conversation de groupe après la partie. |
+| 🗃️ **Tes dix dernières** | Gardées dans ton navigateur. |
 
-**Raccourcis :** <kbd>Espace</kbd> nouveau récit · <kbd>C</kbd> copier · <kbd>P</kbd> permalien.
+**Raccourcis :** <kbd>Espace</kbd> une autre mort · <kbd>C</kbd> copier · <kbd>P</kbd> permalien.
+Cliquer sur la réplique en tire une autre.
 
 ---
 
 ## Installation
 
-Aucune. C'est une page statique, sans dépendance, sans build, sans réseau.
+Aucune. Page statique, sans dépendance, sans build, sans réseau.
 
 ```bash
 git clone https://github.com/sebplace/botct-morts-loufoques.git
 cd botct-morts-loufoques
-# ouvre index.html dans un navigateur, ou :
+# ouvre index.html, ou :
 python -m http.server 8000
 ```
 
@@ -65,61 +75,42 @@ Tout est généré dans le navigateur : **aucune donnée ne sort de ta machine.*
 
 ---
 
-## Structure
+## Ajouter tes propres morts
 
-```
-index.html      le formulaire et le parchemin
-styles.css      thème gothique (clocher animé, parchemin, sceau de cire)
-app.js          moteur : hasard reproductible, accord en genre, rendu, permaliens
-data/lore.js    toutes les tables de texte — c'est ici qu'on écrit
-```
+Tout est dans [`data/lore.js`](data/lore.js).
 
----
-
-## Écrire tes propres morts
-
-Tout le contenu vit dans [`data/lore.js`](data/lore.js), dans les tables `NUIT` et `JOUR`.
-Une mort est une **scène entière**, pas un fragment : `avant` pose la situation, `mort` raconte
-l'enchaînement et sa conclusion.
+**Une mort pour un rôle** — dans `MORTS_ROLE`, la clé est l'`id` du rôle :
 
 ```js
-{
-  titre: "L'Affaire du Tonneau Tiède",
-  niveau: 2,                       // 1 sobre · 2 étrange · 3 loufoque · 4 absurde
-  avant: "Vers minuit, {nom} est descendu{e} à la cave vérifier un bruit qu'{il} était seul{e} à avoir entendu.",
-  mort: "L'escalier n'avait plus que deux marches sur sept, la lanterne s'est éteinte à la troisième absente, et le tonneau de soupe à l'oignon du banquet de dimanche était resté ouvert, encore tiède. {nom} savait nager. Cela n'a servi à rien : on ne nage pas dans la soupe, on s'y enfonce. On l'a repêché{e} au matin, parfaitement assaisonné{e}."
-}
+fossoyeur: "J'avais creusé ma tombe trois jours à l'avance, par habitude professionnelle. Le village me jette dans le puits. Ma tombe est toujours là, vide, impeccable. Personne ne l'a jamais utilisée.",
 ```
 
-Trois règles d'écriture :
+**Une mort générique** — dans `MORTS.jour` ou `MORTS.nuit`, rangée par niveau de délire (`1` à `4`) :
 
-1. **Raconte une chaîne d'événements.** Ce qui est drôle, ce n'est pas « noyé dans de la soupe »,
-   c'est l'escalier amputé, la lanterne qui s'éteint, le tonneau resté ouvert depuis dimanche, et
-   le fait qu'il savait nager.
-2. **Sois concret.** Des chiffres, des heures, des objets précis. « Onze mètres », « six hommes et
-   deux mules », « un trou de huit millimètres ».
-3. **Pas de mécanique de jeu.** Pas de vote, pas de camp, pas de capacité, pas de Conteur. Juste
-   des gens qui meurent bêtement dans un village.
+```js
+3: [
+  "On me pend dans un silence parfait. Puis quelqu'un éternue. Puis tout le monde éternue. Je meurs au milieu d'une épidémie d'éternuements, et ça a beaucoup gâché la solennité."
+]
+```
 
-Marqueurs d'accord, qui se rapportent au personnage :
+Trois règles :
 
-| Marqueur | Masculin | Féminin |
-|---|---|---|
-| `{e}` | *(rien)* | `e` |
-| `{il}` / `{Il}` | il / Il | elle / Elle |
-| `{le}` | le | la |
-| `{un}` | un | une |
-| `{lui}` | lui | elle |
+1. **Première personne, présent.** C'est toi qui parles, debout, devant la table.
+2. **Deux à quatre phrases, une chute.** Si ça ne tient pas en dix secondes à voix haute, c'est trop long.
+3. **La blague vient du rôle ou du village**, pas de la mécanique. On peut parler du Démon, du
+   chêne, du bourreau, du beffroi. On ne parle pas de votes, de camps ni de capacités.
 
-Entre crochets — `[e]`, `[il]`, `[Il]` — l'accord se rapporte à la personne qui a fait exécuter,
-et ne sert donc que dans la table `JOUR`.
+Marqueurs disponibles :
 
-`{nom}` est remplacé par le prénom : la **première** occurrence du récit porte le rôle en
-apposition, les suivantes non. `{acc}` est remplacé par le nom de l'accusateur, et n'a de sens
-que dans `JOUR`.
+| Marqueur | Se rapporte à | Masculin | Féminin |
+|---|---|---|---|
+| `{e}` | toi | *(rien)* | `e` |
+| `[e]` | qui t'a fait pendre | *(rien)* | `e` |
+| `[il]` / `[Il]` | qui t'a fait pendre | il / Il | elle / Elle |
+| `{acc}` | — | *(son prénom)* | |
 
-Les autres tables : `AMORCES_IDEE` / `AMORCES_IDEE_JOUR` et `SUITES_IDEE` (l'enrobage de l'idée
-du joueur), `ROLES` (la liste déroulante), `PRENOMS_M` / `PRENOMS_F` (le prénom de secours).
+⚠️ N'utilise `{e}` que sur un mot dont le féminin s'obtient bien en ajoutant un « e ».
+Pas de `furieux{e}`, pas de `professionnel{e}` — reformule.
 
 ---
 
@@ -128,15 +119,9 @@ du joueur), `ROLES` (la liste déroulante), `PRENOMS_M` / `PRENOMS_F` (le préno
 Les noms des rôles suivent la traduction française publiée par The Pandemonium Institute pour son
 application officielle :
 [`ThePandemoniumInstitute/botc-translations`](https://github.com/ThePandemoniumInstitute/botc-translations),
-fichier `game/fr.json`.
-
-⚠️ TPI précise dans ce même fichier que la traduction est l'œuvre de bénévoles non affiliés. C'est
-néanmoins la terminologie que voient les joueurs francophones dans le produit officiel — donc celle
-qu'utilise ce projet. Il n'existe à ce jour aucune édition française commerciale du jeu.
-
-**Ravenswood Bluff** n'est pas traduit, conformément à cette même version française : le texte de
-règles officiel s'ouvre sur *« Dans la paisible bourgade de Ravenswood Bluff, au cœur d'une nuit
-d'orage, un cri retentit à minuit pile… »*
+fichier `game/fr.json`. TPI précise dans ce même fichier que la traduction est l'œuvre de bénévoles
+non affiliés — c'est néanmoins celle que voient les joueurs francophones dans le produit officiel.
+Il n'existe à ce jour aucune édition française commerciale du jeu.
 
 ---
 
@@ -146,7 +131,6 @@ Code et textes sous licence [MIT](LICENSE).
 
 Projet de fan, **non officiel**, sans aucun lien avec The Pandemonium Institute.
 *Blood on the Clocktower* et les noms de rôles cités sont la propriété de leurs ayants droit ;
-aucun texte de règles n'est reproduit ici. Cette app ne fait qu'inventer des façons ridicules
-de mourir à Ravenswood Bluff.
+aucun texte de règles n'est reproduit ici.
 
 Bonne nuit, tout le monde. 🕯️

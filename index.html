@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Raconte ta mort — Le Registre Macabre de Ravenswood Bluff</title>
-<meta name="description" content="Tu es mort en pleine partie de Blood on the Clocktower ? Donne ton prénom, ton rôle et une idée : l'app en tire une petite histoire de mort parfaitement absurde.">
+<title>Raconte ta mort — Blood on the Clocktower</title>
+<meta name="description" content="Le village vient de t'exécuter et le Conteur te demande de raconter ta mort ? Choisis ton rôle, prends la réplique et lis-la à voix haute. Une mort loufoque pour chacun des 87 rôles de Blood on the Clocktower.">
 <meta name="theme-color" content="#0c0a10">
-<meta property="og:title" content="Raconte ta mort — Le Registre Macabre">
-<meta property="og:description" content="Une brève histoire de mort absurde à Ravenswood Bluff, écrite à partir de ta partie.">
+<meta property="og:title" content="Raconte ta mort — Blood on the Clocktower">
+<meta property="og:description" content="Une mort loufoque à dire à voix haute quand le village vient de te pendre.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%95%AF%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -38,11 +38,6 @@
       <path d="M1120 320 L1120 285 L1150 262 L1180 285 L1180 320 Z"/>
       <path d="M430 320 L430 290 L458 270 L486 290 L486 320 Z"/>
     </g>
-    <g class="birds">
-      <path d="M300 90 q 8 -8 16 0 q 8 -8 16 0"/>
-      <path d="M360 60 q 6 -6 12 0 q 6 -6 12 0"/>
-      <path d="M1080 80 q 7 -7 14 0 q 7 -7 14 0"/>
-    </g>
   </svg>
   <div class="fog"></div>
 </div>
@@ -50,107 +45,111 @@
 <main class="wrap">
 
   <header class="masthead">
-    <p class="kicker">Ravenswood Bluff · Bureau des affaires nocturnes</p>
+    <p class="kicker">Blood on the Clocktower</p>
     <h1>Raconte&nbsp;ta&nbsp;mort</h1>
-    <p class="tagline">Tu es mort en pleine partie&nbsp;? Dis-nous qui tu étais, on s'occupe de la version officielle.</p>
+    <p class="tagline">Le village vient de te pendre et tu n'as aucune idée de quoi dire&nbsp;?
+      Choisis ton rôle, prends la réplique, lis-la à voix haute.</p>
   </header>
 
-  <section class="panel" aria-label="Ta partie">
-    <div class="form-grid">
-      <label class="mini-field">
-        <span>Ton prénom</span>
-        <input type="text" id="nom" placeholder="Sébastien" maxlength="40" autocomplete="off">
-      </label>
-      <label class="mini-field">
-        <span>Genre</span>
-        <select id="genre">
-          <option value="auto">Auto</option>
-          <option value="m">Masculin</option>
-          <option value="f">Féminin</option>
-        </select>
-      </label>
-
-      <label class="mini-field wide">
-        <span>Ton rôle <em>(facultatif)</em></span>
-        <select id="role"><option value="">— je préfère ne pas le dire —</option></select>
-      </label>
-
-      <div class="mini-field wide">
-        <span>Comment es-tu mort·e&nbsp;?</span>
-        <div class="chips" role="radiogroup" aria-label="Type de mort" id="fin-chips">
-          <button type="button" class="chip is-on" role="radio" aria-checked="true" data-value="nuit">🌙 Pendant la nuit</button>
-          <button type="button" class="chip" role="radio" aria-checked="false" data-value="jour">⚖️ Exécuté·e par le village</button>
-        </div>
-      </div>
-
-      <label class="mini-field" id="acc-field" hidden>
-        <span>Qui t'a fait exécuter&nbsp;?</span>
-        <input type="text" id="acc" placeholder="Marguerite" maxlength="40" autocomplete="off">
-      </label>
-      <label class="mini-field" id="acc-genre-field" hidden>
-        <span>Genre</span>
-        <select id="acc-genre">
-          <option value="auto">Auto</option>
-          <option value="m">Masculin</option>
-          <option value="f">Féminin</option>
-        </select>
-      </label>
-
-      <label class="mini-field wide">
-        <span>Une idée, un détail à glisser dans l'histoire <em>(facultatif)</em></span>
-        <textarea id="idee" rows="2" maxlength="180"
-          placeholder="j'avais caché un fromage sous mon siège"></textarea>
-      </label>
-
-      <div class="mini-field wide">
-        <label class="range-label" for="chaos">Niveau d'absurdité&nbsp;: <span id="chaos-label">Complètement loufoque</span></label>
-        <input type="range" id="chaos" min="1" max="4" step="1" value="3">
-        <div class="range-legend"><span>Sobre</span><span>Étrange</span><span>Loufoque</span><span>Absurde</span></div>
-      </div>
-    </div>
-
-    <button type="button" id="generate" class="summon">
-      <span class="summon-ink">Écrire mon récit</span>
-      <span class="summon-hint">espace</span>
-    </button>
-  </section>
-
-  <section class="parchment-shell" aria-label="Ton récit">
+  <!-- LA RÉPLIQUE D'ABORD : c'est ce qu'on vient chercher. -->
+  <section class="stage" aria-label="Ta mort">
     <article class="parchment" id="card" aria-live="polite">
       <div class="seal" aria-hidden="true"><span>†</span></div>
-
-      <p class="affair-kicker">Dossier n°<span id="case-no">—</span> · Registre macabre</p>
-      <h2 class="affair" id="affair">Le village attend ton histoire</h2>
-      <p class="meta"><span class="badge" id="badge-fin">—</span><span class="badge" id="badge-chaos">—</span></p>
-
-      <div class="recit" id="recit">
-        <p class="recit-p">Remplis le formulaire, puis appuie sur « Écrire mon récit ».</p>
-      </div>
-
-      <p class="graine">Graine&nbsp;: <code id="seed">—</code> · <span class="hint">clique sur un paragraphe pour le réécrire</span></p>
+      <p class="entete" id="entete">—</p>
+      <blockquote class="replique" id="replique" role="button" tabindex="0"
+        title="Clique pour une autre mort">Choisis ton rôle et tire ta mort.</blockquote>
+      <p class="meta">
+        <span class="badge" id="badge-fin">—</span>
+        <span class="badge" id="badge-chaos">—</span>
+        <span class="badge badge-role" id="badge-role" hidden>Écrite pour ton rôle</span>
+      </p>
     </article>
 
+    <button type="button" id="generate" class="summon">
+      <span class="summon-ink">Tirer ma mort</span>
+      <span class="summon-hint">espace</span>
+    </button>
+
     <div class="actions">
-      <button type="button" id="copy" class="ghost">📋 Copier le récit</button>
-      <button type="button" id="permalink" class="ghost">🔗 Copier le permalien</button>
-      <button type="button" id="again" class="ghost">🕯️ Encore une</button>
+      <button type="button" id="copy" class="ghost">📋 Copier</button>
+      <button type="button" id="permalink" class="ghost">🔗 Permalien</button>
+      <button type="button" id="again" class="ghost">🕯️ Une autre</button>
     </div>
     <p class="toast" id="toast" role="status" aria-live="polite"></p>
   </section>
 
-  <section class="ledger" aria-label="Récits précédents">
-    <h3>Récits classés <button type="button" id="clear-history" class="mini">vider</button></h3>
-    <ol id="history" class="history"><li class="empty">Aucun récit pour l'instant. La nuit est jeune.</li></ol>
+  <section class="panel" aria-label="Ta partie">
+    <div class="form-grid">
+      <label class="mini-field wide">
+        <span class="fort">Ton rôle</span>
+        <select id="role"><option value="">— je ne dis pas mon rôle —</option></select>
+      </label>
+
+      <div class="mini-field wide">
+        <span class="fort">Comment es-tu mort·e&nbsp;?</span>
+        <div class="chips" role="radiogroup" aria-label="Type de mort" id="fin-chips">
+          <button type="button" class="chip is-on" role="radio" aria-checked="true" data-value="jour">⚖️ Exécuté·e par le village</button>
+          <button type="button" class="chip" role="radio" aria-checked="false" data-value="nuit">🌙 Tué·e pendant la nuit</button>
+        </div>
+      </div>
+
+      <div class="mini-field wide">
+        <label class="range-label" for="chaos">Niveau de délire&nbsp;: <span id="chaos-label">Loufoque</span></label>
+        <input type="range" id="chaos" min="1" max="4" step="1" value="3">
+        <div class="range-legend"><span>Sobre</span><span>Drôle</span><span>Loufoque</span><span>Surréaliste</span></div>
+      </div>
+
+      <details class="extras">
+        <summary>Options — prénom, accusateur, détail perso</summary>
+        <div class="form-grid inner">
+          <label class="mini-field">
+            <span>Ton prénom</span>
+            <input type="text" id="nom" placeholder="Sébastien" maxlength="40" autocomplete="off">
+          </label>
+          <label class="mini-field">
+            <span>Genre</span>
+            <select id="genre">
+              <option value="auto">Auto</option>
+              <option value="m">Masculin</option>
+              <option value="f">Féminin</option>
+            </select>
+          </label>
+          <label class="mini-field" id="acc-field">
+            <span>Qui t'a fait pendre&nbsp;?</span>
+            <input type="text" id="acc" placeholder="Marguerite" maxlength="40" autocomplete="off">
+          </label>
+          <label class="mini-field" id="acc-genre-field">
+            <span>Genre</span>
+            <select id="acc-genre">
+              <option value="auto">Auto</option>
+              <option value="m">Masculin</option>
+              <option value="f">Féminin</option>
+            </select>
+          </label>
+          <label class="mini-field wide">
+            <span>Un détail à toi à caser dedans</span>
+            <textarea id="idee" rows="2" maxlength="160"
+              placeholder="j'avais juré trois fois que j'étais le Cuisinier"></textarea>
+          </label>
+        </div>
+      </details>
+    </div>
+    <p class="graine">Graine&nbsp;: <code id="seed">—</code></p>
+  </section>
+
+  <section class="ledger" aria-label="Morts précédentes">
+    <h3>Tes dernières morts <button type="button" id="clear-history" class="mini">vider</button></h3>
+    <ol id="history" class="history"><li class="empty">Rien pour l'instant. Tu es encore en vie.</li></ol>
   </section>
 
   <footer class="colophon">
-    <p><strong>Le Registre Macabre</strong> — projet de fan, non officiel, sans lien avec The Pandemonium Institute.
+    <p><strong>Raconte ta mort</strong> — projet de fan, non officiel, sans lien avec The Pandemonium Institute.
       <em>Blood on the Clocktower</em> est une marque de ses ayants droit ; aucun texte de règles n'est reproduit ici.</p>
     <p>Les noms français des rôles suivent la traduction publiée par The Pandemonium Institute pour son application officielle
       (<a href="https://github.com/ThePandemoniumInstitute/botc-translations" target="_blank" rel="noopener">botc-translations</a>,
       fichier <code>game/fr.json</code>) — traduction réalisée par des bénévoles, que TPI ne garantit pas fidèle aux règles anglaises.</p>
     <p>Aucune donnée n'est envoyée nulle part : tout est généré dans ton navigateur.
-      Raccourcis&nbsp;: <kbd>Espace</kbd> nouveau récit · <kbd>C</kbd> copier · <kbd>P</kbd> permalien.</p>
+      Raccourcis&nbsp;: <kbd>Espace</kbd> une autre mort · <kbd>C</kbd> copier · <kbd>P</kbd> permalien.</p>
   </footer>
 
 </main>
