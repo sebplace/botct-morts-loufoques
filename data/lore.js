@@ -133,38 +133,38 @@
     jour: {
       1: [
         "On me pend au vieux chêne. La branche casse. On recommence avec une branche plus solide. Elle tient. Moi non.",
-        "Je demande un dernier mot. Je dis : « vous allez vous sentir très bêtes demain matin ». On me pend. Le lendemain matin, personne ne s'est senti bête. C'est ça qui m'a le plus déçu{e}.",
+        "{acc} me désigne. Je demande un dernier mot. Je dis : « vous allez vous sentir très bêtes demain matin ». On me pend. Le lendemain matin, personne ne s'est senti bête. C'est ça qui m'a le plus déçu{e}.",
         "{acc} lève la main avant tout le monde. Quatorze autres suivent. Je n'ai jamais été aussi populaire de ma vie, et jamais aussi brièvement.",
-        "On me pend dans un silence total. Le bourreau s'excuse trois fois. Je lui dis que ce n'est pas grave. Il pleure. Je finis par le consoler, la corde au cou. Drôle de journée.",
+        "On me pend dans un silence total. Le bourreau s'excuse trois fois. Je lui dis que ce n'est pas grave. Il pleure. Je finis par le consoler, la corde au cou. {acc} aussi a beaucoup pleuré.",
         "Je meurs étranglé{e} par mon propre foulard, que j'avais noué trop serré ce matin-là pour avoir l'air digne. J'ai eu l'air digne.",
         "On me pend sous l'horloge, à midi. L'horloge sonne treize coups. Tout le monde fait semblant de n'avoir rien remarqué, y compris moi, et pourtant je suis mort{e}.",
-        "Le village me pend. Trois minutes plus tard, quelqu'un dit : « bon… et si on s'était trompés ? ». Ils s'étaient trompés.",
-        "Je monte sur l'échafaud, je regarde la foule, et je reconnais absolument tout le monde. C'est ça, un village. On m'a pendu{e} entre gens de connaissance."
+        "Le village me pend. Trois minutes plus tard, {acc} dit : « bon… et si on s'était trompés ? ». [Il] s'était trompé[e].",
+        "Je monte sur l'échafaud, je regarde la foule, et je reconnais absolument tout le monde, à commencer par {acc}. C'est ça, un village. On m'a pendu{e} entre gens de connaissance."
       ],
       2: [
         "On me pend, mais la corde est trop longue et je touche le sol. On recommence sur un tabouret. Le tabouret casse. On finit par me pendre assis{e}, ce qui n'a aucune dignité.",
-        "Le village me jette dans le puits. Le puits est à sec depuis 1622. Personne n'avait pensé à vérifier, moi non plus, ce qui nous met à égalité.",
+        "{acc} propose le puits. Le puits est à sec depuis 1622. Personne n'avait pensé à vérifier, moi non plus, ce qui nous met à égalité.",
         "Je m'évanouis de peur avant l'exécution. On me pend évanoui{e}, ce qui est nettement plus confortable, et je me réveille mort{e}. Je recommande.",
         "On me pend avec une corde empruntée au Cordier. Le Cordier assiste à toute la scène en fixant sa corde, uniquement sa corde. Il l'a récupérée le soir même.",
         "Mes derniers mots sont : « attendez, j'ai une info capitale ». Je n'avais aucune info. Je voulais gagner trente secondes. J'en ai gagné douze.",
-        "Je suis exécuté{e} pour avoir gardé le silence au mauvais moment. J'avais simplement la bouche pleine. Personne ne m'a laissé le temps d'avaler.",
+        "{acc} me reproche d'avoir gardé le silence au mauvais moment. J'avais simplement la bouche pleine. Personne ne m'a laissé le temps d'avaler.",
         "On me pend avec beaucoup de sérieux, beaucoup de dignité, et une corde de rideau. C'est le détail que ma famille n'a jamais pardonné.",
         "{acc} me désigne d'un geste du menton. Je demande si c'est bien à moi qu'[il] parle. [Il] confirme du menton. On ne discute pas avec un menton pareil."
       ],
       3: [
         "Je glisse sur la première marche de l'échafaud et je meurs de la chute, avant la corde. Le bourreau a trouvé ça d'un manque de respect total.",
-        "Le village me pend à la girouette du clocher, faute de mieux. Le vent se lève. J'ai tourné toute la nuit, et la girouette indique le sud-ouest depuis.",
+        "{acc} tient à ce qu'on fasse les choses en grand : on me pend à la girouette du clocher. Le vent se lève. J'ai tourné toute la nuit, et la girouette indique le sud-ouest depuis.",
         "On me pend dans un silence parfait. Puis quelqu'un éternue. Puis tout le monde éternue. Je meurs au milieu d'une épidémie d'éternuements, et ça a beaucoup gâché la solennité.",
         "Un corbeau se pose sur mon épaule pendant la cérémonie et refuse de bouger. On l'a enterré avec moi. Il n'a jamais voulu partir.",
-        "Le four du boulanger était déjà chaud, alors on m'y a enfourné{e} avec une miche pour ne pas perdre la place. La miche est ressortie parfaite. Personne n'a voulu la manger.",
-        "On me catapulte par-dessus la colline avec une charrette et un tas de foin. La partie « charrette » fonctionne. La partie « colline » aussi. On ne m'a jamais retrouvé{e}.",
+        "{acc} fait remarquer que le four du boulanger est déjà chaud et qu'il ne faut pas gaspiller la chauffe. On m'y enfourne avec une miche. La miche est ressortie parfaite. Personne n'a voulu la manger.",
+        "{acc} a une idée : une charrette, un tas de foin, et moi par-dessus la colline. La partie « charrette » fonctionne. La partie « colline » aussi. On ne m'a jamais retrouvé{e}.",
         "On m'exécute pendant que la fanfare répète sur la place. Elle n'était au courant de rien. Quatorze musiciens, deux grosses caisses, et un morceau qu'il a bien fallu terminer.",
         "On me pousse du haut du moulin. La roue me rattrape en bas, me remonte, et me redépose en haut. On a recommencé trois fois avant que le meunier ne coupe l'eau."
       ],
       4: [
-        "Le village me raye du registre communal à l'encre noire, à la règle. Je cesse d'exister dans l'heure, en pleine phrase. Je n'ai même pas pu finir mon café.",
+        "{acc} ne crie pas et n'accuse personne : [il] va à la mairie et me raye du registre communal à l'encre noire, à la règle. Je cesse d'exister dans l'heure, en pleine phrase.",
         "On me plie en quatre, on me tamponne deux fois, et on me classe au rayon des affaires closes, entre un litige de 1604 et une vieille histoire de chèvre.",
-        "On me pend rétroactivement à mardi dernier. Je meurs donc avant d'être arrivé{e} à cette semaine, ce qui a beaucoup contrarié le secrétaire de mairie.",
+        "{acc} fait observer qu'on gagnerait un temps fou en me pendant mardi dernier. On me pend donc rétroactivement, et je meurs avant d'être arrivé{e} à cette semaine.",
         "Le village décide que je suis mort{e}. Je ne suis pas d'accord. Le village insiste. À la longue, il faut bien se ranger à l'avis général.",
         "On me remplace par une chaise vide. Les gens ont continué de me parler pendant trois semaines, par politesse. Puis ils ont arrêté. C'est ça qui m'a fait le plus mal.",
         "Je meurs d'une faute d'orthographe dans mon propre nom, découverte beaucoup trop tard. On a retrouvé mes vêtements soigneusement pliés sur la chaise.",

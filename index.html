@@ -45,13 +45,69 @@
 <main class="wrap">
 
   <header class="masthead">
-    <p class="kicker">Blood on the Clocktower</p>
     <h1>Raconte&nbsp;ta&nbsp;mort</h1>
-    <p class="tagline">Le village vient de te pendre et tu n'as aucune idée de quoi dire&nbsp;?
-      Choisis ton rôle, prends la réplique, lis-la à voix haute.</p>
+    <p class="tagline">Le village vient de te pendre&nbsp;? Choisis ton rôle, tire, lis à voix haute.</p>
   </header>
 
-  <!-- LA RÉPLIQUE D'ABORD : c'est ce qu'on vient chercher. -->
+  <section class="panel" aria-label="Ta partie">
+    <div class="form-grid">
+      <label class="mini-field span2">
+        <span class="fort">Ton rôle</span>
+        <select id="role"><option value="">— je ne dis pas mon rôle —</option></select>
+      </label>
+
+      <div class="mini-field span2">
+        <span class="fort">Comment es-tu mort·e&nbsp;?</span>
+        <div class="chips" role="radiogroup" aria-label="Type de mort" id="fin-chips">
+          <button type="button" class="chip is-on" role="radio" aria-checked="true" data-value="jour">⚖️ Exécuté·e</button>
+          <button type="button" class="chip" role="radio" aria-checked="false" data-value="nuit">🌙 Tué·e la nuit</button>
+        </div>
+      </div>
+
+      <label class="mini-field">
+        <span>Ton prénom</span>
+        <input type="text" id="nom" placeholder="Sébastien" maxlength="40" autocomplete="off">
+      </label>
+      <label class="mini-field etroit">
+        <span>Genre</span>
+        <select id="genre">
+          <option value="auto">Auto</option>
+          <option value="m">Masc.</option>
+          <option value="f">Fém.</option>
+        </select>
+      </label>
+      <label class="mini-field" id="acc-field">
+        <span>Qui t'a fait pendre&nbsp;?</span>
+        <input type="text" id="acc" placeholder="Marguerite" maxlength="40" autocomplete="off">
+      </label>
+      <label class="mini-field etroit" id="acc-genre-field">
+        <span>Genre</span>
+        <select id="acc-genre">
+          <option value="auto">Auto</option>
+          <option value="m">Masc.</option>
+          <option value="f">Fém.</option>
+        </select>
+      </label>
+
+      <label class="mini-field plein">
+        <span>Un détail à toi à caser dedans</span>
+        <input type="text" id="idee" maxlength="160"
+          placeholder="j'avais juré trois fois que j'étais le Cuisinier" autocomplete="off">
+      </label>
+
+      <div class="mini-field plein">
+        <label class="range-label" for="chaos">Niveau de délire&nbsp;: <span id="chaos-label">Loufoque</span></label>
+        <input type="range" id="chaos" min="1" max="4" step="1" value="3">
+        <div class="range-legend"><span>Sobre</span><span>Drôle</span><span>Loufoque</span><span>Surréaliste</span></div>
+      </div>
+    </div>
+
+    <button type="button" id="generate" class="summon">
+      <span class="summon-ink">Tirer ma mort</span>
+      <span class="summon-hint">espace</span>
+    </button>
+  </section>
+
   <section class="stage" aria-label="Ta mort">
     <article class="parchment" id="card" aria-live="polite">
       <div class="seal" aria-hidden="true"><span>†</span></div>
@@ -65,75 +121,12 @@
       </p>
     </article>
 
-    <button type="button" id="generate" class="summon">
-      <span class="summon-ink">Tirer ma mort</span>
-      <span class="summon-hint">espace</span>
-    </button>
-
     <div class="actions">
       <button type="button" id="copy" class="ghost">📋 Copier</button>
       <button type="button" id="permalink" class="ghost">🔗 Permalien</button>
       <button type="button" id="again" class="ghost">🕯️ Une autre</button>
     </div>
     <p class="toast" id="toast" role="status" aria-live="polite"></p>
-  </section>
-
-  <section class="panel" aria-label="Ta partie">
-    <div class="form-grid">
-      <label class="mini-field wide">
-        <span class="fort">Ton rôle</span>
-        <select id="role"><option value="">— je ne dis pas mon rôle —</option></select>
-      </label>
-
-      <div class="mini-field wide">
-        <span class="fort">Comment es-tu mort·e&nbsp;?</span>
-        <div class="chips" role="radiogroup" aria-label="Type de mort" id="fin-chips">
-          <button type="button" class="chip is-on" role="radio" aria-checked="true" data-value="jour">⚖️ Exécuté·e par le village</button>
-          <button type="button" class="chip" role="radio" aria-checked="false" data-value="nuit">🌙 Tué·e pendant la nuit</button>
-        </div>
-      </div>
-
-      <div class="mini-field wide">
-        <label class="range-label" for="chaos">Niveau de délire&nbsp;: <span id="chaos-label">Loufoque</span></label>
-        <input type="range" id="chaos" min="1" max="4" step="1" value="3">
-        <div class="range-legend"><span>Sobre</span><span>Drôle</span><span>Loufoque</span><span>Surréaliste</span></div>
-      </div>
-
-      <details class="extras">
-        <summary>Options — prénom, accusateur, détail perso</summary>
-        <div class="form-grid inner">
-          <label class="mini-field">
-            <span>Ton prénom</span>
-            <input type="text" id="nom" placeholder="Sébastien" maxlength="40" autocomplete="off">
-          </label>
-          <label class="mini-field">
-            <span>Genre</span>
-            <select id="genre">
-              <option value="auto">Auto</option>
-              <option value="m">Masculin</option>
-              <option value="f">Féminin</option>
-            </select>
-          </label>
-          <label class="mini-field" id="acc-field">
-            <span>Qui t'a fait pendre&nbsp;?</span>
-            <input type="text" id="acc" placeholder="Marguerite" maxlength="40" autocomplete="off">
-          </label>
-          <label class="mini-field" id="acc-genre-field">
-            <span>Genre</span>
-            <select id="acc-genre">
-              <option value="auto">Auto</option>
-              <option value="m">Masculin</option>
-              <option value="f">Féminin</option>
-            </select>
-          </label>
-          <label class="mini-field wide">
-            <span>Un détail à toi à caser dedans</span>
-            <textarea id="idee" rows="2" maxlength="160"
-              placeholder="j'avais juré trois fois que j'étais le Cuisinier"></textarea>
-          </label>
-        </div>
-      </details>
-    </div>
     <p class="graine">Graine&nbsp;: <code id="seed">—</code></p>
   </section>
 

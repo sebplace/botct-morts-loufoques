@@ -51,6 +51,7 @@ voix haute.
 | 🎚️ **Niveau de délire** | De *sobre* (la branche casse, on recommence, elle tient, toi non) à *surréaliste* (on te raye du registre communal à la règle et tu cesses d'exister en pleine phrase). |
 | ⚖️🌙 **Exécution ou mort nocturne** | Les morts sur mesure sont écrites pour l'exécution — c'est le moment où on te demande de raconter. 56 morts génériques couvrent les deux cas. |
 | 💬 **Ton détail perso** | Tu peux glisser une réplique à toi, citée telle quelle à la fin. |
+| 🖥️ **Tout sur un écran** | Les réglages sont au-dessus, la réplique en dessous. Tu changes de rôle et tu retires sans jamais scroller. |
 | ✍️ **Accord en genre** | Automatique, pour toi comme pour la personne qui t'a fait pendre. |
 | 🔗 **Permalien** | Pour renvoyer ta mort dans la conversation de groupe après la partie. |
 | 🗃️ **Tes dix dernières** | Gardées dans ton navigateur. |
@@ -108,6 +109,9 @@ Marqueurs disponibles :
 | `[e]` | qui t'a fait pendre | *(rien)* | `e` |
 | `[il]` / `[Il]` | qui t'a fait pendre | il / Il | elle / Elle |
 | `{acc}` | — | *(son prénom)* | |
+
+Sers-toi de `{acc}` : c'est ce qui rend le champ « qui t'a fait pendre » utile. Il apparaît
+aujourd'hui dans 14 des 32 répliques d'exécution génériques.
 
 ⚠️ N'utilise `{e}` que sur un mot dont le féminin s'obtient bien en ajoutant un « e ».
 Pas de `furieux{e}`, pas de `professionnel{e}` — reformule.
