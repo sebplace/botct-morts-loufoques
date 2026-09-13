@@ -16,29 +16,33 @@ voix haute.
 
 ## Ce que ça donne
 
+**Voyante**
+
+> « J'ai vu la corde. J'ai vu le chêne. J'ai vu l'heure. J'ai pas vu que c'était pour moi. »
+
 **Fossoyeur**
 
-> « J'avais creusé ma tombe trois jours à l'avance, par habitude professionnelle. Le village me jette dans le puits. Ma tombe est toujours là, vide, impeccable. Personne ne l'a jamais utilisée. »
+> « Je creuse les tombes du village. La mienne était prête depuis mardi, bien droite, bien profonde. Ils m'ont jeté dans le puits. Trente ans de métier, même pas capables de m'enterrer correctement. »
 
 **Ivrogne**
 
-> « Je monte sur l'échafaud en expliquant très calmement que je suis la Voyante. Le bourreau me dit que non. Je lui dis que si. Il avait raison. J'apprends toute ma vie en trois secondes, puis plus rien. »
-
-**Soldat**
-
-> « Aucun Démon ne peut me tuer. Aucun. Je le répète pendant tout le trajet jusqu'au chêne. Le village n'est pas un Démon. Le village est bien pire : il est nombreux. »
-
-**Pourfendeuse**
-
-> « Je tends le doigt et je hurle : "JE SUIS LA POURFENDEUSE !". Il ne se passe rien. Je recommence, plus fort, avec le bras bien tendu. Il ne se passe toujours rien. On me pend pendant que j'essaie une troisième fois. »
+> « Je monte à l'échafaud en répétant que je suis la Voyante. Le bourreau me dit que non. Je lui dis que si. On discute. Il avait raison. Je l'apprends la corde au cou. »
 
 **Saint**
 
-> « Le village me pend. Le village s'aperçoit immédiatement de son erreur. Le village s'excuse. J'accepte les excuses, parce que je suis le Saint. Mais entre nous : quels imbéciles. »
+> « Ils me pendent. Ils comprennent tout de suite. Ils s'excusent. Je pardonne, c'est mon métier. Mais franchement, quelle bande d'abrutis. »
+
+**Jongleur**
+
+> « Je jongle pour ma défense. Cinq balles. Ils applaudissent. Ils me pendent. Dans cet ordre. »
+
+**Fou du roi**
+
+> « Ils me pendent. Je me relève, j'époussette ma veste, je demande si ça compte. Ils disent non. Ils recommencent. Là, ça compte. »
 
 **Sans rôle précisé**
 
-> « On me pend, mais la corde est trop longue et je touche le sol. On recommence sur un tabouret. Le tabouret casse. On finit par me pendre assis, ce qui n'a aucune dignité. »
+> « Ils me pendent au vieux chêne. La branche casse. Ils recommencent avec une plus solide. Elle tient. Moi non. »
 
 ---
 
@@ -96,10 +100,25 @@ fossoyeur: "J'avais creusé ma tombe trois jours à l'avance, par habitude profe
 
 Trois règles :
 
-1. **Première personne, présent.** C'est toi qui parles, debout, devant la table.
-2. **Deux à quatre phrases, une chute.** Si ça ne tient pas en dix secondes à voix haute, c'est trop long.
+1. **Première personne, présent, registre parlé.** C'est toi qui parles, debout, devant la table.
+   On avale les « ne » (*j'ai pas vu*, *ils osent pas*), on dit *du coup*, *voilà*, *bref*.
+2. **Deux à quatre phrases, une chute sèche.** Si ça ne tient pas en dix secondes à voix haute,
+   c'est trop long. La dernière phrase doit être la plus courte.
 3. **La blague vient du rôle ou du village**, pas de la mécanique. On peut parler du Démon, du
    chêne, du bourreau, du beffroi. On ne parle pas de votes, de camps ni de capacités.
+
+Et une interdiction, parce que c'est le piège principal : **pas de commentaire rapporté en fin de
+phrase**. Le « …, ce qui est assez vexant pour un professionnel » est un calque d'anglais
+(*which is, frankly, …*) : ça explique la blague au lieu de la faire. On coupe et on met un point.
+
+| ❌ | ✅ |
+|---|---|
+| On me pend assis, ce qui n'a aucune dignité. | Ils ont fini par me pendre assis. Aucune dignité. |
+| Le village est bien pire : il est nombreux. | Le village, c'est pire : ils sont quinze. |
+| Je m'évanouis, ce qui est plus confortable. | Ils me pendent évanoui. Franchement, c'est la bonne méthode. |
+
+Un lint vérifie ces tics : `, ce qui est`, `tout compte fait`, `je note les noms`,
+`c'est ça, un …`. Il passe sur les 149 textes.
 
 Marqueurs disponibles :
 
