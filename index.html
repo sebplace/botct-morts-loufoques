@@ -4,10 +4,10 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Le Registre Macabre — Générateur de morts loufoques (Blood on the Clocktower)</title>
-<meta name="description" content="Générateur aléatoire de morts loufoques et fidèles au lore pour Blood on the Clocktower. Annoncez les morts de Ravenswood Bluff avec panache : cause, lieu, dernières paroles et verdict du Conteur.">
+<meta name="description" content="Générateur aléatoire de morts loufoques et fidèles au lore pour Blood on the Clocktower. Deux sections : le certificat de décès des morts nocturnes, et le procès-verbal des exécutions du village — cause, vote, dernières paroles et verdict du Conteur.">
 <meta name="theme-color" content="#0c0a10">
 <meta property="og:title" content="Le Registre Macabre de Ravenswood Bluff">
-<meta property="og:description" content="Générateur de morts loufoques pour Blood on the Clocktower.">
+<meta property="og:description" content="Morts nocturnes et exécutions loufoques pour Blood on the Clocktower.">
 <meta property="og:type" content="website">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%95%AF%EF%B8%8F%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -52,10 +52,23 @@
   <header class="masthead">
     <p class="kicker">Ravenswood Bluff · Bureau des affaires nocturnes</p>
     <h1>Le Registre&nbsp;Macabre</h1>
-    <p class="tagline">Générateur de morts loufoques &amp; fidèles au lore pour <em>Blood on the Clocktower</em></p>
+    <p class="tagline">Morts nocturnes &amp; exécutions loufoques pour <em>Blood on the Clocktower</em></p>
   </header>
 
   <section class="panel" aria-label="Réglages du rapport">
+    <div class="modes" role="tablist" aria-label="Type de rapport">
+      <button type="button" class="mode is-on" role="tab" aria-selected="true" data-mode="mort">
+        <span class="mode-icon" aria-hidden="true">🌙</span>
+        <span class="mode-title">Mort de la nuit</span>
+        <span class="mode-sub">Certificat de décès</span>
+      </button>
+      <button type="button" class="mode" role="tab" aria-selected="false" data-mode="execution">
+        <span class="mode-icon" aria-hidden="true">⚖️</span>
+        <span class="mode-title">Exécution loufoque</span>
+        <span class="mode-sub">Procès-verbal du village</span>
+      </button>
+    </div>
+
     <div class="field-group">
       <span class="field-label" id="lbl-script">Script</span>
       <div class="chips" role="radiogroup" aria-labelledby="lbl-script" id="script-chips">
@@ -67,7 +80,7 @@
       </div>
     </div>
 
-    <div class="field-group">
+    <div class="field-group" id="phase-group">
       <span class="field-label" id="lbl-phase">Moment</span>
       <div class="chips" role="radiogroup" aria-labelledby="lbl-phase" id="phase-chips">
         <button type="button" class="chip is-on" role="radio" aria-checked="true" data-value="auto">Au hasard</button>
@@ -87,7 +100,7 @@
     </div>
 
     <div class="field-group inline">
-      <label class="field-label" for="victim-name">Victime (facultatif)</label>
+      <label class="field-label" for="victim-name" id="lbl-victim">Victime (facultatif)</label>
       <div class="inline-row">
         <input type="text" id="victim-name" placeholder="ex. Sébastien" maxlength="40" autocomplete="off">
         <select id="victim-gender" aria-label="Accord en genre">
@@ -99,7 +112,7 @@
     </div>
 
     <button type="button" id="generate" class="summon">
-      <span class="summon-ink">Annoncer une mort</span>
+      <span class="summon-ink" id="summon-label">Annoncer une mort</span>
       <span class="summon-hint">espace</span>
     </button>
   </section>
@@ -108,11 +121,11 @@
     <article class="parchment" id="card" aria-live="polite">
       <div class="seal" aria-hidden="true"><span>†</span></div>
 
-      <p class="affair-kicker">Dossier n°<span id="case-no">—</span> · Registre macabre</p>
+      <p class="affair-kicker">Dossier n°<span id="case-no">—</span> · <span id="registry-label">Registre macabre</span></p>
       <h2 class="affair" id="affair">Le village attend un rapport</h2>
       <p class="meta" id="meta"><span class="badge" id="badge-script">—</span><span class="badge" id="badge-phase">—</span><span class="badge" id="badge-chaos">—</span></p>
 
-      <dl class="report">
+      <dl class="report" id="report-mort">
         <div class="row" data-part="victime">
           <dt>Victime</dt>
           <dd id="out-victime">Appuyez sur « Annoncer une mort » pour ouvrir un dossier.</dd>
@@ -145,6 +158,54 @@
         </div>
       </dl>
 
+      <dl class="report" id="report-execution" hidden>
+        <div class="row" data-part="accuse">
+          <dt>Accusé·e</dt>
+          <dd id="out-accuse">—</dd>
+          <button class="reroll" type="button" data-reroll="accuse" title="Relancer l'accusé" aria-label="Relancer l'accusé">⟳</button>
+        </div>
+        <div class="row" data-part="nommant">
+          <dt>Nommé·e par</dt>
+          <dd id="out-nommant">—</dd>
+          <button class="reroll" type="button" data-reroll="nommant" title="Relancer le nommant" aria-label="Relancer le nommant">⟳</button>
+        </div>
+        <div class="row" data-part="accusation">
+          <dt>Chef d'accusation</dt>
+          <dd id="out-accusation">—</dd>
+          <button class="reroll" type="button" data-reroll="accusation" title="Relancer le chef d'accusation" aria-label="Relancer le chef d'accusation">⟳</button>
+        </div>
+        <div class="row" data-part="preuve">
+          <dt>Pièce à conviction</dt>
+          <dd id="out-preuve">—</dd>
+          <button class="reroll" type="button" data-reroll="preuve" title="Relancer la preuve" aria-label="Relancer la preuve">⟳</button>
+        </div>
+        <div class="row" data-part="defense">
+          <dt>Défense</dt>
+          <dd id="out-defense">—</dd>
+          <button class="reroll" type="button" data-reroll="defense" title="Relancer la défense" aria-label="Relancer la défense">⟳</button>
+        </div>
+        <div class="row" data-part="vote">
+          <dt>Le vote</dt>
+          <dd id="out-vote">—</dd>
+          <button class="reroll" type="button" data-reroll="vote" title="Relancer le vote" aria-label="Relancer le vote">⟳</button>
+        </div>
+        <div class="row" data-part="supplice">
+          <dt>Exécution</dt>
+          <dd id="out-supplice">—</dd>
+          <button class="reroll" type="button" data-reroll="supplice" title="Relancer l'exécution" aria-label="Relancer l'exécution">⟳</button>
+        </div>
+        <div class="row row-reveal" data-part="revelation">
+          <dt>Révélation</dt>
+          <dd id="out-revelation">—</dd>
+          <button class="reroll" type="button" data-reroll="revelation" title="Relancer la révélation" aria-label="Relancer la révélation">⟳</button>
+        </div>
+        <div class="row" data-part="verdictx">
+          <dt>Verdict du Conteur</dt>
+          <dd id="out-verdictx">—</dd>
+          <button class="reroll" type="button" data-reroll="verdictx" title="Relancer le verdict" aria-label="Relancer le verdict">⟳</button>
+        </div>
+      </dl>
+
       <p class="graine">Graine&nbsp;: <code id="seed">—</code> · <span class="hint">⟳ relance une seule ligne du rapport</span></p>
     </article>
 
@@ -164,8 +225,13 @@
   <footer class="colophon">
     <p><strong>Le Registre Macabre</strong> — projet de fan, non officiel, sans lien avec The Pandemonium Institute.
       <em>Blood on the Clocktower</em> est une marque de ses ayants droit ; aucun texte de règles n'est reproduit ici.</p>
+    <p>Les noms français des personnages, des types de rôle et du <em>Vote de Mort</em> suivent la traduction publiée par
+      The Pandemonium Institute pour l'application officielle
+      (<a href="https://github.com/ThePandemoniumInstitute/botc-translations" target="_blank" rel="noopener">botc-translations</a>,
+      fichier <code>game/fr.json</code>) — traduction réalisée par des bénévoles, que TPI ne garantit pas fidèle aux règles anglaises.
+      Les noms des scripts et <em>Ravenswood Bluff</em> ne sont pas traduits, conformément à cette même version française.</p>
     <p>Aucune donnée n'est envoyée nulle part : tout est généré dans votre navigateur.
-      Raccourcis&nbsp;: <kbd>Espace</kbd> nouvelle mort · <kbd>C</kbd> copier · <kbd>P</kbd> permalien.</p>
+      Raccourcis&nbsp;: <kbd>Espace</kbd> nouveau rapport · <kbd>C</kbd> copier · <kbd>P</kbd> permalien · <kbd>M</kbd> changer de section.</p>
   </footer>
 
 </main>

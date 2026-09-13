@@ -124,7 +124,18 @@
 
   /** Construit un dossier complet, entièrement déterminé par (graine, options). */
   function forger(seed, opts) {
-    const rng = mulberry32(hashSeed(seed + "|" + opts.script + "|" + opts.phase + "|" + opts.chaos + "|" + (opts.nom || "") + "|" + opts.genre));
+    return opts.mode === "execution" ? forgerExecution(seed, opts) : forgerMort(seed, opts);
+  }
+
+  function rngPour(seed, opts) {
+    return mulberry32(hashSeed(
+      seed + "|" + opts.mode + "|" + opts.script + "|" + opts.phase + "|" +
+      opts.chaos + "|" + (opts.nom || "") + "|" + opts.genre
+    ));
+  }
+
+  function forgerMort(seed, opts) {
+    const rng = rngPour(seed, opts);
     const cause = tirerCause(rng, opts);
     const victime = tirerVictime(rng, opts);
     const maniere = tirerManiere(rng, opts, cause);
@@ -139,9 +150,69 @@
     const dossier = String(range(rng, 1, 9999)).padStart(4, "0");
 
     return {
-      seed: seed, opts: opts, cause: cause, victime: victime, maniere: maniere,
+      mode: "mort", seed: seed, opts: opts, cause: cause, victime: victime, maniere: maniere,
       lieu: lieu, moment: moment, intro: intro, indice: indice, mots: mots,
       verdict: verdict, phase: phase, cycle: cycle, dossier: dossier, surMesure: false
+    };
+  }
+
+  /* ---------------------------------------------------- exécutions ----- */
+
+  const CHAOS_MIX_EXEC = {
+    1: [[1, 80], [2, 20]],
+    2: [[1, 25], [2, 55], [3, 20]],
+    3: [[2, 25], [3, 55], [4, 20]],
+    4: [[3, 35], [4, 65]]
+  };
+
+  function tirerSupplice(rng, opts) {
+    const tier = weighted(rng, CHAOS_MIX_EXEC[opts.chaos] || CHAOS_MIX_EXEC[3]);
+    return pick(rng, L.MODES_EXECUTION[tier]);
+  }
+
+  /** Décompte de voix plausible : seuil à 50 % des vivants, Votes de Mort en appoint. */
+  function tirerVote(rng) {
+    const vivants = range(rng, 5, 15);
+    const seuil = Math.ceil(vivants / 2);
+    const morts = range(rng, 0, 3);
+    const voix = range(rng, seuil, Math.min(vivants + morts, seuil + 5));
+    const votesDeMort = Math.min(morts, voix);
+    return { vivants: vivants, seuil: seuil, voix: voix, votesDeMort: votesDeMort, note: pick(rng, L.NOTES_DE_VOTE) };
+  }
+
+  function tirerRevelation(rng, opts) {
+    const dispo = L.REVELATIONS.filter(function (r) {
+      return opts.script === "all" || r.script === opts.script || r.script === "all";
+    });
+    const camps = Object.keys(L.POIDS_REVELATION)
+      .filter(function (c) { return dispo.some(function (r) { return r.camp === c; }); })
+      .map(function (c) { return [c, L.POIDS_REVELATION[c]]; });
+    const camp = weighted(rng, camps);
+    return pick(rng, dispo.filter(function (r) { return r.camp === camp; }));
+  }
+
+  function forgerExecution(seed, opts) {
+    const rng = rngPour(seed, opts);
+    const accuse = tirerVictime(rng, opts);
+    const nommant = tirerVictime(rng, { script: opts.script, phase: opts.phase, chaos: opts.chaos, nom: "", genre: "auto", mode: opts.mode });
+    if (nommant.siege === accuse.siege) nommant.siege = (accuse.siege % 15) + 1;
+    const nommantNote = pick(rng, L.MOTS_DU_NOMMANT);
+    const accusation = pick(rng, L.ACCUSATIONS);
+    const preuve = pick(rng, L.PREUVES);
+    const defense = pick(rng, L.PLAIDOYERS);
+    const vote = tirerVote(rng);
+    const supplice = tirerSupplice(rng, opts);
+    const revelation = tirerRevelation(rng, opts);
+    const verdict = pick(rng, L.VERDICTS_EXECUTION);
+    const cycle = range(rng, 1, 5);
+    const dossier = String(range(rng, 1, 9999)).padStart(4, "0");
+
+    return {
+      mode: "execution", seed: seed, opts: opts, victime: accuse, nommant: nommant,
+      nommantNote: nommantNote,
+      accusation: accusation, preuve: preuve, defense: defense, vote: vote,
+      maniere: supplice, revelation: revelation, verdict: verdict,
+      phase: "jour", cycle: cycle, dossier: dossier, surMesure: false
     };
   }
 
@@ -175,6 +246,9 @@
   function titreAffaire(d) { return d.maniere[1]; }
 
   function nomScript(d) {
+    if (d.mode === "execution") {
+      return d.opts.script === "all" ? "Toutes éditions" : L.SCRIPTS[d.opts.script].nom;
+    }
     return d.cause.script === "all" ? "Toutes éditions" : L.SCRIPTS[d.cause.script].nom;
   }
 
@@ -182,7 +256,53 @@
     return (d.phase === "jour" ? "Jour " : "Nuit ") + d.cycle;
   }
 
+  /* ------------------------------------------- textes de l'exécution --- */
+
+  function texteAccuse(d) {
+    return "<strong>" + escapeHtml(d.victime.nom) + "</strong>, siège n°" + d.victime.siege +
+      ", " + (d.victime.genre === "f" ? "citoyenne" : "citoyen") + " de Ravenswood Bluff.";
+  }
+
+  function texteNommant(d) {
+    return escapeHtml(d.nommant.nom) + ", siège n°" + d.nommant.siege + ", " +
+      escapeHtml(accord(d.nommantNote, d.nommant.genre)) + ".";
+  }
+
+  function texteAccusation(d) {
+    return "Accusé" + (d.victime.genre === "f" ? "e" : "") + " " +
+      escapeHtml(accord(d.accusation, d.victime.genre)) + ".";
+  }
+
+  function texteVote(d) {
+    const v = d.vote;
+    const dont = v.votesDeMort > 0
+      ? ", dont " + v.votesDeMort + " Vote" + (v.votesDeMort > 1 ? "s" : "") + " de Mort"
+      : ", sans un seul Vote de Mort"; 
+    return '<span class="tally">' + v.voix + " voix pour, " + v.seuil + " requise" +
+      (v.seuil > 1 ? "s" : "") + " (" + v.vivants + " joueurs en vie)</span>" +
+      escapeHtml(dont) + ". " + escapeHtml(v.note);
+  }
+
+  function texteSupplice(d) {
+    return escapeHtml(accord("Exécuté{e} publiquement, " + minuscule(d.maniere[0]) + ".", d.victime.genre));
+  }
+
+  /** Retire le participe initial des modes déjà rédigés comme « exécuté{e} … ». */
+  function minuscule(s) {
+    return s.replace(/^exécuté\{e\}\s+/, "").replace(/^Exécuté\{e\}\s+/, "");
+  }
+
+  function texteRevelation(d) {
+    const r = d.revelation;
+    return '<span class="camp" data-camp="' + r.camp + '">' + L.LIBELLES_CAMP[r.camp] + "</span>" +
+      escapeHtml(accord(r.texte, d.victime.genre));
+  }
+
   function rapportTexte(d) {
+    return d.mode === "execution" ? rapportExecutionTexte(d) : rapportMortTexte(d);
+  }
+
+  function rapportMortTexte(d) {
     const g = d.victime.genre;
     return [
       "† " + titreAffaire(d).toUpperCase() + " †",
@@ -200,6 +320,33 @@
     ].join("\n");
   }
 
+  function rapportExecutionTexte(d) {
+    const g = d.victime.genre;
+    const v = d.vote;
+    const dont = v.votesDeMort > 0
+      ? ", dont " + v.votesDeMort + " Vote" + (v.votesDeMort > 1 ? "s" : "") + " de Mort"
+      : ", sans un seul Vote de Mort";
+    return [
+      "⚖ " + titreAffaire(d).toUpperCase() + " ⚖",
+      "Procès-verbal du village de Ravenswood Bluff — dossier n°" + d.dossier +
+        " — " + libellePhase(d) + " — " + nomScript(d),
+      "",
+      "ACCUSÉ" + (g === "f" ? "E" : "") + " : " + d.victime.nom + ", siège n°" + d.victime.siege + ".",
+      "NOMMÉ" + (g === "f" ? "E" : "") + " PAR : " + d.nommant.nom + ", siège n°" + d.nommant.siege +
+        ", " + accord(d.nommantNote, d.nommant.genre) + ".",
+      "CHEF D'ACCUSATION : " + accord("Accusé{e} " + d.accusation + ".", g),
+      "PIÈCE À CONVICTION : " + accord(d.preuve, g),
+      "DÉFENSE : " + accord(d.defense, g),
+      "LE VOTE : " + v.voix + " voix pour, " + v.seuil + " requise" + (v.seuil > 1 ? "s" : "") +
+        " (" + v.vivants + " joueurs en vie)" + dont + ". " + v.note,
+      "EXÉCUTION : " + accord("Exécuté{e} publiquement, " + minuscule(d.maniere[0]) + ".", g),
+      "RÉVÉLATION [" + L.LIBELLES_CAMP[d.revelation.camp].toUpperCase() + "] : " + accord(d.revelation.texte, g),
+      "VERDICT DU CONTEUR : " + d.verdict,
+      "",
+      "Graine : " + (d.surMesure ? "sur mesure" : d.seed) + " — " + lienPartage(d)
+    ].join("\n");
+  }
+
   /* ================================================================ */
   /*  Interface                                                       */
   /* ================================================================ */
@@ -207,9 +354,14 @@
   const $ = (sel) => document.querySelector(sel);
   const els = {
     card: $("#card"), affair: $("#affair"), caseNo: $("#case-no"), seed: $("#seed"),
+    registry: $("#registry-label"), summonLabel: $("#summon-label"), victimLabel: $("#lbl-victim"),
+    reportMort: $("#report-mort"), reportExec: $("#report-execution"), phaseGroup: $("#phase-group"),
     badgeScript: $("#badge-script"), badgePhase: $("#badge-phase"), badgeChaos: $("#badge-chaos"),
     victime: $("#out-victime"), constat: $("#out-constat"), cause: $("#out-cause"),
     indice: $("#out-indice"), mots: $("#out-mots"), verdict: $("#out-verdict"),
+    accuse: $("#out-accuse"), nommant: $("#out-nommant"), accusation: $("#out-accusation"),
+    preuve: $("#out-preuve"), defense: $("#out-defense"), vote: $("#out-vote"),
+    supplice: $("#out-supplice"), revelation: $("#out-revelation"), verdictx: $("#out-verdictx"),
     chaos: $("#chaos"), chaosLabel: $("#chaos-label"),
     nom: $("#victim-name"), genre: $("#victim-gender"),
     toast: $("#toast"), history: $("#history")
@@ -217,25 +369,57 @@
 
   let courant = null;
   let dossiers = [];
+  let mode = "mort";
 
   function optionsCourantes() {
     return {
+      mode: mode,
       script: document.querySelector("#script-chips .is-on").dataset.value,
-      phase: document.querySelector("#phase-chips .is-on").dataset.value,
+      phase: mode === "execution" ? "jour" : document.querySelector("#phase-chips .is-on").dataset.value,
       chaos: parseInt(els.chaos.value, 10),
       nom: els.nom.value.trim(),
       genre: els.genre.value
     };
   }
 
+  function appliquerMode(m) {
+    mode = m === "execution" ? "execution" : "mort";
+    document.querySelectorAll(".mode").forEach(function (b) {
+      const on = b.dataset.mode === mode;
+      b.classList.toggle("is-on", on);
+      b.setAttribute("aria-selected", on ? "true" : "false");
+    });
+    const exec = mode === "execution";
+    els.reportMort.hidden = exec;
+    els.reportExec.hidden = !exec;
+    els.phaseGroup.hidden = exec;
+    els.registry.textContent = exec ? "Procès-verbal du village" : "Registre macabre";
+    els.summonLabel.textContent = exec ? "Rendre la sentence" : "Annoncer une mort";
+    els.victimLabel.textContent = exec ? "Accusé·e (facultatif)" : "Victime (facultatif)";
+    els.nom.placeholder = exec ? "ex. Sébastien" : "ex. Sébastien";
+  }
+
   function rendre(d, partiel) {
     courant = d;
-    const parts = {
+    appliquerMode(d.mode);
+    const g = d.victime.genre;
+
+    const parts = d.mode === "execution" ? {
+      accuse: texteAccuse(d),
+      nommant: texteNommant(d),
+      accusation: texteAccusation(d),
+      preuve: escapeHtml(accord(d.preuve, g)),
+      defense: escapeHtml(accord(d.defense, g)),
+      vote: texteVote(d),
+      supplice: texteSupplice(d),
+      revelation: texteRevelation(d),
+      verdictx: escapeHtml(d.verdict)
+    } : {
       victime: texteVictime(d),
       constat: escapeHtml(texteConstat(d)),
       cause: texteCause(d),
-      indice: escapeHtml(accord(d.indice, d.victime.genre)),
-      mots: escapeHtml(accord(d.mots, d.victime.genre)),
+      indice: escapeHtml(accord(d.indice, g)),
+      mots: escapeHtml(accord(d.mots, g)),
       verdict: escapeHtml(d.verdict)
     };
 
@@ -267,7 +451,7 @@
     row.classList.add("flash");
   }
 
-  function nouvelleMort() {
+  function nouveauRapport() {
     const d = forger(newSeed(), optionsCourantes());
     rendre(d);
     archiver(d);
@@ -292,11 +476,26 @@
     },
     indice: function (d, rng) { d.indice = pick(rng, L.INDICES); },
     mots: function (d, rng) { d.mots = pick(rng, L.DERNIERS_MOTS); },
-    verdict: function (d, rng) { d.verdict = pick(rng, L.VERDICTS); }
+    verdict: function (d, rng) { d.verdict = pick(rng, L.VERDICTS); },
+
+    /* --- procès-verbal d'exécution --- */
+    accuse: function (d, rng) { d.victime = tirerVictime(rng, d.opts); },
+    nommant: function (d, rng) {
+      d.nommant = tirerVictime(rng, { script: d.opts.script, phase: d.opts.phase, chaos: d.opts.chaos, nom: "", genre: "auto", mode: d.opts.mode });
+      if (d.nommant.siege === d.victime.siege) d.nommant.siege = (d.victime.siege % 15) + 1;
+      d.nommantNote = pick(rng, L.MOTS_DU_NOMMANT);
+    },
+    accusation: function (d, rng) { d.accusation = pick(rng, L.ACCUSATIONS); },
+    preuve: function (d, rng) { d.preuve = pick(rng, L.PREUVES); },
+    defense: function (d, rng) { d.defense = pick(rng, L.PLAIDOYERS); },
+    vote: function (d, rng) { d.vote = tirerVote(rng); },
+    supplice: function (d, rng) { d.maniere = tirerSupplice(rng, d.opts); },
+    revelation: function (d, rng) { d.revelation = tirerRevelation(rng, d.opts); },
+    verdictx: function (d, rng) { d.verdict = pick(rng, L.VERDICTS_EXECUTION); }
   };
 
   function relancer(part) {
-    if (!courant) { nouvelleMort(); return; }
+    if (!courant || !relances[part]) { nouveauRapport(); return; }
     relances[part](courant, Math.random);
     courant.surMesure = true;
     rendre(courant, part);
@@ -307,6 +506,7 @@
 
   function archiver(d) {
     dossiers.unshift({
+      mode: d.mode,
       titre: titreAffaire(d),
       victime: d.victime.nom,
       phase: libellePhase(d),
@@ -324,8 +524,9 @@
       return;
     }
     els.history.innerHTML = dossiers.map(function (e, i) {
-      return '<li class="entry" data-i="' + i + '" tabindex="0" role="button">' +
-        '<span class="h-no">' + String(i + 1).padStart(2, "0") + "</span>" +
+      const icone = e.mode === "execution" ? "⚖️" : "🌙";
+      return '<li class="entry' + (e.mode === "execution" ? " is-exec" : "") + '" data-i="' + i + '" tabindex="0" role="button">' +
+        '<span class="h-no">' + icone + "</span>" +
         '<span class="h-title">' + escapeHtml(e.titre) + "</span>" +
         '<span class="h-sub">' + escapeHtml(e.victime) + " · " + escapeHtml(e.phase) + "</span>" +
         "</li>";
@@ -335,8 +536,11 @@
   function restaurer(i) {
     const e = dossiers[i];
     if (!e) return;
-    appliquerOptions(e.opts);
-    rendre(forger(e.seed, e.opts));
+    const opts = e.opts;
+    opts.mode = opts.mode || e.mode || "mort";
+    appliquerMode(opts.mode);
+    appliquerOptions(opts);
+    rendre(forger(e.seed, opts));
     els.card.scrollIntoView({ block: "center", behavior: "smooth" });
   }
 
@@ -360,8 +564,9 @@
     u.search = "";
     if (d.surMesure) return u.toString();
     u.searchParams.set("g", d.seed);
+    u.searchParams.set("m", d.mode);
     u.searchParams.set("s", d.opts.script);
-    u.searchParams.set("p", d.opts.phase);
+    if (d.mode !== "execution") u.searchParams.set("p", d.opts.phase);
     u.searchParams.set("c", d.opts.chaos);
     if (d.opts.nom) u.searchParams.set("n", d.opts.nom);
     if (d.opts.genre !== "auto") u.searchParams.set("x", d.opts.genre);
@@ -375,11 +580,13 @@
   function lireURL() {
     const p = new URLSearchParams(location.search);
     if (!p.get("g")) return null;
+    const m = p.get("m") === "execution" ? "execution" : "mort";
     return {
       seed: p.get("g"),
       opts: {
+        mode: m,
         script: p.get("s") || "all",
-        phase: p.get("p") || "auto",
+        phase: m === "execution" ? "jour" : (p.get("p") || "auto"),
         chaos: Math.min(4, Math.max(1, parseInt(p.get("c"), 10) || 3)),
         nom: p.get("n") || "",
         genre: p.get("x") || "auto"
@@ -389,7 +596,7 @@
 
   function appliquerOptions(o) {
     setChip("#script-chips", o.script);
-    setChip("#phase-chips", o.phase);
+    if (o.mode !== "execution") setChip("#phase-chips", o.phase);
     els.chaos.value = o.chaos;
     els.chaosLabel.textContent = L.CHAOS_LABELS[o.chaos];
     els.nom.value = o.nom || "";
@@ -438,6 +645,14 @@
   /* ------------------------------------------------------------ câblage */
 
   function init() {
+    document.querySelectorAll(".mode").forEach(function (b) {
+      b.addEventListener("click", function () {
+        if (mode === b.dataset.mode) return;
+        appliquerMode(b.dataset.mode);
+        nouveauRapport();
+      });
+    });
+
     document.querySelectorAll("#script-chips .chip, #phase-chips .chip").forEach(function (chip) {
       chip.addEventListener("click", function () {
         setChip("#" + chip.parentElement.id, chip.dataset.value);
@@ -448,8 +663,8 @@
       els.chaosLabel.textContent = L.CHAOS_LABELS[parseInt(els.chaos.value, 10)];
     });
 
-    $("#generate").addEventListener("click", nouvelleMort);
-    $("#again").addEventListener("click", nouvelleMort);
+    $("#generate").addEventListener("click", nouveauRapport);
+    $("#again").addEventListener("click", nouveauRapport);
 
     document.querySelectorAll(".reroll").forEach(function (b) {
       b.addEventListener("click", function () { relancer(b.dataset.reroll); });
@@ -486,19 +701,24 @@
       const tag = (e.target.tagName || "").toLowerCase();
       if (tag === "input" || tag === "select" || tag === "textarea") return;
       if (e.metaKey || e.ctrlKey || e.altKey) return;
-      if (e.code === "Space" || e.key === "Enter") { e.preventDefault(); nouvelleMort(); }
+      if (e.code === "Space" || e.key === "Enter") { e.preventDefault(); nouveauRapport(); }
       else if (e.key === "c" || e.key === "C") { $("#copy").click(); }
       else if (e.key === "p" || e.key === "P") { $("#permalink").click(); }
+      else if (e.key === "m" || e.key === "M") {
+        appliquerMode(mode === "execution" ? "mort" : "execution");
+        nouveauRapport();
+      }
     });
 
     charger();
 
     const depuisURL = lireURL();
     if (depuisURL) {
+      appliquerMode(depuisURL.opts.mode);
       appliquerOptions(depuisURL.opts);
       rendre(forger(depuisURL.seed, depuisURL.opts));
     } else {
-      nouvelleMort();
+      nouveauRapport();
     }
   }
 

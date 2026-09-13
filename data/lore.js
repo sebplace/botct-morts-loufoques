@@ -169,7 +169,7 @@
       ["percuté{e} de plein fouet par une porte de grange lâchée par le vent, deux fois", "L'Affaire de la Porte Récidiviste"],
       ["étouffé{e} sous les pétales d'un bouquet anonyme et curieusement volumineux", "L'Affaire du Bouquet Anonyme"],
       ["emporté{e} par un courant d'air qu'on entend encore certaines nuits", "L'Affaire du Courant d'Air Persistant"],
-      ["mort{e} en expliquant pour la septième fois qu'{il} était le Lavandier", "L'Affaire de la Septième Explication"],
+      ["mort{e} en expliquant pour la septième fois qu'{il} était la Lavandière", "L'Affaire de la Septième Explication"],
       ["victime d'un accident de brouette d'une improbabilité mathématique", "L'Affaire de la Brouette Improbable"],
       ["piétiné{e} par un unique mouton, mais avec beaucoup de conviction", "L'Affaire du Mouton Convaincu"],
       ["tombé{e} du lit, d'une hauteur pourtant très raisonnable", "L'Affaire de la Chute Raisonnable"]
@@ -206,11 +206,11 @@
   const CAUSES = [
     /* ---------- Trouble Brewing ---------- */
     {
-      id: "imp", script: "tb", camp: "demon", quand: "nuit", nom: "l'Imp",
+      id: "imp", script: "tb", camp: "demon", quand: "nuit", nom: "le Diablotin",
       intro: [
-        "L'Imp a choisi. C'est tout ce qu'il y a à comprendre.",
-        "L'Imp a frappé comme on mouche une chandelle : d'un geste, sans commentaire.",
-        "L'Imp a agi entre deux battements de l'horloge, à l'heure où le village dormait déjà très mal."
+        "Le Diablotin a choisi. C'est tout ce qu'il y a à comprendre.",
+        "Le Diablotin a frappé comme on mouche une chandelle : d'un geste, sans commentaire.",
+        "Le Diablotin a agi entre deux battements de l'horloge, à l'heure où le village dormait déjà très mal."
       ],
       manieres: [
         ["frappé{e} une seule fois, très proprement, par quelque chose qui savait où viser", "L'Affaire du Geste Unique"],
@@ -219,10 +219,10 @@
       ]
     },
     {
-      id: "imp-etoile", script: "tb", camp: "demon", quand: "nuit", nom: "l'Imp (passage d'étoile)",
+      id: "imp-etoile", script: "tb", camp: "demon", quand: "nuit", nom: "le Diablotin (passage de flambeau)",
       intro: [
-        "L'Imp s'est désigné lui-même : la lignée devait continuer ailleurs.",
-        "L'Imp a transmis sa charge en se supprimant, ce qui reste la plus dévouée des démissions."
+        "Le Diablotin s'est désigné lui-même : la lignée devait continuer ailleurs.",
+        "Le Diablotin a transmis sa charge en se supprimant, ce qui reste la plus dévouée des démissions."
       ],
       manieres: [
         ["poignardé{e} de sa propre main, avec une détermination toute administrative", "L'Affaire de la Démission Définitive"],
@@ -230,33 +230,9 @@
       ]
     },
     {
-      id: "execution", script: "all", camp: "village", quand: "jour", nom: "le village lui-même",
+      id: "slayer", script: "tb", camp: "village", quand: "jour", nom: "la Pourfendeuse",
       intro: [
-        "Le village a voté. Le village a eu tort. Le village recommencera demain.",
-        "Une majorité confortable, un raisonnement bancal, une corde parfaitement fonctionnelle.",
-        "Exécution régulière, unanimement regrettée dès la nuit suivante."
-      ],
-      lieux: [
-        "sur la place du village, au pied du vieux chêne",
-        "devant le gibet communal, fraîchement repeint",
-        "au centre du cercle, sous quinze paires d'yeux honteux"
-      ],
-      moments: [
-        "à la fin d'un vote gagné d'une seule voix",
-        "quinze secondes après la dernière main levée",
-        "juste après un « bon, il faut bien faire quelque chose »"
-      ],
-      manieres: [
-        ["pendu{e} à un chêne qui a vu passer quatre-vingts innocents et deux coupables", "L'Affaire du Chêne Statisticien"],
-        ["exécuté{e} sur la foi d'une intuition et d'un regard légèrement fuyant", "L'Affaire du Regard Fuyant"],
-        ["exécuté{e} après avoir crié « je suis le Chef ! » d'un ton un peu trop enthousiaste", "L'Affaire de l'Enthousiasme Suspect"],
-        ["exécuté{e} pour avoir gardé le silence au pire moment possible", "L'Affaire du Silence Mal Placé"]
-      ]
-    },
-    {
-      id: "slayer", script: "tb", camp: "village", quand: "jour", nom: "le Tueur (Slayer)",
-      intro: [
-        "Le Tueur a pointé du doigt. Cette fois, le doigt avait raison.",
+        "La Pourfendeuse a pointé du doigt. Cette fois, le doigt avait raison.",
         "Un doigt tendu, un cri théâtral, un démon qui s'écroule : le village n'en revient toujours pas."
       ],
       manieres: [
@@ -265,10 +241,10 @@
       ]
     },
     {
-      id: "vierge", script: "tb", camp: "village", quand: "jour", nom: "la Vierge (Virgin)",
+      id: "vierge", script: "tb", camp: "village", quand: "jour", nom: "l'Immaculée",
       intro: [
-        "{Il} a nominé la Vierge. C'était, rétrospectivement, une mauvaise idée.",
-        "La Vierge a été nominée ; la procédure, elle, s'est montrée impitoyable."
+        "{Il} a nominé l'Immaculée. C'était, rétrospectivement, une mauvaise idée.",
+        "L'Immaculée a été nominée ; la procédure, elle, s'est montrée impitoyable."
       ],
       manieres: [
         ["exécuté{e} instantanément pour avoir levé la main une demi-seconde trop tôt", "L'Affaire de la Demi-Seconde"],
@@ -360,9 +336,9 @@
       ]
     },
     {
-      id: "parrain", script: "bmr", camp: "sbire", quand: "nuit", nom: "le Parrain (Godfather)",
+      id: "parrain", script: "bmr", camp: "sbire", quand: "nuit", nom: "le Parrain",
       intro: [
-        "Un Étranger est mort le jour même. Le Parrain a estimé que cela méritait une réponse.",
+        "Un Marginal est mort le jour même. Le Parrain a estimé que cela méritait une réponse.",
         "Le Parrain règle ses comptes la nuit qui suit, avec une régularité de comptable."
       ],
       manieres: [
@@ -371,7 +347,7 @@
       ]
     },
     {
-      id: "commere", script: "bmr", camp: "village", quand: "nuit", nom: "la Commère (Gossip)",
+      id: "commere", script: "bmr", camp: "village", quand: "nuit", nom: "la Commère",
       intro: [
         "La Commère a dit quelque chose de vrai en public. Quelqu'un en est mort.",
         "La rumeur était exacte. C'est bien là tout le problème."
@@ -383,7 +359,7 @@
       ]
     },
     {
-      id: "bricoleur", script: "bmr", camp: "etranger", quand: "toujours", nom: "le Bricoleur (Tinker)",
+      id: "bricoleur", script: "bmr", camp: "marginal", quand: "toujours", nom: "le Bricoleur",
       intro: [
         "Le Bricoleur peut mourir à tout moment. Le moment, c'était maintenant.",
         "Rien ne laissait présager cette mort, sinon la fiche de personnage du Bricoleur."
@@ -395,7 +371,7 @@
       ]
     },
     {
-      id: "parieur", script: "bmr", camp: "village", quand: "nuit", nom: "le Parieur (Gambler)",
+      id: "parieur", script: "bmr", camp: "village", quand: "nuit", nom: "le Parieur",
       intro: [
         "Le Parieur s'est trompé. Le Parieur paie toujours comptant.",
         "Une mauvaise intuition, un pari perdu, une addition immédiate."
@@ -406,9 +382,9 @@
       ]
     },
     {
-      id: "enfant-lune", script: "bmr", camp: "etranger", quand: "nuit", nom: "l'Enfant de la Lune (Moonchild)",
+      id: "selenite", script: "bmr", camp: "marginal", quand: "nuit", nom: "le Sélénite",
       intro: [
-        "L'Enfant de la Lune est mort aujourd'hui et a désigné quelqu'un dans son dernier souffle. Ce quelqu'un, c'était {lui}.",
+        "Le Sélénite est mort aujourd'hui et a désigné quelqu'un dans son dernier souffle. Ce quelqu'un, c'était {lui}.",
         "Une dernière accusation, lancée au hasard depuis l'au-delà, a trouvé preneur."
       ],
       manieres: [
@@ -421,7 +397,7 @@
     {
       id: "fang-gu", script: "sv", camp: "demon", quand: "nuit", nom: "le Fang Gu",
       intro: [
-        "Le Fang Gu a attaqué un Étranger. L'Étranger est devenu le Fang Gu. Le Fang Gu est mort. Tout le monde suit ?",
+        "Le Fang Gu a attaqué un Marginal. Le Marginal est devenu le Fang Gu. Le Fang Gu est mort. Tout le monde suit ?",
         "Le Fang Gu a sauté d'un corps à l'autre, laissant l'ancien sur le carreau."
       ],
       manieres: [
@@ -465,7 +441,7 @@
       ]
     },
     {
-      id: "sorciere", script: "sv", camp: "sbire", quand: "jour", nom: "la Sorcière (Witch)",
+      id: "sorciere", script: "sv", camp: "sbire", quand: "jour", nom: "la Sorcière",
       intro: [
         "La Sorcière l'avait maudit{e}. {Il} a nominé quand même. La malédiction est très ponctuelle.",
         "Une malédiction, une nomination, une mort : la Sorcière apprécie les chaînes causales courtes."
@@ -476,7 +452,7 @@
       ]
     },
     {
-      id: "barbier", script: "sv", camp: "etranger", quand: "nuit", nom: "le Barbier (Barber)",
+      id: "barbier", script: "sv", camp: "marginal", quand: "nuit", nom: "le Barbier",
       intro: [
         "Le Barbier est mort, et le Démon en a profité pour échanger deux personnages. Le service continue après la fermeture.",
         "La mort du Barbier a déclenché une redistribution générale qui n'arrangeait personne."
@@ -487,7 +463,7 @@
       ]
     },
     {
-      id: "maladroit", script: "sv", camp: "etranger", quand: "toujours", nom: "le Maladroit (Klutz)",
+      id: "maladroit", script: "sv", camp: "marginal", quand: "toujours", nom: "le Maladroit",
       intro: [
         "Le Maladroit est mort et a désigné quelqu'un. Fidèle à lui-même, il a mal désigné.",
         "Une chute, une désignation, une catastrophe collective : le Maladroit dans toute sa splendeur."
@@ -498,10 +474,10 @@
       ]
     },
     {
-      id: "cheri", script: "sv", camp: "etranger", quand: "toujours", nom: "le Chéri (Sweetheart)",
+      id: "dulcinee", script: "sv", camp: "marginal", quand: "toujours", nom: "la Dulcinée",
       intro: [
-        "Le Chéri est mort. Quelqu'un, quelque part, est désormais ivre en permanence.",
-        "La mort du Chéri a laissé un voisin définitivement embrouillé."
+        "La Dulcinée est morte. Quelqu'un, quelque part, est désormais ivre en permanence.",
+        "La mort de la Dulcinée a laissé un voisin définitivement embrouillé."
       ],
       manieres: [
         ["mort{e} adoré{e} de tous, en emportant la lucidité d'un voisin parfaitement innocent", "L'Affaire de la Lucidité Emportée"],
@@ -533,7 +509,7 @@
       ]
     },
     {
-      id: "riot", script: "exp", camp: "demon", quand: "jour", nom: "l'Émeute (Riot)",
+      id: "riot", script: "exp", camp: "demon", quand: "jour", nom: "l'Émeute",
       intro: [
         "Tout le monde est l'Émeute. Nominer, c'est tuer. Le village l'a compris trop tard.",
         "L'Émeute a transformé le débat démocratique en activité mortelle et légèrement bruyante."
@@ -555,10 +531,10 @@
       ]
     },
     {
-      id: "lil-monsta", script: "exp", camp: "demon", quand: "nuit", nom: "Lil' Monsta",
+      id: "timonstre", script: "exp", camp: "demon", quand: "nuit", nom: "le Timonstre",
       intro: [
         "Un sbire tenait le bébé cette nuit. Le bébé avait faim.",
-        "Lil' Monsta ne se déplace pas : on le porte, on le berce, et on le laisse manger."
+        "Le Timonstre ne se déplace pas : on le porte, on le berce, et on le laisse manger."
       ],
       manieres: [
         ["dévoré{e} par quelque chose de très petit, de très mignon et de très affamé", "L'Affaire du Petit Appétit"],
@@ -577,9 +553,9 @@
       ]
     },
     {
-      id: "yaggababble", script: "exp", camp: "demon", quand: "nuit", nom: "le Yaggababble",
+      id: "yaggablabla", script: "exp", camp: "demon", quand: "nuit", nom: "le Yaggablabla",
       intro: [
-        "Le Yaggababble a une phrase secrète. Il l'a prononcée. Beaucoup trop de fois.",
+        "Le Yaggablabla a une phrase secrète. Il l'a prononcée. Beaucoup trop de fois.",
         "Chaque répétition de la phrase a coûté une vie. Celle-ci était la quatrième."
       ],
       manieres: [
@@ -599,7 +575,7 @@
       ]
     },
     {
-      id: "golem", script: "exp", camp: "etranger", quand: "jour", nom: "le Golem",
+      id: "golem", script: "exp", camp: "marginal", quand: "jour", nom: "le Golem",
       intro: [
         "Le Golem a nominé. Le Golem ne nomine qu'une fois, mais il le fait très bien.",
         "Nominé{e} par le Golem, {il} n'était manifestement pas le Démon. Le Golem s'en est aperçu ensuite."
@@ -621,10 +597,10 @@
       ]
     },
     {
-      id: "lleech", script: "exp", camp: "demon", quand: "nuit", nom: "le Lleech",
+      id: "parasyte", script: "exp", camp: "demon", quand: "nuit", nom: "le Parasyte",
       intro: [
-        "Le Lleech s'est accroché à un hôte. L'hôte allait très bien. Les autres, non.",
-        "Tant que l'hôte vit, le Lleech est intouchable. Et il en profite largement."
+        "Le Parasyte s'est accroché à un hôte. L'hôte allait très bien. Les autres, non.",
+        "Tant que l'hôte vit, le Parasyte est intouchable. Et il en profite largement."
       ],
       manieres: [
         ["drainé{e} lentement par quelque chose d'accroché ailleurs, à quelqu'un d'autre", "L'Affaire de la Sangsue Lointaine"],
@@ -690,7 +666,7 @@
     "« Faites-moi confiance, je sais exactement ce que je fais. »",
     "« Bon, cette nuit on ne risque rien, c'est calme. »",
     "« Si je meurs, c'est que j'avais raison. Retenez bien ça. »",
-    "« Je vous jure que je suis le Chef. LE CHEF. »",
+    "« Je vous jure que je suis le Cuisinier. LE CUISINIER. »",
     "« Laissez-moi juste finir mon raisonnement, c'est important. »",
     "« Écoutez, statistiquement, ça ne peut pas être moi. »",
     "« Je vais me coucher, réveillez-moi s'il se passe quelque chose. »",
@@ -728,7 +704,7 @@
     "Le Conteur note quelque chose dans son grimoire, puis le referme un peu trop vite.",
     "Le Conteur confirme : ce n'était ni un accident, ni une surprise, ni une injustice.",
     "Le Conteur précise que cette mort était évitable, et s'arrête là.",
-    "Le Conteur rappelle que les morts conservent un vote fantôme, et un seul.",
+    "Le Conteur rappelle que les morts conservent leur Vote de Mort, et un seul.",
     "Le Conteur déclare la nuit terminée. Le village, lui, n'a pas fini d'en parler.",
     "Le Conteur estime que le village a eu exactement ce qu'il méritait.",
     "Le Conteur observe un silence qui vaut tous les aveux.",
@@ -744,6 +720,288 @@
     "Le Conteur rappelle qu'il reste au moins un Démon en circulation. Bonne journée.",
     "Le Conteur promet que la prochaine sera plus douce. Le Conteur promet beaucoup de choses."
   ];
+
+  /* ================================================================== */
+  /*  EXÉCUTIONS — le village se charge lui-même du sale travail         */
+  /* ================================================================== */
+
+  /** Complète « accusé{e} … » dans le chef d'accusation. */
+  const ACCUSATIONS = [
+    "d'avoir répondu trop vite à une question que personne n'avait posée",
+    "d'avoir dit « je suis gentil » avec une intonation manifestement suspecte",
+    "d'avoir croisé les bras pendant toute l'annonce du matin",
+    "de n'avoir rien dit de la journée, ce qui est éminemment louche",
+    "d'avoir beaucoup trop parlé, ce qui est tout aussi louche",
+    "d'avoir revendiqué un rôle déjà revendiqué par deux autres personnes",
+    "d'avoir regardé le Conteur au moment exact où il ne fallait pas",
+    "d'avoir survécu à trois nuits d'affilée, ce qui relève de la provocation",
+    "d'avoir proposé de ne rien faire aujourd'hui",
+    "d'avoir proposé d'exécuter quelqu'un d'autre, ce qui revient au même",
+    "d'avoir souri pendant la lecture de la liste des morts",
+    "d'avoir utilisé le mot « statistiquement » deux fois en une phrase",
+    "d'avoir défendu la mauvaise personne avec une chaleur excessive",
+    "d'avoir changé de version entre le petit-déjeuner et le vote",
+    "d'avoir gardé exactement la même version, mot pour mot, ce qui sent le texte appris",
+    "d'être assis{e} à côté de deux morts, ce qui fait beaucoup de coïncidences",
+    "de n'être assis{e} à côté d'aucun mort, ce qui fait encore plus de coïncidences",
+    "d'avoir bâillé pendant un témoignage capital",
+    "d'avoir proposé un plan trop bon pour être honnête",
+    "d'avoir refusé de boire à la santé du village",
+    "d'avoir juré sur la tête d'un mort qui n'avait rien demandé",
+    "d'avoir corrigé la grammaire de son propre accusateur",
+    "d'avoir dit « faites-moi confiance » sans y être invité{e}",
+    "d'avoir voté contre tout le monde, y compris contre {lui}-même",
+    "d'avoir été le dernier à lever la main, et le plus haut",
+    "d'avoir un nom qui sonne un peu démoniaque, à la réflexion",
+    "d'avoir rangé sa chaise pendant la discussion sur les alignements",
+    "d'avoir eu raison hier, ce qu'aucun innocent ne se permettrait",
+    "d'avoir apporté des biscuits, ce qui est exactement ce que ferait un Démon",
+    "d'être la seule personne dont personne ne se méfiait encore"
+  ];
+
+  const PREUVES = [
+    "Trois personnes affirment l'avoir vu{e} sourire au mauvais moment. Les trois se contredisent sur l'heure.",
+    "Son information de la première nuit était exacte. Beaucoup trop exacte.",
+    "Le Fossoyeur a retrouvé une empreinte de botte. Tout le village porte les mêmes bottes.",
+    "Un mort a hoché la tête quand son nom a été prononcé. Enfin, quelqu'un croit l'avoir vu hocher.",
+    "On a compté ses interventions : quatorze. La moyenne du village est de six.",
+    "Sa version de la nuit 2 tient en trois phrases, dont deux sont invérifiables.",
+    "Quelqu'un a trouvé une bougie éteinte devant sa porte. C'est tout, mais c'est troublant.",
+    "Le chat de la Tavernière a refusé de s'asseoir sur ses genoux.",
+    "Un{e} voisin{e} jure l'avoir entendu{e} rire seul{e} vers deux heures du matin.",
+    "Son alibi repose entièrement sur le témoignage d'une personne morte depuis.",
+    "{Il} a été désigné{e} par une information que tout le monde soupçonne d'être empoisonnée.",
+    "Le vote de la veille avait déjà failli {le} désigner. Le village n'aime pas se répéter, mais tout de même.",
+    "On a retrouvé son nom griffonné trois fois dans la marge d'un registre.",
+    "Sa réaction à l'annonce du matin a été jugée « une demi-seconde trop lente » par deux témoins.",
+    "Personne ne se souvient de l'avoir vu{e} pendant la discussion de midi.",
+    "Tout le monde se souvient parfaitement de l'avoir vu{e}, ce qui est encore pire.",
+    "Le Conteur n'a pas bronché quand son nom a été cité. Le village y a vu un aveu.",
+    "Une addition impeccable de rumeurs aboutit à {lui} avec une marge d'erreur raisonnable.",
+    "{Il} a refusé de jurer sur le puits communal, prétextant une entorse.",
+    "Deux personnes ont dit « c'est évidemment {lui} » en même temps, ce qui a fait office de preuve.",
+    "Le seul élément à décharge a été perdu entre le lavoir et la place.",
+    "Son siège grince. Aucun autre siège du village ne grince.",
+    "Le dossier est mince, mais il est relié, et un dossier relié impressionne.",
+    "L'accusation repose sur une intuition tenace et sur un besoin collectif de conclure.",
+    "Quelqu'un a dit « j'ai un mauvais pressentiment » et personne n'a osé contredire un pressentiment."
+  ];
+
+  const PLAIDOYERS = [
+    "« Si j'étais le Démon, croyez bien que je me défendrais mieux que ça. »",
+    "« Exécutez-moi, vous verrez bien. » — le village a vu.",
+    "« Je peux tout expliquer, mais il me faudrait environ quarante minutes. »",
+    "« Vous commettez une erreur, et pire : une erreur ennuyeuse. »",
+    "« Regardez-moi dans les yeux. Non, pas comme ça. »",
+    "« Je réclame un second vote, un avocat et un verre d'eau. »",
+    "« D'accord, mais qui protégera le village quand je ne serai plus là ? »",
+    "« Techniquement, personne n'a prouvé que je respirais encore ce matin. »",
+    "« Je vous préviens : ma mort va vous coûter très cher. » — elle a coûté une journée.",
+    "« Très bien. Mais rappelez-vous qui vous a dit de ne pas le faire. »",
+    "« C'est un complot, et j'en veux pour preuve que personne ne me croit. »",
+    "« Je suis prêt{e} à être exécuté{e} demain. Pas aujourd'hui. Demain. »",
+    "« Vous allez tous vous sentir très bêtes dans exactement une nuit. »",
+    "« Je n'ai pas de défense, j'ai une dignité. »",
+    "« Posez-moi n'importe quelle question. Sauf celle-là. »",
+    "« Je propose qu'on exécute plutôt la personne qui m'accuse, par symétrie. »",
+    "« Sachez que je vous pardonne. Je ne vous pardonne pas du tout, en fait. »",
+    "« Attendez ! J'ai une information capitale. » — {il} ne l'a jamais donnée.",
+    "« Mon rôle est trop important pour être révélé maintenant. Et maintenant il est trop tard. »",
+    "« Est-ce qu'on peut au moins voter à bulletin secret ? »",
+    "« Je m'en remets à la sagesse du village. » — pari audacieux.",
+    "« Je vous rappelle que j'ai apporté les biscuits. »",
+    "« Un instant : est-ce que quelqu'un a vérifié que j'étais vivant{e} ? »",
+    "« Tout ceci est une immense perte de temps, et je le prouverai post mortem. »",
+    "« Faites vite, alors. J'ai horreur des adieux. »"
+  ];
+
+  /** Modes d'exécution, par niveau de loufoquerie. [description, titre de l'affaire] */
+  const MODES_EXECUTION = {
+    1: [
+      ["pendu{e} au vieux chêne, proprement, sans un mot de trop", "L'Exécution Impeccable"],
+      ["pendu{e} à un chêne qui a vu passer quatre-vingts innocents et deux coupables", "L'Exécution du Chêne Statisticien"],
+      ["exécuté{e} au gibet communal, à l'heure dite, selon la coutume", "L'Exécution Réglementaire"],
+      ["exécuté{e} sur la foi d'une intuition et d'un regard légèrement fuyant", "L'Exécution du Regard Fuyant"],
+      ["exécuté{e} pour avoir gardé le silence au pire moment possible", "L'Exécution du Silence Mal Placé"],
+      ["précipité{e} du haut du beffroi, d'une poussée presque respectueuse", "L'Exécution du Beffroi"],
+      ["exécuté{e} dans un silence si dense qu'on entendait la corde réfléchir", "L'Exécution Silencieuse"],
+      ["exécuté{e} devant l'assemblée entière, qui a tenu à être présente jusqu'au bout", "L'Exécution Assidue"],
+      ["exécuté{e} au lever du soleil, le village ayant tenu à faire les choses dignement", "L'Exécution à l'Aube"]
+    ],
+    2: [
+      ["poussé{e} dans le puits communal, avec un « plouf » d'une banalité décevante", "L'Exécution du Plouf Décevant"],
+      ["exécuté{e} après avoir crié « je suis le Cuisinier ! » d'un ton un peu trop enthousiaste", "L'Exécution de l'Enthousiasme Suspect"],
+      ["pendu{e} à une corde empruntée au Cordier, qui a exigé de la récupérer ensuite", "L'Exécution de la Corde Prêtée"],
+      ["exécuté{e} à la troisième tentative, les deux premières ayant échoué pour raisons techniques", "L'Exécution en Trois Essais"],
+      ["écrasé{e} sous la cloche du beffroi, descendue spécialement pour l'occasion", "L'Exécution sous la Cloche"],
+      ["exécuté{e} par le Bourrelier, qui n'avait jamais fait ça et a beaucoup transpiré", "L'Exécution de l'Amateur"],
+      ["enterré{e} sous les huées, avant même la fin de la procédure", "L'Exécution Anticipée"],
+      ["exécuté{e} avec une solennité gâchée par un fou rire au premier rang", "L'Exécution Gâchée"],
+      ["pendu{e} à une branche qui a cédé, puis à une autre, plus sérieuse", "L'Exécution de la Deuxième Branche"]
+    ],
+    3: [
+      ["catapulté{e} par-dessus la colline à l'aide d'une charrette et d'un tas de foin", "L'Exécution Balistique"],
+      ["exécuté{e} par noyade dans le tonneau de soupe du banquet annuel, désormais annulé", "L'Exécution du Banquet Annulé"],
+      ["piétiné{e} par la fanfare du village, entrée au mauvais moment", "L'Exécution en Fanfare"],
+      ["exécuté{e} par une foule qui s'y est reprise à quinze, chacun tirant dans son sens", "L'Exécution Collective et Désordonnée"],
+      ["enfermé{e} dans le four à pain avec une miche, dont la cuisson fut parfaite", "L'Exécution Boulangère"],
+      ["poussé{e} du haut du moulin, puis ramené{e} par la roue, puis repoussé{e}", "L'Exécution en Boucle"],
+      ["exécuté{e} par un jury d'oies, désignées à la courte paille", "L'Exécution Ansérine"],
+      ["pendu{e} par les bretelles à la girouette, qui a tourné toute la nuit", "L'Exécution Girouette"],
+      ["exécuté{e} sous une avalanche de choux lancés depuis le potager de la Mégère", "L'Exécution Maraîchère"],
+      ["exécuté{e} à l'ancienne, c'est-à-dire d'une manière que plus personne ne sait reproduire", "L'Exécution à l'Ancienne"],
+      ["écrasé{e} par le buste du Fondateur, descellé par l'enthousiasme général", "L'Exécution du Fondateur"],
+      ["exécuté{e} deux fois, le village ayant perdu le compte après le premier vote", "L'Exécution en Double"]
+    ],
+    4: [
+      ["exécuté{e} par vote, sans corde, sans arme et sans contact : le vote a suffi", "L'Exécution Purement Démocratique"],
+      ["rayé{e} du registre communal, ce qui s'est avéré parfaitement suffisant", "L'Exécution Administrative"],
+      ["exécuté{e} rétroactivement à la nuit précédente, pour gagner du temps", "L'Exécution Rétroactive"],
+      ["exécuté{e} par un règlement voté le matin même et jamais relu depuis", "L'Exécution Réglementaire au Sens Strict"],
+      ["plié{e} en quatre, tamponné{e}, et classé{e} au rayon des affaires closes", "L'Exécution Classée Sans Suite"],
+      ["exécuté{e} par consensus si unanime que la réalité n'a pas osé contredire", "L'Exécution par Consensus"],
+      ["exécuté{e} sur parole, le village ayant décidé de se croire sur parole", "L'Exécution sur Parole"],
+      ["remplacé{e} par une chaise vide, à laquelle tout le monde a continué de parler", "L'Exécution Mobilière"],
+      ["exécuté{e} par une phrase prononcée au conditionnel passé, ce qui a suffi", "L'Exécution Grammaticale"],
+      ["d'abord annulé{e}, puis réinstauré{e}, puis menée à bien par acquit de conscience", "L'Exécution par Acquit de Conscience"]
+    ]
+  };
+
+  /** Commentaires sur le décompte des voix. */
+  const NOTES_DE_VOTE = [
+    "Le village est formel. Le village est souvent formel.",
+    "Deux mains se sont levées par simple réflexe grégaire.",
+    "Une voix a basculé le vote à la toute dernière seconde, puis a regretté.",
+    "Personne n'a osé baisser la main le premier.",
+    "Le décompte a été refait trois fois, avec trois résultats différents.",
+    "Une main s'est levée toute seule, son propriétaire jure le contraire.",
+    "Le vote a été acquis dans un enthousiasme qui retombera dans dix minutes.",
+    "Trois personnes ont voté en regardant ailleurs.",
+    "Un vote de plus et c'était l'égalité ; une égalité aurait tout sauvé.",
+    "Les morts ont voté en premier, ce qui a donné le ton.",
+    "La majorité s'est faite sur un malentendu parfaitement identifiable après coup.",
+    "Le Conteur a compté à voix haute, lentement, en laissant une dernière chance à tout le monde.",
+    "Quelqu'un a demandé un recomptage. Le recomptage a aggravé son cas.",
+    "Le vote a duré quatre secondes. La délibération, quarante minutes.",
+    "Une main hésitante a fini de sceller le sort du village."
+  ];
+
+  /** Verdicts spécifiques aux exécutions. */
+  const VERDICTS_EXECUTION = [
+    "Le Conteur enregistre l'exécution. Le Conteur ne commente pas les exécutions.",
+    "Le Conteur rappelle qu'il n'y aura qu'une exécution par jour, et que celle-ci est faite.",
+    "Le Conteur note la décision du village dans la colonne prévue à cet effet.",
+    "Le Conteur observe que le village est très fort pour décider, un peu moins pour décider juste.",
+    "Le Conteur referme le grimoire. La nuit va tomber, et elle ne sera pas clémente.",
+    "Le Conteur s'abstient de tout commentaire, ce qui est en soi un commentaire.",
+    "Le Conteur confirme : la procédure a été respectée de bout en bout. Le résultat, c'est autre chose.",
+    "Le Conteur laisse au village quelques secondes pour savourer, puis annonce la nuit.",
+    "Le Conteur rappelle que les morts conservent un vote, et un seul. Le silence se fait.",
+    "Le Conteur archive l'affaire sous la mention : « le village a agi vite ».",
+    "Le Conteur signale qu'on peut désormais passer à la suite. Le village n'est pas prêt.",
+    "Le Conteur sourit poliment. C'est rarement bon signe."
+  ];
+
+  /**
+   * Révélations post-mortem : ce que le village découvre après coup.
+   * Les conséquences citées suivent les règles officielles du jeu.
+   */
+  /** Petite phrase attachée au nommant (accordée au genre du nommant). */
+  const MOTS_DU_NOMMANT = [
+    "qui tient à préciser que ce n'est absolument rien de personnel",
+    "qui n'avait jamais nominé personne jusqu'à aujourd'hui",
+    "qui avait un très mauvais pressentiment depuis le petit-déjeuner",
+    "qui s'est levé{e} lentement, pour l'effet dramatique",
+    "qui venait de perdre un pari et devait nominer quelqu'un",
+    "qui a nominé en s'excusant trois fois pendant la phrase",
+    "qui prétend agir « dans l'intérêt supérieur du village »",
+    "qui avait préparé son discours la veille au soir",
+    "qui a nominé par élimination, tous les autres ayant déjà été nominés",
+    "qui regrette déjà, mais un peu tard",
+    "qui a nominé en regardant le Conteur, ce qui n'aide personne",
+    "qui jure avoir vu quelque chose, sans pouvoir dire quoi",
+    "qui voulait surtout que la journée avance",
+    "qui a été poussé{e} du coude par son voisin de gauche"
+  ];
+
+  const REVELATIONS = [
+    /* ---- le Démon : le village avait raison (pour une fois) ---- */
+    { camp: "demon", script: "all", texte: "{Il} était le Démon. Le village exulte — puis se souvient qu'un Sbire peut très bien reprendre le flambeau cette nuit." },
+    { camp: "demon", script: "all", texte: "{Il} était le Démon. La partie s'arrête là. Personne n'ose avouer avoir voté au hasard." },
+    { camp: "demon", script: "all", texte: "{Il} était le Démon, et {il} l'avait annoncé trois fois en rigolant. Personne n'avait voulu y croire." },
+    { camp: "demon", script: "tb", texte: "{Il} était bel et bien le Diablotin. La Femme écarlate, au troisième rang, n'a pas eu l'air si affligée que ça." },
+    { camp: "demon", script: "sv", texte: "{Il} était le Fang Gu. Un Marginal, quelque part, vient de se sentir étrangement en forme." },
+    { camp: "demon", script: "bmr", texte: "{Il} était le Zombuul, déjà mort une première fois. Le village espère très fort que celle-ci compte." },
+    { camp: "demon", script: "exp", texte: "{Il} était le Démon. Il en reste malheureusement un certain nombre d'autres dans ce script." },
+
+    /* ---- un Sbire : demi-victoire ---- */
+    { camp: "sbire", script: "all", texte: "{Il} faisait bien partie des Sbires. Le village s'autorise une demi-victoire et une pleine tournée." },
+    { camp: "sbire", script: "all", texte: "{Il} servait le Démon, ce qui ne fait pas gagner, mais fait beaucoup de bien au moral." },
+    { camp: "sbire", script: "tb", texte: "{Il} était l'Empoisonneur. Les informations reçues depuis deux nuits redeviennent, avec un peu de chance, fiables." },
+    { camp: "sbire", script: "tb", texte: "{Il} était l'Espionne, qui passait pour Villageoise depuis le premier soir, chiffres à l'appui." },
+    { camp: "sbire", script: "tb", texte: "{Il} était le Baron. Cela explique rétrospectivement pourquoi il y avait tant de Marginaux dans cette partie." },
+    { camp: "sbire", script: "tb", texte: "{Il} était la Femme écarlate. Le Démon, lui, se porte très bien et dort à deux sièges de là." },
+    { camp: "sbire", script: "bmr", texte: "{Il} était l'Avocat du diable, qui avait sauvé trois accusés de la corde. Le quatrième, c'était {lui}." },
+    { camp: "sbire", script: "sv", texte: "{Il} était la Sorcière. La malédiction du jour tombe donc à l'eau, ce qui arrange au moins une personne." },
+    { camp: "sbire", script: "exp", texte: "{Il} servait le Démon, et a été remplacé{e} avant même la fin de l'après-midi." },
+
+    /* ---- un Marginal : c'est plus compliqué ---- */
+    { camp: "marginal", script: "all", texte: "{Il} comptait parmi les Marginaux : techniquement du bon côté, statistiquement une perte sèche." },
+    { camp: "marginal", script: "tb", texte: "{Il} était le Saint. La partie s'arrête immédiatement : le Bien a perdu. Le village range les chaises en silence." },
+    { camp: "marginal", script: "tb", texte: "{Il} était la Recluse, qui s'obstinait à avoir l'air maléfique. À force, elle a fini par convaincre tout le monde." },
+    { camp: "marginal", script: "tb", texte: "{Il} était l'Ivrogne. {Il} se croyait Villageois{e} depuis le début et {il} est mort{e} sans jamais l'apprendre." },
+    { camp: "marginal", script: "tb", texte: "{Il} était le Majordome. Son maître a voté contre {lui}, ce qui restera un grand moment de vie domestique." },
+    { camp: "marginal", script: "bmr", texte: "{Il} était le Bricoleur, qui serait probablement mort tout seul avant la fin de la nuit." },
+    { camp: "marginal", script: "bmr", texte: "{Il} était le Sélénite, qui a désigné quelqu'un en tombant. Ce quelqu'un ne va pas passer une bonne nuit." },
+    { camp: "marginal", script: "bmr", texte: "{Il} était le Gros bras, et la première personne qui l'a choisi cette partie n'a plus jamais rien compris." },
+    { camp: "marginal", script: "sv", texte: "{Il} était la Bête de foire, à qui l'on avait justement demandé de ne pas trop parler de son rôle." },
+    { camp: "marginal", script: "sv", texte: "{Il} était la Dulcinée. Un voisin vient de devenir définitivement ivre, et l'ignore encore." },
+    { camp: "marginal", script: "sv", texte: "{Il} était le Maladroit. Sa désignation d'adieu a raté de trois sièges." },
+    { camp: "marginal", script: "sv", texte: "{Il} était le Barbier. Le Démon va pouvoir échanger deux personnages cette nuit, en souvenir." },
+    { camp: "marginal", script: "exp", texte: "{Il} était l'Hérétique. Quel que soit le camp qui gagne à la fin, il perdra. Le village n'a pas fini de digérer." },
+    { camp: "marginal", script: "exp", texte: "{Il} était la Demoiselle. Un Sbire pouvait la désigner pour faire perdre le Bien ; le village s'en est chargé tout seul." },
+    { camp: "marginal", script: "exp", texte: "{Il} était le Politicien, dont le talent consiste précisément à changer de camp au bon moment." },
+
+    /* ---- un Villageois : la catastrophe habituelle ---- */
+    { camp: "village", script: "all", texte: "{Il} comptait parmi les Villageois, avec une capacité parfaitement utile et désormais parfaitement perdue." },
+    { camp: "village", script: "all", texte: "{Il} était du côté du Bien. Le village vient de faire le travail du Démon, gratuitement et avec entrain." },
+    { camp: "village", script: "tb", texte: "{Il} était le Soldat : invulnérable au Démon, parfaitement vulnérable au village." },
+    { camp: "village", script: "tb", texte: "{Il} était la Corneille, qui aurait appris le nom de son assassin si le Démon l'avait tuée. Une exécution, ça ne compte pas." },
+    { camp: "village", script: "tb", texte: "{Il} était le Fossoyeur. {Il} aurait appris cette nuit quel rôle avait été exécuté aujourd'hui. C'était le sien." },
+    { camp: "village", script: "tb", texte: "{Il} était le Maire. À trois joueurs en vie et sans exécution, le Bien l'emportait. C'est désormais un souvenir." },
+    { camp: "village", script: "tb", texte: "{Il} était l'Immaculée — deuxième nomination, capacité déjà consommée la veille. Le timing du village est remarquable." },
+    { camp: "village", script: "tb", texte: "{Il} était le Moine, qui protégeait quelqu'un d'autre chaque nuit. Plus personne ne protège personne." },
+    { camp: "village", script: "tb", texte: "{Il} était la Pourfendeuse, qui gardait son tir pour le bon moment. Le bon moment n'est jamais venu." },
+    { camp: "village", script: "tb", texte: "{Il} était l'Empathe, qui répétait depuis deux jours que ses voisins étaient bons. {Il} avait raison, évidemment." },
+    { camp: "village", script: "tb", texte: "{Il} était le Cuisinier, dont le chiffre du premier soir était exact. Personne n'avait fait le calcul." },
+    { camp: "village", script: "tb", texte: "{Il} était la Voyante, à deux doigts de trouver. Ses deux doigts reposent désormais au cimetière." },
+    { camp: "village", script: "bmr", texte: "{Il} était la Tisanière : tant qu'{il} vivait, ses deux voisins ne pouvaient pas mourir. Ils s'en aperçoivent maintenant." },
+    { camp: "village", script: "bmr", texte: "{Il} était l'Aubergiste, grâce à qui deux joueurs avaient survécu à la nuit. Ces deux joueurs ont voté contre {lui}." },
+    { camp: "village", script: "bmr", texte: "{Il} était le Marin, ivre, heureux et absolument invulnérable à tout — sauf à un vote." },
+    { camp: "village", script: "bmr", texte: "{Il} était le Fou du roi. {Il} s'est relevé, a épousseté sa veste et a demandé si le vote comptait quand même." },
+    { camp: "village", script: "bmr", texte: "{Il} était la Grand-mère. Son petit-enfant, quelque part dans le cercle, respire nettement moins bien." },
+    { camp: "village", script: "bmr", texte: "{Il} était le Courtisan, qui avait rendu le Démon ivre une nuit entière. Le Démon a fini par dessoûler." },
+    { camp: "village", script: "sv", texte: "{Il} était l'Horloger, qui savait exactement à quelle distance se trouvait le Démon. Cette distance vient de changer." },
+    { camp: "village", script: "sv", texte: "{Il} était le Charmeur de serpents, à un échange près de devenir le Démon {lui}-même. Raté d'un cheveu." },
+    { camp: "village", script: "sv", texte: "{Il} était l'Oracle, qui comptait les morts maléfiques chaque nuit. {Il} pourra désormais les compter de l'intérieur." },
+    { camp: "village", script: "sv", texte: "{Il} était le Jongleur, dont les cinq devinettes ne seront jamais validées." },
+    { camp: "village", script: "exp", texte: "{Il} comptait parmi les Villageois d'un script expérimental, avec une capacité que personne n'avait fini de lire." },
+
+    /* ---- le Conteur garde le secret ---- */
+    { camp: "inconnu", script: "all", texte: "Le Conteur ne révèle rien. Le village devra vivre avec, jusqu'à la fin de la partie ou la fin de ses jours." },
+    { camp: "inconnu", script: "all", texte: "Le Conteur secoue la tête. Personne ne saura. C'est précisément là que commence le vrai jeu." }
+  ];
+
+  /** Pondération des révélations par camp. */
+  const POIDS_REVELATION = { village: 40, marginal: 26, sbire: 20, demon: 10, inconnu: 4 };
+
+  const LIBELLES_CAMP = {
+    demon: "Démon",
+    sbire: "Sbire",
+    marginal: "Marginal",
+    village: "Villageois",
+    inconnu: "Non révélé"
+  };
 
   /* ------------------------------------------------------------------ */
   /*  MÉTA                                                               */
@@ -767,6 +1025,9 @@
     PRENOMS_M, PRENOMS_F, EPITHETES_M, EPITHETES_F,
     LIEUX, MOMENTS, MANIERES, CAUSES,
     INDICES, DERNIERS_MOTS, VERDICTS,
+    ACCUSATIONS, PREUVES, PLAIDOYERS, MODES_EXECUTION,
+    NOTES_DE_VOTE, VERDICTS_EXECUTION, REVELATIONS, MOTS_DU_NOMMANT,
+    POIDS_REVELATION, LIBELLES_CAMP,
     SCRIPTS, CHAOS_LABELS
   };
 })(window);

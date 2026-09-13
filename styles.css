@@ -141,6 +141,38 @@ body {
 }
 #chaos-label { color: var(--ink); letter-spacing: .04em; text-transform: none; font-size: .95rem; }
 
+/* ----------------------------------------------------------- onglets */
+
+.modes { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+.mode {
+  display: grid; gap: 2px;
+  padding: 13px 14px;
+  text-align: left;
+  color: var(--ink-soft);
+  background: rgba(255,255,255,.025);
+  border: 1px solid rgba(217,178,106,.2);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all .2s ease;
+}
+.mode:hover { border-color: rgba(217,178,106,.5); color: var(--ink); transform: translateY(-1px); }
+.mode-icon { font-size: 1.1rem; line-height: 1; }
+.mode-title { font-family: var(--title); font-size: .98rem; letter-spacing: .04em; }
+.mode-sub { font-size: .76rem; color: var(--ink-faint); font-style: italic; }
+
+.mode.is-on {
+  color: var(--gold-hot);
+  border-color: var(--gold);
+  background: linear-gradient(180deg, rgba(217,178,106,.16), rgba(142,29,38,.14));
+  box-shadow: 0 0 22px rgba(217,178,106,.18), inset 0 1px 0 rgba(255,255,255,.08);
+}
+.mode.is-on .mode-sub { color: var(--ink-soft); }
+
+@media (max-width: 560px) {
+  .modes { grid-template-columns: 1fr; }
+}
+
 .chips { display: flex; flex-wrap: wrap; gap: 8px; }
 
 .chip {
@@ -322,6 +354,7 @@ select option { background: var(--night-3); color: var(--ink); }
 }
 
 .report { margin: 0; display: grid; gap: 2px; }
+.report[hidden], [hidden] { display: none !important; }
 
 .row {
   display: grid;
@@ -345,6 +378,30 @@ select option { background: var(--night-3); color: var(--ink); }
 .row dd em { color: #4a3a26; }
 .row.flash dd { animation: ink-in .45s ease; }
 @keyframes ink-in { from { opacity: 0; filter: blur(2px); transform: translateY(-3px); } to { opacity: 1; filter: none; transform: none; } }
+
+/* La révélation post-mortem : le clou du procès-verbal. */
+.row-reveal {
+  margin-top: 4px;
+  background: rgba(142, 29, 38, .07);
+  border-left: 3px solid rgba(142, 29, 38, .45);
+  padding-left: 12px;
+  border-radius: 3px;
+}
+.row-reveal dd { font-weight: 500; }
+.row-reveal .camp {
+  display: inline-block;
+  font-family: var(--title); font-size: .64rem;
+  letter-spacing: .16em; text-transform: uppercase;
+  padding: 2px 8px; margin-right: 8px; border-radius: 3px;
+  vertical-align: 2px;
+  color: #fdf1e0; background: #7a1a22;
+}
+.row-reveal .camp[data-camp="village"] { background: #2f5d3a; }
+.row-reveal .camp[data-camp="marginal"] { background: #6a5320; }
+.row-reveal .camp[data-camp="sbire"] { background: #8e3d17; }
+.row-reveal .camp[data-camp="inconnu"] { background: #4a4550; }
+
+.tally { font-variant-numeric: tabular-nums; font-weight: 500; color: #5b1620; }
 
 .reroll {
   align-self: center;
@@ -436,6 +493,9 @@ select option { background: var(--night-3); color: var(--ink); }
 }
 .colophon p { margin: 0 0 8px; }
 .colophon strong { color: var(--ink-soft); }
+.colophon a { color: var(--gold); text-decoration-color: rgba(217,178,106,.35); }
+.colophon a:hover { color: var(--gold-hot); }
+.colophon code { font-family: ui-monospace, Consolas, monospace; font-size: .9em; color: var(--ink-soft); }
 kbd {
   font-family: ui-monospace, Consolas, monospace; font-size: .8em;
   padding: 1px 6px; border-radius: 4px;
